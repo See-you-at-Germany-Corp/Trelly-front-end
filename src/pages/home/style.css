@@ -1,0 +1,13 @@
+.homepage-main-container {
+    background: lightblue; 
+    height: 100vh; 
+    overflow: auto;
+}
+.homepage-main-container .homepage-sub-container {
+    background: snow;
+    height: 100vh;
+    overflow: auto; 
+    padding-right: 5%;
+    width: 65%;
+    float: right; 
+}
