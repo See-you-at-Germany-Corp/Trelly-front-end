@@ -14,6 +14,7 @@ const store = createStore(rootReducer);
 ReactDOM.render(
   <Provider store={store}>
     <App />
+    <h1>Mark</h1>
   </Provider>,
   document.getElementById('root')
 );
