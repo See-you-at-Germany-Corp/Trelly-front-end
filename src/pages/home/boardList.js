@@ -44,7 +44,7 @@ const BoardList = (props) => {
                                 /// create new personal board card.
                                 props.boardListData.length - 1 === index && props.listName === 'Personal Boards' &&
                                 <Link to='' className='board-list-item' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
-                                    <p style={{ marginTop: '32.5px', color: 'black', marginLeft: '0' }}>Create new board</p> 
+                                    <p style={{ marginTop: '35px', color: 'black', marginLeft: '0' }}>Create new board</p> 
                                 </Link>
                             }
                         </React.Fragment>
