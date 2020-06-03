@@ -6,22 +6,26 @@ const initState = [
     {
         id: 0,
         name: 'Trelly',
-        background: 'lightPink'
+        background: 'lightPink',
+        starred: false
     },
     {
         id: 1,
         name: 'KMITL',
-        background: 'lightBlue'
+        background: 'lightBlue',
+        starred: false
     },
     {
         id: 2,
         name: 'Pepsi',
-        background: 'lightGreen'
+        background: 'lightGreen',
+        starred: true
     },
     {
         id: 3,
         name: 'Meo Germany',
-        background: 'lightCoral'
+        background: 'lightCoral',
+        starred: false
     }
 ]
 
@@ -59,6 +63,30 @@ export default (state = initState, action)=> {
             }
 
             return newState3;
+
+        case 'STAR_BOARD':
+            const newState4 = [...state];
+            const starIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (starIndex > 0) {
+                newState4[starIndex].starred = true;
+
+                /// post to backend.
+            }
+
+            return newState4;
+
+        case 'UNSTAR_BOARD':
+            const newState5 = [...state];
+            const unStarIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (unStarIndex > 0) {
+                newState5[unStarIndex].starred = false;
+
+                /// post to backend.
+            }
+
+            return newState5;
 
         default:
             return state;

@@ -5,7 +5,7 @@ import './style.css';
 
 import BoardList from './boardList.js';
 
-import { addBoard, delBoard, changeName } from '../../redux/actions/boardList.js';
+import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
 
 const ReducersBoardListTest =({ dispatch })=> {
 
@@ -20,7 +20,15 @@ const ReducersBoardListTest =({ dispatch })=> {
             <button onClick={() => dispatch(addBoard(test))}>Add Board</button>
             <button onClick={() => dispatch(delBoard(1))}>Del Board</button>
             <button onClick={() => dispatch(changeName(3, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
+            <button onClick={() => dispatch(starBoard(4))}>Star Board</button>
+            <button onClick={() => dispatch(unStarBoard(2))}>Unstar Board</button>
         </>
+    );
+}
+
+const personalToStarred = (personalBoardList) => { 
+    return (
+        personalBoardList.filter(board => board.starred === true)
     );
 }
 
@@ -32,7 +40,7 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, starredBoardList, dispatch})=> { 
+const Home = ({ personalBoardList, dispatch})=> {  
     return ( 
         <>
             <div style={{ background: 'lightCoral', height: '40px', position: 'sticky' }}></div>
@@ -42,13 +50,19 @@ const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
                 <HomeMenuBar />
 
                 <div className='homepage-sub-container'>
-                
-                {
-                    starredBoardList.length > 0 &&
-                    <BoardList listName='Starred Boards' icon='star' boardListData={starredBoardList} />
+
+                { 
+                    /// starred board lists.
+                    personalToStarred(personalBoardList).length > 0 &&
+                    <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} />
                 }
 
                 {
+                    /// recently view board lists. (comingsoon)
+                }
+
+                {
+                    /// personal board lists.
                     personalBoardList.length > 0 &&
                     <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} />
                 }

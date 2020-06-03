@@ -1,14 +1,7 @@
 import React from 'react';
 
 import './boardListStyle.css';
- 
-const BoardDetail =()=> {
-    return (
-        <>
-        </>
-    );
-}
-
+  
 const BoardList =(props)=> { 
     return (
         <div className={`${props.listName}-board-list board-list`}>

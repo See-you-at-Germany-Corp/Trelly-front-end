@@ -13,3 +13,13 @@ export const changeName =(boardId, name)=> ({
     boardId,
     name
 })
+
+export const starBoard =(boardId)=> ({
+    type: 'STAR_BOARD',
+    boardId, 
+})
+
+export const unStarBoard =(boardId)=> ({
+    type: 'UNSTAR_BOARD',
+    boardId, 
+})

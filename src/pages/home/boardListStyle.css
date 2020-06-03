@@ -3,9 +3,8 @@
     flex-flow: row wrap;
     background: lightsteelblue;
     width: 100%;
-    max-height: 25vh;
-    padding: 25px 0% 25px 10px;   
-    overflow: visible; 
+    max-height: 17vh;
+    padding: 25px 0% 25px 10px;    
     max-width: 900px;
     min-width: 288px;
 }
