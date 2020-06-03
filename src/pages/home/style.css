@@ -1,0 +1,68 @@
+.homepage-main-container {
+    !background: lightblue; 
+    background: snow;
+    height: 100vh;  
+    overflow: auto;
+    display: flex;
+    flex-direction: row ;
+    padding-top: 22px;
+}
+
+.homepage-main-container .homepage-menu-bar {
+    !background: wheat; 
+    height: 50vh;    
+    width: 30%;
+    min-width: 267px;
+}
+
+.homepage-main-container .homepage-menu-bar .menu-box {
+    margin-top: 14px;
+    !background: plum;  
+    float: right;
+    width: 245px;
+}
+
+.homepage-main-container .homepage-menu-bar .menu-box .menu-item {
+    padding: 4px 0px 6px 5px; 
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: block;
+    text-decoration: none;
+    color: black;  
+    border-radius: 4px;
+    transition: background 0.1s;
+}
+
+.homepage-main-container .homepage-menu-bar .menu-box .menu-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transition: background 0.1s;
+}
+
+.homepage-main-container .homepage-menu-bar .menu-box .menu-item > i {
+    padding: 2px 10px 2px 5px;
+    font-size: 12px;
+}
+
+.homepage-main-container .homepage-menu-bar .menu-box .menu-item > p { 
+    padding-top: 3px;
+    font-size: 14px;
+    display: inline;
+    opacity: 100%; 
+}
+
+.homepage-main-container .homepage-sub-container {
+    !background: snow;
+    height: 100vh;
+    overflow: auto;  
+    width: 70%;   
+}
+
+@media only screen and (max-width: 600px) {
+    .homepage-main-container .homepage-menu-bar {
+        display: none;
+    }
+
+    .homepage-main-container .homepage-sub-container { 
+        width: 100%;  
+    }
+}
