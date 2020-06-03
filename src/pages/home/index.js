@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
@@ -44,18 +45,31 @@ const personalToStarred = (personalBoardList) => {
 }
 
 const HomeMenuBar = () => {
+    const navLinkActiveStyle = {
+        color: 'rgb(2, 106, 167)',
+        background: 'rgba(170, 210, 230, 0.3)'
+    };
+
     return (
         <div className='homepage-menu-bar'>
-            
+            <div className='menu-box'>
+                {
+                    homeMenuBarData.map(menu => (
+                        <NavLink to={menu.href} className='menu-item' activeStyle={navLinkActiveStyle}>
+                            <i className={`fas fa-${menu.icon}`}></i>
+                            <p><b>{menu.name}</b></p>
+                        </NavLink>
+                    ))
+                }
+            </div>
         </div>
     );
 }
 
-const Home = ({ personalBoardList, dispatch})=> {  
-    console.log(personalBoardList);
+const Home = ({ personalBoardList, dispatch})=> {   
     return ( 
         <>
-            <div style={{ background: 'lightCoral', height: '40px', position: 'sticky' }}></div>
+            <div style={{ background: 'rgb(2, 106, 167)', height: '40px', position: 'sticky' }}></div>
             <div className='homepage-main-container'>
                 {/*<Navbar />*/}
 

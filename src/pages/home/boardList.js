@@ -12,7 +12,7 @@ const BoardList = (props) => {
         <div className={`${props.listName}-board-list board-list`}>
             <div className={`${props.listName}-board-name board-name-group`}>
                 <i className={`board-icon fas fa-${props.icon}`}></i>
-                <p className={`${props.listName}-board board-name`}>{`${props.listName}`}</p>
+                <p className={`${props.listName}-board board-name`}><b>{`${props.listName}`}</b></p>
             </div>
 
             {
@@ -27,7 +27,7 @@ const BoardList = (props) => {
                     return (
                         <React.Fragment key={`${keyId}-${index}`}>
                             <Link to={board.href} className='board-list-item' style={{ background: `${board.background}` }}>
-                                <p>{board.name}</p>
+                                <p><b>{board.name}</b></p>
 
                                 {
                                     board.starred === false ?
@@ -43,7 +43,7 @@ const BoardList = (props) => {
                             {
                                 /// create new personal board card.
                                 props.boardListData.length - 1 === index && props.listName === 'Personal Boards' &&
-                                <Link to='' className='board-list-item' style={{ background: 'lightGray', textAlign: 'center' }}>
+                                <Link to='' className='board-list-item' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
                                     <p style={{ marginTop: '32.5px', color: 'black', marginLeft: '0' }}>Create new board</p> 
                                 </Link>
                             }

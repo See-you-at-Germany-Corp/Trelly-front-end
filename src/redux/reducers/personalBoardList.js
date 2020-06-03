@@ -6,7 +6,7 @@ const initState = [
     {
         id: 0,
         name: 'Trelly',
-        background: 'lightPink',
+        background: 'salmon',
         starred: false,
         starred_id: 0,
         href: ''
@@ -14,7 +14,7 @@ const initState = [
     {
         id: 1,
         name: 'KMITL',
-        background: 'lightBlue',
+        background: 'deepskyblue',
         starred: false,
         starred_id: 0,
         href: ''
@@ -22,7 +22,7 @@ const initState = [
     {
         id: 2,
         name: 'Pepsi',
-        background: 'lightGreen',
+        background: 'plum',
         starred: true,
         starred_id: 0,
         href: ''
@@ -30,7 +30,7 @@ const initState = [
     {
         id: 3,
         name: 'Meo Germany',
-        background: 'lightCoral',
+        background: 'limegreen',
         starred: false,
         starred_id: 0,
         href: ''
