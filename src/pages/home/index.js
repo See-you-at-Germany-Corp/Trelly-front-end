@@ -54,7 +54,7 @@ const Home = ({ personalBoardList, dispatch})=> {
                 { 
                     /// starred board lists.
                     personalToStarred(personalBoardList).length > 0 &&
-                    <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} />
+                        <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
                 }
 
                 {
@@ -64,7 +64,7 @@ const Home = ({ personalBoardList, dispatch})=> {
                 {
                     /// personal board lists.
                     personalBoardList.length > 0 &&
-                    <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} />
+                        <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} dispatch={dispatch} />
                 }
 
                 {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
@@ -76,8 +76,7 @@ const Home = ({ personalBoardList, dispatch})=> {
 }
 
 const mapStateToProps =(state)=> ({
-    personalBoardList: state.personalBoardList,
-    starredBoardList: state.starredBoardList
+    personalBoardList: state.personalBoardList
 })
  
 const HomeWithConnect = connect(mapStateToProps)(Home);

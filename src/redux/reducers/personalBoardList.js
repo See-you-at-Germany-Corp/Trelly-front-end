@@ -43,7 +43,7 @@ export default (state = initState, action)=> {
             const newState2 = [...state];
             const delIndex = newState2.findIndex(data => data.id === action.boardId)
             
-            if (delIndex > 0) {
+            if (delIndex >= 0) {
                 newState2.splice(delIndex, 1);
 
                 /// post to backend.
@@ -55,7 +55,7 @@ export default (state = initState, action)=> {
             const newState3 = [...state];
             const changeIndex = state.findIndex(data => data.id === action.boardId) 
             
-            if (changeIndex > 0)
+            if (changeIndex >= 0)
             {
                 newState3[changeIndex].name = action.name;
 
@@ -66,9 +66,9 @@ export default (state = initState, action)=> {
 
         case 'STAR_BOARD':
             const newState4 = [...state];
-            const starIndex = state.findIndex(data => data.id === action.boardId)
+            const starIndex = state.findIndex(data => data.id === action.boardId) 
 
-            if (starIndex > 0) {
+            if (starIndex >= 0) {
                 newState4[starIndex].starred = true;
 
                 /// post to backend.
@@ -80,7 +80,7 @@ export default (state = initState, action)=> {
             const newState5 = [...state];
             const unStarIndex = state.findIndex(data => data.id === action.boardId)
 
-            if (unStarIndex > 0) {
+            if (unStarIndex >= 0) {
                 newState5[unStarIndex].starred = false;
 
                 /// post to backend.
