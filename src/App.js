@@ -1,20 +1,25 @@
-import React from 'react';  
-import { 
+import React from 'react';
+import {
   BrowserRouter as Router,
   Switch,
   Route
 } from 'react-router-dom';
 
 import Home from './pages/home';
+import Login from './pages/login';
 
 function App() {
   return (
     <Router>
       <Switch>
 
+        {/* <Route path='/login/' component={} /> */}
+
         <Route exact path='/'>
-          <Home />
+          {/* <Home /> */}
+          <Login />
         </Route>
+
 
       </Switch>
     </Router>
