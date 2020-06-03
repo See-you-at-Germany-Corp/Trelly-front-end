@@ -3,10 +3,10 @@
     flex-flow: row wrap;
     background: lightsteelblue;
     width: 100%;
-    max-height: 17vh;
-    padding: 25px 0% 25px 10px;    
+    !max-height: 17vh;
+    padding: 20px 0% 25px 10px;    
     max-width: 900px;
-    min-width: 288px; 
+    min-width: 288px;  
 }
 
 .board-list .board-name-group { 
@@ -20,7 +20,7 @@
 }
 
 .board-list .board-name-group .board-name { 
-    display: inline;
+    display: inline; 
 }
 
 .board-list .board-list-item {

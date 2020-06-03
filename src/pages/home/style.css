@@ -4,7 +4,7 @@
     overflow: auto;
     display: flex;
     flex-direction: row ;
-    margin-top: 22px;
+    padding-top: 22px;
 }
 
 .homepage-main-container .homepage-menu-bar {

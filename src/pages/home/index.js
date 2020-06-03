@@ -7,6 +7,7 @@ import BoardList from './boardList.js';
 
 import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
 
+// eslint-disable-next-line
 const ReducersBoardListTest =({ dispatch })=> {
 
     const test = {
