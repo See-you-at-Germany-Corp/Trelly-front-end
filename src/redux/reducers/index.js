@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import boardData from './boardList.js';
+import personalBoardList from './personalBoardList.js';
 
 export default combineReducers ({
-    boardData
+    personalBoardList
 });

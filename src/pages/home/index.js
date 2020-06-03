@@ -5,7 +5,7 @@ import './style.css';
 
 import BoardList from './boardList.js';
 
-import { addBoard, delBoard, changeName } from '../../actions/boardList.js';
+import { addBoard, delBoard, changeName } from '../../redux/actions/boardList.js';
 
 const ReducersBoardListTest =({ dispatch })=> {
 
@@ -19,7 +19,7 @@ const ReducersBoardListTest =({ dispatch })=> {
         <>
             <button onClick={() => dispatch(addBoard(test))}>Add Board</button>
             <button onClick={() => dispatch(delBoard(1))}>Del Board</button>
-            <button onClick={() => dispatch(changeName(3, 'ILOVEU TO MUCH SO MUCH!'))}>Change name</button>
+            <button onClick={() => dispatch(changeName(3, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
         </>
     );
 }
@@ -32,7 +32,7 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ boardData, dispatch})=> { 
+const Home = ({ personalBoardList, dispatch})=> { 
     return ( 
         <>
             <div style={{ background: 'lightCoral', height: '40px', position: 'sticky' }}></div>
@@ -43,9 +43,9 @@ const Home = ({ boardData, dispatch})=> {
 
                 <div className='homepage-sub-container'>
                 
-                <BoardList listName='Personal Boards' boardData={boardData} />
+                <BoardList listName='Personal Boards' personalBoardList={personalBoardList} />
 
-                {/*<ReducersBoardListTest dispatch={dispatch} />*/}
+                {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
 
                 </div> 
             </div>
@@ -54,7 +54,7 @@ const Home = ({ boardData, dispatch})=> {
 }
 
 const mapStateToProps =(state)=> ({
-    boardData: state.boardData
+    personalBoardList: state.personalBoardList
 })
  
 const HomeWithConnect = connect(mapStateToProps)(Home);

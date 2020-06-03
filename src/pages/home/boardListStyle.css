@@ -10,6 +10,20 @@
     min-width: 288px;
 }
 
+.board-list .board-name-group { 
+    width: 95%;
+    margin-left: 25px;
+}
+
+.board-list .board-name-group .board-icon { 
+    display: inline;
+    padding-right: 15px;
+}
+
+.board-list .board-name-group .board-name { 
+    display: inline;
+}
+
 .board-list .board-list-item {
     background-color: lightpink; 
     height: 90px;  

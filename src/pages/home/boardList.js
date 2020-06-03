@@ -12,13 +12,17 @@ const BoardDetail =()=> {
 const BoardList =(props)=> { 
     return (
         <div className={`${props.listName}-board-list board-list`}>
-        {
-            props.boardData.map(board => 
-                <div className='board-list-item' style={{background: `${board.background}`}}>
-                    {board.name}
-                </div>
-            )
-        }
+            <div className={`${props.listName}-board-name board-name-group`}>
+                <i className="board-icon fas fa-user"></i>
+                <p className={`${props.listName}-board board-name`}>{`${props.listName}`}</p>
+            </div>
+            {
+                props.personalBoardList.map(board => 
+                    <div className='board-list-item' style={{background: `${board.background}`}}>
+                        {board.name}
+                    </div>
+                )
+            }
         </div>
     );
 }
