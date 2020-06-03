@@ -67,6 +67,15 @@ export default function Login() {
                     </StyledList>
                 </FormContainer>
             </LoginContainer >
+
+
+            {
+
+                <BackgroundDec>
+                    <LeftDecImg src={require('../../asset/collab.png')} />
+                    <RightDecImg src={require('../../asset/hero.svg')} />
+                </BackgroundDec>
+            }
         </>
     )
 }
@@ -78,8 +87,8 @@ const LoginContainer = styled.div`
     flex-wrap: wrap;
     align-items: center;
     flex-direction: column;
+    overflow: visible;
 
-    background: #F9FAFC;
 `
 
 const HeaderLogo = styled.img`
@@ -145,4 +154,31 @@ const StyledList = styled.ul`
 const BackgroundDec = styled.div`
     width: 100vw;
     height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -900;
+    background-color: #F9FAFC;
+`
+
+const LeftDecImg = styled.img`
+    width: 400px;
+    max-width: 25%;
+    margin-left: 10px;
+    position: absolute;
+    margin-bottom: 5 px;
+    left: 0;
+    bottom: 0;
+    z-index: -999;
+`
+
+const RightDecImg = styled.img`
+    width: 400px;
+    max-width: 25%;
+    position: absolute;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    right: 0;
+    bottom: 0;
+    z-index: -999;
 `
