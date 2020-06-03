@@ -32,7 +32,7 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, dispatch})=> { 
+const Home = ({ personalBoardList, starredBoardList, dispatch})=> { 
     return ( 
         <>
             <div style={{ background: 'lightCoral', height: '40px', position: 'sticky' }}></div>
@@ -43,7 +43,15 @@ const Home = ({ personalBoardList, dispatch})=> {
 
                 <div className='homepage-sub-container'>
                 
-                <BoardList listName='Personal Boards' personalBoardList={personalBoardList} />
+                {
+                    starredBoardList.length > 0 &&
+                    <BoardList listName='Starred Boards' icon='star' boardListData={starredBoardList} />
+                }
+
+                {
+                    personalBoardList.length > 0 &&
+                    <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} />
+                }
 
                 {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
 
@@ -54,7 +62,8 @@ const Home = ({ personalBoardList, dispatch})=> {
 }
 
 const mapStateToProps =(state)=> ({
-    personalBoardList: state.personalBoardList
+    personalBoardList: state.personalBoardList,
+    starredBoardList: state.starredBoardList
 })
  
 const HomeWithConnect = connect(mapStateToProps)(Home);
