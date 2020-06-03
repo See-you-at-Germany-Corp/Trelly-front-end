@@ -7,25 +7,33 @@ const initState = [
         id: 0,
         name: 'Trelly',
         background: 'lightPink',
-        starred: false
+        starred: false,
+        starred_id: 0,
+        href: ''
     },
     {
         id: 1,
         name: 'KMITL',
         background: 'lightBlue',
-        starred: false
+        starred: false,
+        starred_id: 0,
+        href: ''
     },
     {
         id: 2,
         name: 'Pepsi',
         background: 'lightGreen',
-        starred: true
+        starred: true,
+        starred_id: 0,
+        href: ''
     },
     {
         id: 3,
         name: 'Meo Germany',
         background: 'lightCoral',
-        starred: false
+        starred: false,
+        starred_id: 0,
+        href: ''
     }
 ]
 
@@ -57,7 +65,7 @@ export default (state = initState, action)=> {
             
             if (changeIndex >= 0)
             {
-                newState3[changeIndex].name = action.name;
+                newState3[changeIndex].name = action.name; 
 
                 /// post to backend.
             }
@@ -71,6 +79,16 @@ export default (state = initState, action)=> {
             if (starIndex >= 0) {
                 newState4[starIndex].starred = true;
 
+                let maxStarredId = 0;
+                /// search max starred_id.
+                newState4.map(state => { 
+                    if (state.starred_id > maxStarredId)
+                        maxStarredId =  state.starred_id;
+                    return ({});
+                })
+
+                newState4[starIndex].starred_id = maxStarredId + 1; 
+
                 /// post to backend.
             }
 
@@ -82,6 +100,7 @@ export default (state = initState, action)=> {
 
             if (unStarIndex >= 0) {
                 newState5[unStarIndex].starred = false;
+                newState5[unStarIndex].starred_id = 0;
 
                 /// post to backend.
             }

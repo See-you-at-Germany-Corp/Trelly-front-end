@@ -7,6 +7,8 @@ import BoardList from './boardList.js';
 
 import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
 
+import homeMenuBarData from './homeMenuBarData.js';
+
 // eslint-disable-next-line
 const ReducersBoardListTest =({ dispatch })=> {
 
@@ -27,9 +29,17 @@ const ReducersBoardListTest =({ dispatch })=> {
     );
 }
 
-const personalToStarred = (personalBoardList) => { 
+const personalToStarred = (personalBoardList) => {  
+
+    let starredBoardList = personalBoardList.filter(board => board.starred === true);
+    starredBoardList.sort(function (a, b) {
+        /// sort lowest to highest.
+        return a.starred_id - b.starred_id;
+    });
+
     return (
-        personalBoardList.filter(board => board.starred === true)
+        /// return starredBoardList with sort lowest to highest starred_id.
+        starredBoardList
     );
 }
 
@@ -42,6 +52,7 @@ const HomeMenuBar = () => {
 }
 
 const Home = ({ personalBoardList, dispatch})=> {  
+    console.log(personalBoardList);
     return ( 
         <>
             <div style={{ background: 'lightCoral', height: '40px', position: 'sticky' }}></div>
