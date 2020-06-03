@@ -24,23 +24,32 @@ const ReducersBoardListTest =({ dispatch })=> {
     );
 }
 
+const HomeMenuBar = () => {
+    return (
+        <div className='homepage-menu-bar'>
+            
+        </div>
+    );
+}
 
 const Home = ({ boardData, dispatch})=> { 
-    return (
-        <div className='homepage-main-container'>
-            {/*<Navbar />*/}
-            <div style={{background: 'lightCoral', height: '40px'}}></div>
-            <div className='homepage-sub-container'>
-            {
-                 boardData.map(board => (
-                     <BoardList key={board.id} boardData={board} />
-                 ))
-            }
+    return ( 
+        <>
+            <div style={{ background: 'lightCoral', height: '40px', position: 'sticky' }}></div>
+            <div className='homepage-main-container'>
+                {/*<Navbar />*/}
 
-            {/*<ReducersBoardListTest dispatch={dispatch} />*/}
+                <HomeMenuBar />
 
-            </div> 
-        </div>
+                <div className='homepage-sub-container'>
+                
+                <BoardList listName='Personal Boards' boardData={boardData} />
+
+                {/*<ReducersBoardListTest dispatch={dispatch} />*/}
+
+                </div> 
+            </div>
+        </>
     );
 }
 

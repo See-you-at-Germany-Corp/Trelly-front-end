@@ -1,13 +1,35 @@
 .homepage-main-container {
     background: lightblue; 
-    height: 100vh; 
+    height: 100vh;  
     overflow: auto;
+    display: flex;
+    flex-direction: row ;
 }
+
+.homepage-main-container .homepage-menu-bar {
+    background: wheat; 
+    height: 50vh;    
+    width: 30%;
+    min-width: 267px;
+}
+
 .homepage-main-container .homepage-sub-container {
     background: snow;
     height: 100vh;
-    overflow: auto; 
-    padding-right: 5%;
-    width: 65%;
-    float: right; 
+    overflow: auto;  
+    width: 70%; 
+    !float: right; 
+}
+
+@media only screen and (max-width: 600px) {
+    .homepage-main-container .homepage-menu-bar {
+        display: none;
+    }
+
+    .homepage-main-container .homepage-sub-container {
+        background: snow;
+        height: 100vh;
+        overflow: auto;  
+        width: 100%;  
+    }
 }

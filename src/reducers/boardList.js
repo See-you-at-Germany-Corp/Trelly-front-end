@@ -6,22 +6,22 @@ const initState = [
     {
         id: 0,
         name: 'Trelly',
-        background: ''
+        background: 'lightPink'
     },
     {
         id: 1,
         name: 'KMITL',
-        background: ''
+        background: 'lightBlue'
     },
     {
         id: 2,
         name: 'Pepsi',
-        background: ''
+        background: 'lightGreen'
     },
     {
         id: 3,
         name: 'Meo Germany',
-        background: ''
+        background: 'lightCoral'
     }
 ]
 

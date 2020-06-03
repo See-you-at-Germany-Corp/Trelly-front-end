@@ -1,10 +1,25 @@
 import React from 'react';
 
-const BoardList =(props)=> { 
+import './boardListStyle.css';
+ 
+const BoardDetail =()=> {
     return (
         <>
-            <h1>Hello from {props.boardData.name} BoardList.</h1>
         </>
+    );
+}
+
+const BoardList =(props)=> { 
+    return (
+        <div className={`${props.listName}-board-list board-list`}>
+        {
+            props.boardData.map(board => 
+                <div className='board-list-item' style={{background: `${board.background}`}}>
+                    {board.name}
+                </div>
+            )
+        }
+        </div>
     );
 }
 
