@@ -71,7 +71,7 @@ const HomeMenuBar = () => {
 const Home = ({ personalBoardList, createStatus, dispatch})=> {    
 
     const createOnStyle = createStatus === true ? {
-        filter: 'brightness(60%)'
+        filter: 'brightness(25%)'
     } : {};
 
     var createNewBoardComp = document.getElementById('create-new-board');
@@ -88,11 +88,8 @@ const Home = ({ personalBoardList, createStatus, dispatch})=> {
 
     return ( 
         <>
-            <div style={{ background: 'rgb(2, 106, 167)', height: '40px', width: '100%', position: 'sticky', top: '0' }}></div>
             <CreateNewBoard />
-            <div className='homepage-main-container' style={createOnStyle}>
-                {/*<Navbar />*/}
-
+            <div className='homepage-main-container' style={createOnStyle}> 
                 <HomeMenuBar />
 
                 <div className='homepage-sub-container'>

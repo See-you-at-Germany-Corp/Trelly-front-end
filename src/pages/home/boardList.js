@@ -44,7 +44,7 @@ const BoardList = (props) => {
                             {
                                 /// create new personal board card.
                                 props.boardListData.length - 1 === index && props.listName === 'Personal Boards' &&
-                                <div onClick={() => props.dispatch(createOn())} className='board-list-item' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
+                                <div onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
                                     <p style={{ marginTop: '35px', color: 'black', marginLeft: '0' }}>Create new board</p> 
                                 </div>
                             }

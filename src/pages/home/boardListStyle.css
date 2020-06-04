@@ -65,6 +65,18 @@
     opacity: 100; 
 }
 
+.board-list .create-new-board-button {
+    user-select: none;
+}
+
+.board-list .create-new-board-button:hover {
+    cursor: pointer;
+}
+
+.board-list .create-new-board-button:active {
+    filter: brightness(90%); 
+}
+
 @media only screen and (max-width: 900px) and (min-width: 751px) {
     .board-list {  
     }

@@ -1,25 +1,16 @@
-html, body {
-    height: 100%;
-    margin: 0px;
-}
-
-#root {
-    height: 100%;
-    margin: 0px; 
-} 
-
 .homepage-main-container {
-    !background: lightblue; 
+    /* background: lightblue;  */
     background: snow;
-    height: 100%;  
+    position: relative;
+    height: 91.5vh; 
     display: flex;
     flex-direction: row ;
     padding-top: 22px;  
-    overflow: visible;
+    overflow: auto;
 }
 
 .homepage-main-container .homepage-menu-bar {
-    !background: wheat;   
+    /* !background: wheat;    */
     height: 200px;    
     width: 30%;
     min-width: 267px; 
@@ -29,7 +20,7 @@ html, body {
 
 .homepage-main-container .homepage-menu-bar .menu-box { 
     margin-top: 14px;
-    !background: plum;  
+    /* background: plum;   */
     float: right;
     width: 245px;
 }
@@ -63,7 +54,7 @@ html, body {
 }
 
 .homepage-main-container .homepage-sub-container {
-    !background: lightcoral; 
+    /* background: lightcoral;  */
     width: 70%;    
 }
 
