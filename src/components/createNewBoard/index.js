@@ -12,8 +12,10 @@ const CreateNewBoard = ({createStatus, dispatch}) => {
     };
 
     return (
-        <div className='create-new-board-box' id='create-new-board' style={createOnStyle}>
-            <h1>Hello from CreateNewBoard.</h1>
+        <div className='create-new-board-container'>
+            <div className='create-new-board-box' id='create-new-board' style={createOnStyle}>
+                <h1>Hello from CreateNewBoard.</h1>
+            </div>
         </div>
     );
 }
