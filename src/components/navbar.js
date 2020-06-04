@@ -60,22 +60,39 @@ const variants={
 
 
 
+
 const Navbar =()=>{
     const [isSearch,setSearch] = useState(false);
-    const [isShowBoard,setShowBoard] = useState(false);
-    const [isShowMenu,setShowMenu] = useState(false);
-    const [isShowCreate,setShowCreate] = useState(false);
-    const [isShowInfo,setShowInfo] = useState(false);
-    const [isShowNoti,setShowNoti] = useState(false);
-    const [isShowAvatar,setShowAvatar] = useState(false);
+    const [isOpen,setOpen] = useState(false);
+    const [isROpen,setROpen] = useState(false);
     const inputRef = useRef();
+    const [isType,setType] = useState(false);
+    const setDropDown =(open,type)=>{
+        setOpen(open);
+        setType(type);
+    }
+    const setRDropDown =(open,type)=>{
+        setROpen(open);
+        setType(type);
+    }
+    
+    const showLeftDropDown =(open,type)=>{
+        
+        return (<DropDown visible={open} children={<h1>{type}</h1>}/>);
+    }
+    const showRightDropDown =(open,type)=>{
+        return (<DropDown visible={open} children={<h1>{type}</h1>}/>);
+    }
     const setFocus=()=>{
         this.inputRef.current.focus();
+    }
+    const getDropDown =()=>{
+
     }
     return (
         <div className="navbar-container" style={navbarstyle}>
             <div className="navbar-inside" style={{backgroundColor:"#0079bf",height:"100%",display:"flex"}}>
-                <div className="left-side" style={{height:"100%",width:"70%",display:"flex",flexDirection:"column",justifyContent:"center"}}>
+                <div className="left-side" style={{height:"100%",width:"70%",display:"flex",flexDirection:"column",alignItems: "flex-start",marginTop:"4px"}}>
                 <div className="home-icon" style={{
                         display:"flex",
                         flexDirection:"row",
@@ -83,6 +100,7 @@ const Navbar =()=>{
                         marginRight:"4px",
                         height:"80%",
                         paddingLeft:"4px",
+                        alignItems: "flex-start",
                         paddingRight:"4px"}}>
                             <div className="SomeThingButton" style={{
                             display:"flex",
@@ -93,7 +111,7 @@ const Navbar =()=>{
                             // alignItems: "flex-start",
                             height:"100%",
                             }}>
-                            <motion.button onClick={()=>setShowMenu(!isShowMenu)} onBlur={()=>setShowMenu(!isShowMenu)}
+                            <motion.button onClick={()=>setDropDown(true,'menu')} onBlur={()=>setDropDown(false,'menu')}
                                 style={buttonStyle}
                                 whileHover={{
                                     backgroundColor:"rgba(255, 255, 255, 0.1)",
@@ -104,7 +122,7 @@ const Navbar =()=>{
                                
                                 
                             </motion.button>
-                            <DropDown visible={isShowMenu} children={<h1>SomeThing</h1>} />
+                            {/* <DropDown visible={isShowMenu} children={<h1>SomeThing</h1>} /> */}
                         </div>
                         <div className="HomeButton" style={{
                             display:"flex",
@@ -136,7 +154,7 @@ const Navbar =()=>{
                             // alignItems: "flex-start",
                             height:"100%"
                             }}>
-                            <motion.button onClick={()=>setShowBoard(!isShowBoard)} onBlur={()=>setShowBoard(!isShowBoard)}
+                            <motion.button onClick={()=>setDropDown(true,'test')} onBlur={()=>setDropDown(false,'test')}
                                 style={buttonStyle}
                                 whileHover={{
                                     backgroundColor:"rgba(255, 255, 255, 0.1)",
@@ -147,7 +165,7 @@ const Navbar =()=>{
                                 Boards
                                 
                             </motion.button>
-                            <DropDown visible={isShowBoard} children={<h1>Board</h1>}/>
+                            {/* <DropDown visible={isShowBoard} children={<h1>Board</h1>}/> */}
                         </div>
                             
                         <motion.div className="search" 
@@ -194,14 +212,15 @@ const Navbar =()=>{
                                     
                                 </div>
                             </motion.div>
-                            <DropDown visible={isSearch} children={<h1>Search</h1>}/>
+                            {showLeftDropDown(isSearch,'search')}
                         </motion.div>
                     </div>
-
+                    {showLeftDropDown(isOpen,isType)}
                 </div>
 
-                <div className="right-side" style={{height:"100%",width:"30%",display:"flex",flexDirection:"column",justifyContent:"center"}}>
-                <div className="home-icon" style={{
+                <div className="right-side" style={{height:"100%",width:"30%",display:"flex",flexDirection:"column",
+                            alignItems: "flex-end",marginTop:"4px"}}>
+                    <div className="home-icon" style={{
                         display:"flex",
                         flexDirection:"row",
                         // flexWrap:"wrap",,
@@ -219,7 +238,7 @@ const Navbar =()=>{
                             // alignItems: "flex-start",
                             height:"100%"
                             }}>
-                            <motion.button onClick={()=>setShowCreate(!isShowCreate)} onBlur={()=>setShowCreate(!isShowCreate)}
+                            <motion.button onClick={()=>setRDropDown(true,'test')} onBlur={()=>setRDropDown(false,'test')}
                                 style={buttonStyle}
                                 whileHover={{
                                     backgroundColor:"rgba(255, 255, 255, 0.1)",
@@ -230,7 +249,7 @@ const Navbar =()=>{
                                
                                 
                             </motion.button>
-                            <DropDown visible={isShowCreate} children={<h1>Create</h1>}/>
+                            {/* <DropDown visible={isShowCreate} children={<h1>Create</h1>}/> */}
                         </div>
                         <div className="InfoButton" style={{
                             display:"flex",
@@ -243,7 +262,7 @@ const Navbar =()=>{
                             alignItems: "flex-end",
                             height:"100%"
                             }}>
-                            <motion.button onClick={()=>setShowInfo(!isShowInfo)} onBlur={()=>setShowInfo(!isShowInfo)}
+                            <motion.button onClick={()=>setRDropDown(true,'test')} onBlur={()=>setRDropDown(false,'test')}
                                 style={buttonStyle}
                                 whileHover={{
                                     backgroundColor:"rgba(255, 255, 255, 0.1)",
@@ -254,7 +273,7 @@ const Navbar =()=>{
                                
                                 
                             </motion.button>
-                            <DropDown visible={isShowInfo} children={<h1>Info</h1>}/>
+                            {/* <DropDown visible={isShowInfo} children={<h1>Info</h1>}/> */}
                         </div>
                         <div className="Notilist" style={{
                             display:"flex",
@@ -266,7 +285,7 @@ const Navbar =()=>{
                             alignItems: "flex-end",
                             height:"100%"
                             }}>
-                            <motion.button onClick={()=>setShowNoti(!isShowNoti)} onBlur={()=>setShowNoti(!isShowNoti)}
+                            <motion.button onClick={()=>setRDropDown(true,'test')} onBlur={()=>setRDropDown(false,'test')}
                                 style={buttonStyle}
                                 whileHover={{
                                     backgroundColor:"rgba(255, 255, 255, 0.1)",
@@ -276,7 +295,7 @@ const Navbar =()=>{
                                 <NotificationsNoneRoundedIcon />
                                 
                             </motion.button>
-                            <DropDown  visible={isShowNoti} children={<h1>Notification</h1>}/>
+                            {/* <DropDown  visible={isShowNoti} children={<h1>Notification</h1>}/> */}
                         </div>
                         <div className="Avatarlist" style={{
                             display:"flex",
@@ -288,15 +307,15 @@ const Navbar =()=>{
                             height:"100%"
                             }}>
                             <motion.button style={{outline:"none",border:"none",backgroundColor:"transparent",margin:"auto",padding:"0px"}}
-                                onClick={()=>setShowAvatar(!isShowAvatar)} onBlur={()=>setShowAvatar(!isShowAvatar)}
+                                onClick={()=>setRDropDown(true,'test')} onBlur={()=>setRDropDown(false,'test')}
                             >
                                 <Avatar style={{width:"32px",height:"32px",margin:"auto"}} />
                             </motion.button>
-                            <DropDown  visible={isShowAvatar} children={<h1>Notification</h1>}/>
+                            {/* <DropDown  visible={isShowAvatar} children={<h1>Notification</h1>}/> */}
                         </div>
                         
                     </div>
-
+                    {showRightDropDown(isROpen,isType)}
                 </div>
             </div>
         </div>
