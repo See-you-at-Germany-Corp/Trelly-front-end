@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; 
 
 import './boardListStyle.css';
 import { starBoard, unStarBoard } from '../../redux/actions/personalBoardList';
+import { createOn } from '../../redux/actions/createNewBoard';
 
 const BoardList = (props) => {
     
@@ -43,9 +44,9 @@ const BoardList = (props) => {
                             {
                                 /// create new personal board card.
                                 props.boardListData.length - 1 === index && props.listName === 'Personal Boards' &&
-                                <Link to='' className='board-list-item' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
+                                <div onClick={() => props.dispatch(createOn())} className='board-list-item' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
                                     <p style={{ marginTop: '35px', color: 'black', marginLeft: '0' }}>Create new board</p> 
-                                </Link>
+                                </div>
                             }
                         </React.Fragment>
                     );
@@ -55,5 +56,5 @@ const BoardList = (props) => {
         </div>
     );
 }
-
+ 
 export default BoardList;

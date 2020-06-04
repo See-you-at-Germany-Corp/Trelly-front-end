@@ -40,7 +40,7 @@
 .board-list .board-list-item .board-star {
     font-size: 12px;
     float: right; 
-    margin-top: 30px; 
+    margin-top: 35px; 
     padding: 10px;
     transform: translateX(13px);
     transition: transform 0.2s, opacity 0.2s, filter 0.2s, font-size 0.1s;

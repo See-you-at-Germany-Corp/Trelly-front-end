@@ -5,8 +5,10 @@ import { NavLink } from 'react-router-dom';
 import './style.css';
 
 import BoardList from './boardList.js';
+import CreateNewBoard from '../../components/createNewBoard';
 
 import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
+import { createOff } from '../../redux/actions/createNewBoard';
 
 import homeMenuBarData from './homeMenuBarData.js';
 
@@ -54,8 +56,8 @@ const HomeMenuBar = () => {
         <div className='homepage-menu-bar'>
             <div className='menu-box'>
                 {
-                    homeMenuBarData.map(menu => (
-                        <NavLink to={menu.href} className='menu-item' activeStyle={navLinkActiveStyle}>
+                    homeMenuBarData.map((menu, index) => (
+                        <NavLink key={index} to={menu.href} className='menu-item' activeStyle={navLinkActiveStyle}>
                             <i className={`fas fa-${menu.icon}`}></i>
                             <p><b>{menu.name}</b></p>
                         </NavLink>
@@ -66,11 +68,29 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, dispatch})=> {   
+const Home = ({ personalBoardList, createStatus, dispatch})=> {    
+
+    const createOnStyle = createStatus === true ? {
+        filter: 'brightness(60%)'
+    } : {};
+
+    var createNewBoardComp = document.getElementById('create-new-board');
+  
+    /// setTimeout for deley opening createNewBoard component.
+    /// if don't setTimeout, createNewBoard will open then close suddenly.
+    setTimeout(() => {
+        window.onclick = function (event) { 
+            if (event.target !== createNewBoardComp && createStatus === true) {
+                dispatch(createOff());
+            } 
+        }
+    }, 100);
+
     return ( 
         <>
             <div style={{ background: 'rgb(2, 106, 167)', height: '40px', position: 'sticky' }}></div>
-            <div className='homepage-main-container'>
+            <CreateNewBoard />
+            <div className='homepage-main-container' style={createOnStyle}>
                 {/*<Navbar />*/}
 
                 <HomeMenuBar />
@@ -90,7 +110,13 @@ const Home = ({ personalBoardList, dispatch})=> {
                 {
                     /// personal board lists.
                     personalBoardList.length > 0 &&
-                        <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} dispatch={dispatch} />
+                        <BoardList 
+                            listName='Personal Boards' 
+                            icon='user' 
+                            boardListData={personalBoardList} 
+                            dispatch={dispatch}
+                            createStatus={createStatus}
+                        />
                 }
 
                 {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
@@ -102,7 +128,8 @@ const Home = ({ personalBoardList, dispatch})=> {
 }
 
 const mapStateToProps =(state)=> ({
-    personalBoardList: state.personalBoardList
+    personalBoardList: state.personalBoardList,
+    createStatus: state.createNewBoard.is_on
 })
  
 const HomeWithConnect = connect(mapStateToProps)(Home);

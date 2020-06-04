@@ -1,0 +1,10 @@
+.create-new-board-box {
+    height: 30vh;
+    overflow: auto;  
+    position: absolute;
+    margin: 0 auto; 
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    background-color: skyblue;
+}
