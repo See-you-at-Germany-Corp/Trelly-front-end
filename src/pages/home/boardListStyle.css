@@ -3,7 +3,7 @@
     flex-flow: row wrap;
     !background: lightsteelblue;
     width: 100%; 
-    padding: 20px 0% 25px 10px;    
+    padding: 20px 0% 25px 0px;    
     max-width: 900px;
     min-width: 288px;  
 }

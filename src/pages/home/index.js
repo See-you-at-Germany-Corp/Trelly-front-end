@@ -88,7 +88,7 @@ const Home = ({ personalBoardList, createStatus, dispatch})=> {
 
     return ( 
         <>
-            <div style={{ background: 'rgb(2, 106, 167)', height: '40px', position: 'sticky' }}></div>
+            <div style={{ background: 'rgb(2, 106, 167)', height: '40px', width: '100%', position: 'sticky', top: '0' }}></div>
             <CreateNewBoard />
             <div className='homepage-main-container' style={createOnStyle}>
                 {/*<Navbar />*/}
