@@ -1,0 +1,37 @@
+.tabbed-pane-nav {
+    background-color: #f4f5f7;
+    border-bottom: 1px solid #dfe1e6;
+    position: relative;
+    text-align: center;
+}
+.tabbed-pane-nav-item {
+    display: inline-block;
+}
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+ol, ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.tabbed-pane-nav-item-button.active, .tabbed-pane-nav-item-button.active:active, .tabbed-pane-nav-item-button.active:hover {
+    background-color: #fff;
+    border-color: #dfe1e6;
+    cursor: default;
+    margin-bottom: -1px;
+    padding-bottom: 9px;
+}
+.tabbed-pane-nav-item-button {
+    background-color: #dfe1e6;
+    border: 1px solid #dfe1e6;
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+    display: inline-block;
+    font-weight: 700;
+    margin: 2px 2px 0;
+    padding: 8px 20px;
+    text-decoration: none;
+    box-sizing: border-box;
+}
