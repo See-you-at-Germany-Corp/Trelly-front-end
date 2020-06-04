@@ -6,31 +6,34 @@ import { TextField, FormControl, Divider } from '@material-ui/core'
 import { BackgroundDecorate, StyledList, FormSection, FormButton, HeaderLogo, FormLayout, Footer } from './styled'
 import { connect } from 'react-redux'
 
-function Login(props) {
+export default function Signup() {
     const windowSize = useWindowSize()
 
-    const [loginState, setLoginState] = React.useState({
-        username: '',
+    const [signupState, setSignupState] = React.useState({
+        email: '',
+        fullname: '',
         password: '',
     })
 
-    const form = {
-        username: ['text', 'Username', 'Enter Username'],
-        password: ['password', 'Password', 'Enter Password'],
-    }
-
     const handleChange = (prop) => (e) => {
-        setLoginState({ ...loginState, [prop]: e.target.value })
+        setSignupState({ ...signupState, [prop]: e.target.value })
     }
 
-    const login = () => {
-        // Login then redirect to Home
+    const signup = () => {
+        // Signup then Login -> redirect to home
 
         // props.dispatch({type: 'LOG_IN'})
-        // console.log(loginState.username, loginState.password);
+        console.log(signupState);
+    }
+
+    const form = {
+        email: ['email', 'Email', 'Enter Email Address'],
+        fullname: ['text', 'Full name', 'Enter Full name'],
+        password: ['password', 'Password', 'Enter Password']
     }
 
     const smallClient = windowSize.height < 350
+    const linkColor = {color: '#3a86ff'}
 
     return (
         <div style={{ overflow: 'visible', height: '100vh' }}>
@@ -43,7 +46,7 @@ function Login(props) {
                     {
                         smallClient && <HeaderLogo />
                     }
-                    <h1>Log in to Trelly</h1>
+                    <h1>Sign up for your account</h1>
                     <FormControl fullWidth>
                         {
                             Object.keys(form).map((item, i) => {
@@ -53,37 +56,42 @@ function Login(props) {
                                         label={form[item][1]}
                                         placeholder={form[item][2]}
                                         size='small'
-                                        value={loginState[item]}
+                                        value={signupState[item]}
                                         onChange={handleChange(item)} />
                                 )
                             })
                         }
                     </FormControl>
 
-                    <FormButton onClick={login} text='Log In' />
+                    <div style={{
+                        display: 'inline',
+                        fontSize: 12,
+                        marginTop: 10,
+                        marginBottom: 25,
+                        color: 'rgb(94, 108, 132)',
+                    }}>
+                        By signing up, I accept the Atlassian&nbsp;
+                        <Link to='/signup' style={linkColor}>Cloud Terms of Service</Link>
+                        &nbsp;and acknowledge the&nbsp;
+                        <Link to='/signup' style={linkColor}>Privacy Policy.</Link>
+                    </div>
+
+                    <FormButton onClick={signup} text='Sign up'/>
 
                     <Divider />
 
-                    <StyledList>
-                        <li style={{ marginRight: 7 }}>
-                            <Link to='/forgot' style={{ color: '#3a86ff' }}>Can't log in?</Link>
-                        </li>
-                        ᛫
-                        <li style={{ marginLeft: 7 }}>
-                            <Link to='/signup' style={{ color: '#3a86ff' }}>Sign up for an account</Link>
-                        </li>
-                    </StyledList>
+                    <Link to='/login' style={{
+                        display: 'inline',
+                        fontSize: 12,
+                        marginTop: 10,
+                        marginBottom: 25,
+                        color: 'rgb(94, 108, 132)',
+                        textAlign: 'center',
+                        color: '#3a86ff'
+                    }}>
+                        Already have an Atlassian account? Log in
+                    </Link>
                 </FormLayout>
-
-                <StyledList style={{ fontSize: 12 }}>
-                    <li style={{ marginRight: 7 }}>
-                        <Link to='/forgot' style={{ fontSize: 'inherit', color: '#3a86ff' }}>Privacy Policy</Link>
-                    </li>
-                        ᛫
-                    <li style={{ marginLeft: 7 }}>
-                        <Link to='/signup' style={{ fontSize: 'inherit', color: '#3a86ff' }}>Terms of Service</Link>
-                    </li>
-                </StyledList>
             </FormSection >
 
             {
@@ -95,11 +103,3 @@ function Login(props) {
         </div>
     )
 }
-
-const mapStateToProps = (state) => ({
-    loggedIn: state.loggedIn
-})
-
-const LoginWithConnect = connect(mapStateToProps)(Login)
-
-export default LoginWithConnect;

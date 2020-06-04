@@ -6,18 +6,20 @@ import {
 } from 'react-router-dom';
 
 import Home from './pages/home';
-import { Login } from './pages/user-account/login';
+import Signup from './pages/user-account/signup'
+import Login from './pages/user-account/login';
 
 function App() {
   return (
     <Router>
       <Switch>
 
-        {/* <Route path='/login/' component={} /> */}
+        <Route path='/login/' component={Login} />
+        <Route path='/signup/' component={Signup} />
 
         <Route exact path='/'>
-          {/* <Home /> */}
-          <Login />
+          <Home />
+          {/* <Signup /> */}
         </Route>
 
 

@@ -11,7 +11,7 @@ import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../re
 import homeMenuBarData from './homeMenuBarData.js';
 
 // eslint-disable-next-line
-const ReducersBoardListTest =({ dispatch })=> {
+const ReducersBoardListTest = ({ dispatch }) => {
 
     const test = {
         id: 4,
@@ -30,7 +30,7 @@ const ReducersBoardListTest =({ dispatch })=> {
     );
 }
 
-const personalToStarred = (personalBoardList) => {  
+const personalToStarred = (personalBoardList) => {
 
     let starredBoardList = personalBoardList.filter(board => board.starred === true);
     starredBoardList.sort(function (a, b) {
@@ -66,8 +66,8 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, dispatch})=> {   
-    return ( 
+const Home = ({ personalBoardList, dispatch }) => {
+    return (
         <>
             <div style={{ background: 'rgb(2, 106, 167)', height: '40px', position: 'sticky' }}></div>
             <div className='homepage-main-container'>
@@ -77,34 +77,34 @@ const Home = ({ personalBoardList, dispatch})=> {
 
                 <div className='homepage-sub-container'>
 
-                { 
-                    /// starred board lists.
-                    personalToStarred(personalBoardList).length > 0 &&
+                    {
+                        /// starred board lists.
+                        personalToStarred(personalBoardList).length > 0 &&
                         <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
-                }
+                    }
 
-                {
-                    /// recently view board lists. (comingsoon)
-                }
+                    {
+                        /// recently view board lists. (comingsoon)
+                    }
 
-                {
-                    /// personal board lists.
-                    personalBoardList.length > 0 &&
+                    {
+                        /// personal board lists.
+                        personalBoardList.length > 0 &&
                         <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} dispatch={dispatch} />
-                }
+                    }
 
-                {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
+                    {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
 
-                </div> 
+                </div>
             </div>
         </>
     );
 }
 
-const mapStateToProps =(state)=> ({
+const mapStateToProps = (state) => ({
     personalBoardList: state.personalBoardList
 })
- 
+
 const HomeWithConnect = connect(mapStateToProps)(Home);
 
 export default HomeWithConnect;

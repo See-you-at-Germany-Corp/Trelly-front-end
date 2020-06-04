@@ -47,12 +47,11 @@ export const Footer = (props) => {
                 <img src='https://d2k1ftgv7pobq7.cloudfront.net/meta/c/p/res/images/16006ae28f149063408d601e8c80eddc/atlassian-logo-blue-small.svg' alt='' />
             </div>
 
-            <StyledList>
+            <StyledList style={{ maxWidth: '50%', marginBottom: 20 }}>
                 {
-                    Object.keys(list).map((item) => {
-                        console.log(item);
+                    Object.keys(list).map((item, i) => {
                         return (
-                            <li style={{ marginRight: 12 }}>
+                            <li style={{ marginRight: 12 }} key={`footer${i}`}>
                                 <Link to={`/${list[item]}`} style={{ fontSize: 12, color: '#5E6C84' }}>{item}</Link>
                             </li>
                         )
@@ -62,8 +61,6 @@ export const Footer = (props) => {
         </StyledFooter>
     )
 }
-
-
 
 /* -------------------------------------------------------------------------- */
 /*                                   Styled                                   */
