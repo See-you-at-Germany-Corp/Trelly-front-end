@@ -5,9 +5,10 @@ import {
   Route
 } from 'react-router-dom';
 
-import Home from './pages/home';
+import Home from './pages/home'
+import Login from './pages/user-account/login'
 import Signup from './pages/user-account/signup'
-import Login from './pages/user-account/login';
+import Forgot from './pages/user-account/forgot'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
         <Route path='/login/' component={Login} />
         <Route path='/signup/' component={Signup} />
+        <Route path='/forgot/' component={Forgot} />
 
         <Route exact path='/'>
           <Home />

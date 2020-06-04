@@ -52,7 +52,9 @@ export const Footer = (props) => {
                     Object.keys(list).map((item, i) => {
                         return (
                             <li style={{ marginRight: 12 }} key={`footer${i}`}>
-                                <Link to={`/${list[item]}`} style={{ fontSize: 12, color: '#5E6C84' }}>{item}</Link>
+                                <LinkCover>
+                                    <a style={{ fontSize: 12, color: '#5E6C84' }}>{item}</a>
+                                </LinkCover>
                             </li>
                         )
                     })
@@ -88,6 +90,24 @@ export const StyledList = styled.ul`
         text-decoration: underline;
     }
 `
+
+export const LinkCover = styled.div`
+    display: inline;
+    cursor: pointer;
+    padding-left: 0px;
+    text-align: center;
+    text-decoration: none;
+
+    a {
+        color: #3a86ff;
+        text-decoration: none;
+    }
+    
+    a:hover{
+        text-decoration: underline;
+    }
+`
+
 export const FormSection = styled.section`
     width: 100%;
     display: flex;
@@ -125,6 +145,25 @@ export const FormLayout = styled.div`
         text-align: center;
         margin-bottom: 25px;
         letter-spacing: -0.01em;
+    }
+
+    h2 {
+        color: #5E6C84;
+        font-size: 14px;
+        margin-top: 5px;
+        margin-left: 3px;
+        line-height: 28px;
+        font-weight: 600;
+    }
+
+    h3 {
+        color: #5E6C84;
+        font-size: 13px;
+        margin-top: 5px;
+        margin-left: 3px;
+        font-weight: 500;
+        line-height: 28px;
+        text-align: center;
     }
 
     .MuiTextField-root{

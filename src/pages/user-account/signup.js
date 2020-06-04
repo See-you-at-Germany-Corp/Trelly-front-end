@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useWindowSize } from '../../function/useWindowSize'
 import { TextField, FormControl, Divider } from '@material-ui/core'
-import { BackgroundDecorate, StyledList, FormSection, FormButton, HeaderLogo, FormLayout, Footer } from './styled'
+import { BackgroundDecorate, FormSection, FormButton, HeaderLogo, FormLayout, Footer, LinkCover } from './styled'
 import { connect } from 'react-redux'
 
 export default function Signup() {
@@ -21,9 +21,10 @@ export default function Signup() {
 
     const signup = () => {
         // Signup then Login -> redirect to home
+    }
 
-        // props.dispatch({type: 'LOG_IN'})
-        console.log(signupState);
+    const login = () => {
+        //
     }
 
     const form = {
@@ -33,7 +34,9 @@ export default function Signup() {
     }
 
     const smallClient = windowSize.height < 350
-    const linkColor = {color: '#3a86ff'}
+
+    const termOfServices = <LinkCover><a>Cloud Terms of Service</a></LinkCover>
+    const policies = <LinkCover><a>Privacy Policies</a></LinkCover>
 
     return (
         <div style={{ overflow: 'visible', height: '100vh' }}>
@@ -65,32 +68,26 @@ export default function Signup() {
 
                     <div style={{
                         display: 'inline',
-                        fontSize: 12,
+                        fontSize: 11.4,
                         marginTop: 10,
                         marginBottom: 25,
                         color: 'rgb(94, 108, 132)',
                     }}>
                         By signing up, I accept the Atlassian&nbsp;
-                        <Link to='/signup' style={linkColor}>Cloud Terms of Service</Link>
+                        {termOfServices}
                         &nbsp;and acknowledge the&nbsp;
-                        <Link to='/signup' style={linkColor}>Privacy Policy.</Link>
+                        {policies}
                     </div>
 
-                    <FormButton onClick={signup} text='Sign up'/>
+                    <FormButton onClick={signup} text='Sign up' />
 
                     <Divider />
 
-                    <Link to='/login' style={{
-                        display: 'inline',
-                        fontSize: 12,
-                        marginTop: 10,
-                        marginBottom: 25,
-                        color: 'rgb(94, 108, 132)',
-                        textAlign: 'center',
-                        color: '#3a86ff'
-                    }}>
-                        Already have an Atlassian account? Log in
-                    </Link>
+                    <LinkCover>
+                        <Link to='/login' style={{ fontSize: 12 }}>
+                            Already have an Atlassian account? Log in
+                        </Link>
+                    </LinkCover>
                 </FormLayout>
             </FormSection >
 

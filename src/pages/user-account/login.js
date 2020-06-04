@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useWindowSize } from '../../function/useWindowSize'
 import { TextField, FormControl, Divider } from '@material-ui/core'
-import { BackgroundDecorate, StyledList, FormSection, FormButton, HeaderLogo, FormLayout, Footer } from './styled'
+import { BackgroundDecorate, StyledList, FormSection, FormButton, HeaderLogo, FormLayout, Footer, LinkCover } from './styled'
 import { connect } from 'react-redux'
 
 function Login(props) {
@@ -77,11 +77,15 @@ function Login(props) {
 
                 <StyledList style={{ fontSize: 12 }}>
                     <li style={{ marginRight: 7 }}>
-                        <Link to='/forgot' style={{ fontSize: 'inherit', color: '#3a86ff' }}>Privacy Policy</Link>
+                        <LinkCover>
+                            <a style={{ fontSize: 'inherit' }}>Privacy Policy</a>
+                        </LinkCover>
                     </li>
                         ᛫
                     <li style={{ marginLeft: 7 }}>
-                        <Link to='/signup' style={{ fontSize: 'inherit', color: '#3a86ff' }}>Terms of Service</Link>
+                        <LinkCover>
+                            <a style={{ fontSize: 'inherit' }}>Terms of Service</a>
+                        </LinkCover>
                     </li>
                 </StyledList>
             </FormSection >
