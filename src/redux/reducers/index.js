@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 
-import personalBoardList from './personalBoardList.js'; 
+import logedIn from './login'
+import personalBoardList from './personalBoardList.js';
 
 export default combineReducers ({
+    logedIn,
     personalBoardList
 });
