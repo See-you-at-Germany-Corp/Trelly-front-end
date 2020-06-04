@@ -1,10 +1,54 @@
-.create-new-board-box {
-    height: 30vh;
-    overflow: auto;  
+.create-new-board-container { 
     position: absolute;
-    margin: 0 auto; 
+    overflow: hidden;
+    height: 91.5vh;
+    width: 100%;
+    z-index: 1;
+    background-color: rbga(255, 255, 255, 0.1);
+}
+
+.create-new-board-box {
+    opacity: 100%;
+    height: 145px;
+    width: 405px; 
+    position: absolute;
+    margin-top: 8px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1;
-    background-color: skyblue;
+    z-index: 2;
+    /* background-color: skyblue; */
+    display: flex;
+}
+
+.create-new-board-box .new-board-detail-box {
+    /* background-color: mediumorchid; */
+    width: 295px;
+    height: 13vh;    
+    float: left;
+    border-radius: 3px;
+}
+
+.create-new-board-box .new-board-bg-list {
+    /* background-color: lightpink; */
+    width: 110px;
+    height: 13vh;  
+    display: flex;
+    flex-wrap: wrap; 
+    /* padding-left: 8px; */
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector {
+    width: 28px;
+    height: 27px;  
+    margin: 0px 0px 6.5px 8px;
+    border-radius: 3px;
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector:hover {
+    cursor: pointer;
+    filter: brightness(85%);
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector:active { 
+    filter: brightness(70%);
 }

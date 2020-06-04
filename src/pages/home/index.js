@@ -68,19 +68,17 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, createStatus, dispatch})=> {    
+const Home = ({ personalBoardList, createStatus, createCurrent, dispatch})=> {    
 
     const createOnStyle = createStatus === true ? {
         filter: 'brightness(25%)'
     } : {};
-
-    var createNewBoardComp = document.getElementById('create-new-board');
-  
+ 
     /// setTimeout for deley opening createNewBoard component.
     /// if don't setTimeout, createNewBoard will open then close suddenly.
     setTimeout(() => {
-        window.onclick = function (event) { 
-            if (event.target !== createNewBoardComp && createStatus === true) {
+        window.onclick = function (event) {  
+            if (event.target === createCurrent.current && createStatus === true) {
                 dispatch(createOff());
             } 
         }
@@ -126,7 +124,8 @@ const Home = ({ personalBoardList, createStatus, dispatch})=> {
 
 const mapStateToProps =(state)=> ({
     personalBoardList: state.personalBoardList,
-    createStatus: state.createNewBoard.is_on
+    createStatus: state.createNewBoard.is_on,
+    createCurrent: state.createNewBoard.ref
 })
  
 const HomeWithConnect = connect(mapStateToProps)(Home);
