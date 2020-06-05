@@ -61,3 +61,42 @@
 .create-new-board-box .new-board-bg-list .bg-selector:active { 
     filter: brightness(70%);
 }
+
+.create-new-board-box .create-button { 
+    width: 105px;
+    height: 35px;   
+    background-color: salmon;
+    margin-top: 10px;
+    border-radius: 3px;
+    display: flex; 
+    justify-content: center;
+    user-select: none;  
+    outline: none;
+    border: none;
+}
+
+.create-new-board-box .create-button:hover { 
+    cursor: pointer;
+    filter: brightness(110%);
+}
+
+.create-new-board-box .create-button:active {  
+    filter: brightness(80%);
+}
+
+.create-new-board-box .create-button:disabled {   
+    cursor: not-allowed;
+    background-color: whitesmoke; 
+}
+.create-new-board-box .create-button:disabled > p {   
+    color: darkgrey;
+}
+
+.create-new-board-box .create-button > p { 
+    padding: 0;
+    margin: 0;
+    margin-left: -2px;
+    font-size: 14px; 
+    align-self: center;
+    color: whitesmoke;
+}

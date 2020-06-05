@@ -4,50 +4,57 @@ import { connect } from 'react-redux';
 import './style.css';
 
 import backgroundSelectorData from './backgroundSelectData.js';
-import { setBackground, setCurrent } from '../../redux/actions/createNewBoard';
+import { setBackground, setCurrent, setName } from '../../redux/actions/createNewBoard';
 
 const BackgroundSelector = ({ background, createBackground, id, dispatch }) => {
-
-    const isSelected = background === createBackground ? 'brightness(85%)' : '';
+ 
+    /// if background in bg selector === background in bg preview -> isSelected is true.
+    const isSelected = background === createBackground;
+    const selectedFilter = isSelected ? 'brightness(85%)' : '';
 
     const bgStyle = {
         background: background,
-        filter: isSelected
+        filter: selectedFilter
     }; 
 
-    return (
-        <React.Fragment key={id}>
+    return ( 
+        <div onClick={() => dispatch(setBackground(background))} className='bg-selector' style={bgStyle}>
 
-            <div onClick={() => dispatch(setBackground(background))} className='bg-selector' style={bgStyle}>
+        {
+            isSelected &&
+            <i className="fas fa-check"></i>
+        }
 
-            {
-                background === createBackground &&
-                <i className="fas fa-check"></i>
-            }
-
-            </div>
-
-        </React.Fragment>
+        </div> 
     );
 }
 
-const CreateNewBoard = ({createStatus, createBackground, dispatch}) => {
- 
+const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, currentName, dispatch}) => {
+  
+    const dataForCreating = {...sampleBoardData};
+
     const createOnStyle = createStatus === true ? {
         display: 'block'
     } : {
         display: 'none'
     };
-
+    
     const createNewBoardRef = React.createRef(); 
     dispatch(setCurrent(createNewBoardRef));
-
+    
+    const onInputChange = (e) => {
+        dispatch(setName(e.target.value));
+    } 
+ 
+    const buttonIsDisabled = currentName.length === 0;
+ 
     return (
         <div className='create-new-board-container' ref={createNewBoardRef} style={createOnStyle}>
             <div className='create-new-board-box' style={createOnStyle}>
 
+                {/* background preview & detail input */}
                 <div className='new-board-detail-box' style={{ background: createBackground}}>
-                    
+                    <input value={currentName} onChange={(e) => onInputChange(e)}></input>
                 </div>
 
                 <div className='new-board-bg-list'>
@@ -60,6 +67,7 @@ const CreateNewBoard = ({createStatus, createBackground, dispatch}) => {
                         })
                         .map(bg => (
                             <BackgroundSelector 
+                                key={bg.id}
                                 background={bg.background} 
                                 createBackground={createBackground} 
                                 dispatch={dispatch} 
@@ -69,6 +77,17 @@ const CreateNewBoard = ({createStatus, createBackground, dispatch}) => {
                     }
                 </div>
 
+                {
+                    buttonIsDisabled ?
+                    <button className='create-button' disabled>
+                        <p>Create Board</p>
+                    </button>
+                    :
+                    <button className='create-button' onClick={() => console.log(55555555)}>
+                        <p>Create Board</p>
+                    </button>
+                }
+
             </div>
         </div>
     );
@@ -77,6 +96,8 @@ const CreateNewBoard = ({createStatus, createBackground, dispatch}) => {
 const mapStateToProps = (state) => ({
     createStatus: state.createNewBoard.is_on,
     createBackground: state.createNewBoard.background,
+    currentName: state.createNewBoard.name,
+    sampleBoardData: state.personalBoardList[0]
 })
 
 const CreateNewBoardWithConnect = connect(mapStateToProps)(CreateNewBoard);

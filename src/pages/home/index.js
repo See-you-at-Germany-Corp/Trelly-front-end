@@ -8,18 +8,21 @@ import BoardList from './boardList.js';
 import CreateNewBoard from '../../components/createNewBoard';
 
 import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
-import { createOff } from '../../redux/actions/createNewBoard';
+import { createOff, setName } from '../../redux/actions/createNewBoard';
 
 import homeMenuBarData from './homeMenuBarData.js';
 
 // eslint-disable-next-line
-const ReducersBoardListTest =({ dispatch })=> {
+const ReducersBoardListTest =({ sample, dispatch })=> {
 
-    const test = {
-        id: 4,
-        name: 'Test',
-        background: ''
-    }
+    const test = {...sample};
+
+    test.id = 4;
+    test.name = 'test';
+    test.background = '#ffe66d';
+    test.starred = false;
+    test.starred_id = 0;
+    test.href = '';
 
     return (
         <>
@@ -77,9 +80,11 @@ const Home = ({ personalBoardList, createStatus, createCurrent, dispatch})=> {
     /// setTimeout for deley opening createNewBoard component.
     /// if don't setTimeout, createNewBoard will open then close suddenly.
     setTimeout(() => {
+        /// if click out of createNewBoard area -> close createNewBoard popup, reset name.
         window.onclick = function (event) {  
             if (event.target === createCurrent.current && createStatus === true) {
                 dispatch(createOff());
+                dispatch(setName(''));
             } 
         }
     }, 100);
@@ -114,7 +119,7 @@ const Home = ({ personalBoardList, createStatus, createCurrent, dispatch})=> {
                         />
                 }
 
-                {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
+                {/* {<ReducersBoardListTest dispatch={dispatch} sample={personalBoardList[0]} />} */}
 
                 </div> 
             </div>

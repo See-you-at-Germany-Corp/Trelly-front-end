@@ -1,4 +1,5 @@
 const initState = {
+    name: '',
     is_on: true,
     background: 'mediumorchid',
     ref: ''
@@ -28,6 +29,12 @@ export default (state = initState, action)=> {
             return {
                 ...state,
                 ref: action.ref
+            }
+
+        case 'SET_NAME': 
+            return {
+                ...state,
+                name: action.name
             }
     
         default:
