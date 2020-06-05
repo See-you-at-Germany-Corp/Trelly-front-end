@@ -1,0 +1,134 @@
+import React from 'react';
+import { connect } from 'react-redux'; 
+
+import './style.css';
+
+import backgroundSelectorData from './backgroundSelectData.js';
+import { setBackground, setName, createOff } from '../../redux/actions/createNewBoard';
+import { addBoard } from '../../redux/actions/personalBoardList';
+
+const BackgroundSelector = ({ background, createBackground, id, dispatch }) => {
+ 
+    /// if background in bg selector === background in bg preview -> isSelected is true.
+    const isSelected = background === createBackground; 
+
+    const bgStyle = {
+        background: background,
+        filter: isSelected ? 'brightness(85%)' : ''
+    }; 
+
+    return ( 
+        <div onClick={() => dispatch(setBackground(background))} className='bg-selector' style={bgStyle}>
+
+        {
+            isSelected &&
+            <i className="fas fa-check"></i>
+        }
+
+        </div> 
+    );
+}
+
+const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, currentName, dispatch}) => {
+    
+    const createOnStyle = {
+        display: createStatus === true ? 'block' : 'none'
+    };
+    
+    const onInputChange = (e) => {
+        dispatch(setName(e.target.value));
+    }  
+    
+    const dataForCreating = { ...sampleBoardData };
+    
+    const setNewDataAndAddBoard = () => {  
+        dataForCreating.name = currentName;
+        dataForCreating.background = createBackground;
+        /// generating path of new board.
+        dataForCreating.href = '';
+        
+        dispatch(addBoard(dataForCreating));
+        dispatch(createOff());
+        dispatch(setName(''));
+        
+        /// redirect to new board.
+        setTimeout (() => {
+            //window.location = dataForCreating.href;
+        }, 500)
+            
+    }
+        
+    /// create ref of createNewBoard parent.
+    const createNewBoardRef = React.useRef();
+
+    /// setTimeout to deley for wait opening createNewBoard component.
+    /// if don't setTimeout, createNewBoard will open then close suddenly.
+    setTimeout(() => {
+        /// if click out of createNewBoard area -> close createNewBoard popup, reset name.
+        window.onclick = function (event) {
+            if (event.target === createNewBoardRef.current && createStatus === true) {
+                dispatch(createOff());
+                dispatch(setName(''));
+            }
+        }
+    }, 100);
+
+    return (
+        <div className='create-new-board-container' ref={createNewBoardRef} style={createOnStyle}>
+            <div className='create-new-board-box' style={createOnStyle}>
+
+                {/* background preview & detail input */}
+                <div className='new-board-detail-box' style={{ background: createBackground}}>
+                    <i className="fas fa-times" onClick={() => dispatch(createOff())}></i>
+                    <input value={currentName} onChange={(e) => onInputChange(e)} placeholder='Add board title' ></input>
+                </div>
+
+                <div className='new-board-bg-list'>
+                    {
+                        backgroundSelectorData
+                        /// strict max number to render.
+                        .filter(bg => { 
+                            return (
+                                bg.id < 9
+                            );
+                        })
+                        .map(bg => (
+                            <BackgroundSelector 
+                                key={bg.id}
+                                background={bg.background} 
+                                createBackground={createBackground} 
+                                dispatch={dispatch} 
+                                id={bg.id}
+                            />
+                        ))
+                    }
+                </div>
+
+                {
+                    /// check name's length in newCreateBoard name input.
+                    /// if 0 -> disabled.
+                    currentName.length === 0 ?
+                    <button className='create-button' disabled>
+                        <p>Create Board</p>
+                    </button>
+                    :
+                    <button className='create-button' onClick={() => setNewDataAndAddBoard()}>
+                        <p>Create Board</p>
+                    </button>
+                }
+
+            </div>
+        </div>
+    );
+}
+
+const mapStateToProps = (state) => ({
+    createStatus: state.createNewBoard.is_on,
+    createBackground: state.createNewBoard.background,
+    currentName: state.createNewBoard.name,
+    sampleBoardData: state.personalBoardList[0]
+})
+
+const CreateNewBoardWithConnect = connect(mapStateToProps)(CreateNewBoard);
+
+export default CreateNewBoardWithConnect;

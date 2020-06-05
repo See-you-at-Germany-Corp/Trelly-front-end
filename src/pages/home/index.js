@@ -4,28 +4,27 @@ import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
-import BoardList from './boardList.js';
+import BoardList from './boardList.js'; 
 
 import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
 
 import homeMenuBarData from './homeMenuBarData.js';
 
 // eslint-disable-next-line
-const ReducersBoardListTest =({ dispatch })=> {
+const ReducersBoardListTest =({ sample, dispatch })=> {
 
-    const test = {
-        id: 4,
-        name: 'Test',
-        background: ''
-    }
+    const test = {...sample};
+ 
+    test.name = 'test';
+    test.background = '#ffe66d'; 
 
     return (
         <>
             <button onClick={() => dispatch(addBoard(test))}>Add Board</button>
             <button onClick={() => dispatch(delBoard(1))}>Del Board</button>
-            <button onClick={() => dispatch(changeName(3, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
+            <button onClick={() => dispatch(changeName(1, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
             <button onClick={() => dispatch(starBoard(4))}>Star Board</button>
-            <button onClick={() => dispatch(unStarBoard(2))}>Unstar Board</button>
+            <button onClick={() => dispatch(unStarBoard(4))}>Unstar Board</button>
         </>
     );
 }
@@ -54,8 +53,8 @@ const HomeMenuBar = () => {
         <div className='homepage-menu-bar'>
             <div className='menu-box'>
                 {
-                    homeMenuBarData.map(menu => (
-                        <NavLink to={menu.href} className='menu-item' activeStyle={navLinkActiveStyle}>
+                    homeMenuBarData.map((menu, index) => (
+                        <NavLink key={index} to={menu.href} className='menu-item' activeStyle={navLinkActiveStyle}>
                             <i className={`fas fa-${menu.icon}`}></i>
                             <p><b>{menu.name}</b></p>
                         </NavLink>
@@ -66,43 +65,45 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, dispatch})=> {   
-    return ( 
-        <>
-            <div style={{ background: 'rgb(2, 106, 167)', height: '40px', position: 'sticky' }}></div>
-            <div className='homepage-main-container'>
-                {/*<Navbar />*/}
+const Home = ({ personalBoardList, dispatch})=> {    
+  
+    return (  
+        <div className='homepage-main-container'> 
+            <HomeMenuBar />
 
-                <HomeMenuBar />
+            <div className='homepage-sub-container'>
 
-                <div className='homepage-sub-container'>
+            { 
+                /// starred board lists.
+                personalToStarred(personalBoardList).length > 0 &&
+                    <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
+            }
 
-                { 
-                    /// starred board lists.
-                    personalToStarred(personalBoardList).length > 0 &&
-                        <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
-                }
+            {
+                /// recently view board lists. (comingsoon)
+            }
 
-                {
-                    /// recently view board lists. (comingsoon)
-                }
+            {
+                /// personal board lists.
+                personalBoardList.length > 0 &&
+                    <BoardList 
+                        listName='Personal Boards' 
+                        icon='user' 
+                        boardListData={personalBoardList} 
+                        dispatch={dispatch} 
+                    />
+            }
 
-                {
-                    /// personal board lists.
-                    personalBoardList.length > 0 &&
-                        <BoardList listName='Personal Boards' icon='user' boardListData={personalBoardList} dispatch={dispatch} />
-                }
+            {/* {<ReducersBoardListTest dispatch={dispatch} sample={personalBoardList[0]} />} */}
 
-                {/* {<ReducersBoardListTest dispatch={dispatch} />} */}
-
-                </div> 
-            </div>
-        </>
+            </div> 
+        </div> 
     );
 }
 
 const mapStateToProps =(state)=> ({
-    personalBoardList: state.personalBoardList
+    personalBoardList: state.personalBoardList,
+    createCurrent: state.createNewBoard.ref
 })
  
 const HomeWithConnect = connect(mapStateToProps)(Home);
