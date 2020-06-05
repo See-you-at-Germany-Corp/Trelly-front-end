@@ -12,7 +12,6 @@ import homeMenuBarData from './homeMenuBarData.js';
 
 // eslint-disable-next-line
 const ReducersBoardListTest =({ sample, dispatch })=> {
-
     const test = {...sample};
  
     test.name = 'test';
@@ -29,7 +28,7 @@ const ReducersBoardListTest =({ sample, dispatch })=> {
     );
 }
 
-const personalToStarred = (personalBoardList) => {  
+const personalToStarred = (personalBoardList) => {
 
     let starredBoardList = personalBoardList.filter(board => board.starred === true);
     starredBoardList.sort(function (a, b) {
@@ -105,7 +104,7 @@ const mapStateToProps =(state)=> ({
     personalBoardList: state.personalBoardList,
     createCurrent: state.createNewBoard.ref
 })
- 
+
 const HomeWithConnect = connect(mapStateToProps)(Home);
 
 export default HomeWithConnect;
