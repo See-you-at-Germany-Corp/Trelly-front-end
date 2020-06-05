@@ -37,6 +37,6 @@ export default [
     },
     {
         id: 8,
-        background: 'snow'
+        background: 'whitesmoke'
     }
 ];

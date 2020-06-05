@@ -6,19 +6,28 @@ import './style.css';
 import backgroundSelectorData from './backgroundSelectData.js';
 import { setBackground, setCurrent } from '../../redux/actions/createNewBoard';
 
-const BackgroundSelector = ({ background, createBackground, dispatch }) => {
+const BackgroundSelector = ({ background, createBackground, id, dispatch }) => {
 
-    const isSelected = background === createBackground ? 'brightness(70%)' : '';
+    const isSelected = background === createBackground ? 'brightness(85%)' : '';
 
     const bgStyle = {
         background: background,
         filter: isSelected
-    };
+    }; 
 
     return (
-        <div onClick={() => dispatch(setBackground(background))} className='bg-selector' style={bgStyle}>
+        <React.Fragment key={id}>
 
-        </div>
+            <div onClick={() => dispatch(setBackground(background))} className='bg-selector' style={bgStyle}>
+
+            {
+                background === createBackground &&
+                <i className="fas fa-check"></i>
+            }
+
+            </div>
+
+        </React.Fragment>
     );
 }
 
@@ -54,6 +63,7 @@ const CreateNewBoard = ({createStatus, createBackground, dispatch}) => {
                                 background={bg.background} 
                                 createBackground={createBackground} 
                                 dispatch={dispatch} 
+                                id={bg.id}
                             />
                         ))
                     }

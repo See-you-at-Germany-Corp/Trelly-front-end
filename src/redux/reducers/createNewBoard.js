@@ -1,5 +1,5 @@
 const initState = {
-    is_on: false,
+    is_on: true,
     background: 'mediumorchid',
     ref: ''
 }

@@ -36,12 +36,21 @@
     flex-wrap: wrap; 
     /* padding-left: 8px; */
 }
-
+ 
 .create-new-board-box .new-board-bg-list .bg-selector {
     width: 28px;
     height: 27px;  
     margin: 0px 0px 6.5px 8px;
     border-radius: 3px;
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector > i {
+    color: white;
+    z-index: 1;
+    position: absolute;
+    margin-top: 7px;
+    margin-left: 7.5px;
+    font-size: 12px;
 }
 
 .create-new-board-box .new-board-bg-list .bg-selector:hover {
