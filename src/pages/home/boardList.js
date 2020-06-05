@@ -17,18 +17,22 @@ const BoardList = (props) => {
             </div>
 
             {
-                props.boardListData.map((board, index) => {
+                props.boardListData
+                .filter(board => board.id > 0)
+                .map((board, index) => {
 
                     const starredStyle = board.starred === true ? {
                         transform: 'translateX(0px)',
                         opacity: '100',
-                        color: 'khaki'
+                        color: 'khaki', 
                     } : {};
+
+                    const boardNameDisplay = board.name.length < 35 ? board.name : `${board.name.substring(0, 34)}...`
 
                     return (
                         <React.Fragment key={`${keyId}-${index}`}>
                             <Link to={board.href} className='board-list-item' style={{ background: `${board.background}` }}>
-                                <p><b>{board.name}</b></p>
+                                <p><b>{boardNameDisplay}</b></p>
 
                                 {
                                     board.starred === false ?
@@ -43,9 +47,9 @@ const BoardList = (props) => {
 
                             {
                                 /// create new personal board card.
-                                props.boardListData.length - 1 === index && props.listName === 'Personal Boards' &&
+                                props.boardListData.length - 2 === index && props.listName === 'Personal Boards' &&
                                 <div onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
-                                    <p style={{ marginTop: '35px', color: 'black', marginLeft: '0' }}>Create new board</p> 
+                                    <p style={{ marginTop: '35px', color: 'slategray', marginLeft: '9px', width: '170px' }}>Create new board</p> 
                                 </div>
                             }
                         </React.Fragment>

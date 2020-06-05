@@ -4,11 +4,9 @@ import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
-import BoardList from './boardList.js';
-import CreateNewBoard from '../../components/createNewBoard';
+import BoardList from './boardList.js'; 
 
 import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
-import { createOff, setName } from '../../redux/actions/createNewBoard';
 
 import homeMenuBarData from './homeMenuBarData.js';
 
@@ -16,21 +14,17 @@ import homeMenuBarData from './homeMenuBarData.js';
 const ReducersBoardListTest =({ sample, dispatch })=> {
 
     const test = {...sample};
-
-    test.id = 4;
+ 
     test.name = 'test';
-    test.background = '#ffe66d';
-    test.starred = false;
-    test.starred_id = 0;
-    test.href = '';
+    test.background = '#ffe66d'; 
 
     return (
         <>
             <button onClick={() => dispatch(addBoard(test))}>Add Board</button>
             <button onClick={() => dispatch(delBoard(1))}>Del Board</button>
-            <button onClick={() => dispatch(changeName(3, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
+            <button onClick={() => dispatch(changeName(1, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
             <button onClick={() => dispatch(starBoard(4))}>Star Board</button>
-            <button onClick={() => dispatch(unStarBoard(2))}>Unstar Board</button>
+            <button onClick={() => dispatch(unStarBoard(4))}>Unstar Board</button>
         </>
     );
 }
@@ -71,65 +65,44 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, createStatus, createCurrent, dispatch})=> {    
+const Home = ({ personalBoardList, dispatch})=> {    
+  
+    return (  
+        <div className='homepage-main-container'> 
+            <HomeMenuBar />
 
-    const createOnStyle = createStatus === true ? {
-        filter: 'brightness(25%)'
-    } : {};
- 
-    /// setTimeout for deley opening createNewBoard component.
-    /// if don't setTimeout, createNewBoard will open then close suddenly.
-    setTimeout(() => {
-        /// if click out of createNewBoard area -> close createNewBoard popup, reset name.
-        window.onclick = function (event) {  
-            if (event.target === createCurrent.current && createStatus === true) {
-                dispatch(createOff());
-                dispatch(setName(''));
-            } 
-        }
-    }, 100);
+            <div className='homepage-sub-container'>
 
-    return ( 
-        <>
-            <CreateNewBoard />
-            <div className='homepage-main-container' style={createOnStyle}> 
-                <HomeMenuBar />
+            { 
+                /// starred board lists.
+                personalToStarred(personalBoardList).length > 0 &&
+                    <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
+            }
 
-                <div className='homepage-sub-container'>
+            {
+                /// recently view board lists. (comingsoon)
+            }
 
-                { 
-                    /// starred board lists.
-                    personalToStarred(personalBoardList).length > 0 &&
-                        <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
-                }
+            {
+                /// personal board lists.
+                personalBoardList.length > 0 &&
+                    <BoardList 
+                        listName='Personal Boards' 
+                        icon='user' 
+                        boardListData={personalBoardList} 
+                        dispatch={dispatch} 
+                    />
+            }
 
-                {
-                    /// recently view board lists. (comingsoon)
-                }
+            {/* {<ReducersBoardListTest dispatch={dispatch} sample={personalBoardList[0]} />} */}
 
-                {
-                    /// personal board lists.
-                    personalBoardList.length > 0 &&
-                        <BoardList 
-                            listName='Personal Boards' 
-                            icon='user' 
-                            boardListData={personalBoardList} 
-                            dispatch={dispatch}
-                            createStatus={createStatus}
-                        />
-                }
-
-                {/* {<ReducersBoardListTest dispatch={dispatch} sample={personalBoardList[0]} />} */}
-
-                </div> 
-            </div>
-        </>
+            </div> 
+        </div> 
     );
 }
 
 const mapStateToProps =(state)=> ({
     personalBoardList: state.personalBoardList,
-    createStatus: state.createNewBoard.is_on,
     createCurrent: state.createNewBoard.ref
 })
  

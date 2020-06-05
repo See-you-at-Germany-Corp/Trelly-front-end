@@ -5,32 +5,40 @@
 const initState = [
     {
         id: 0,
-        name: 'Trelly',
-        background: 'salmon',
+        name: '//sampleboard//',
+        background: '#cccccc',
         starred: false,
         starred_id: 0,
         href: ''
     },
     {
         id: 1,
-        name: 'KMITL',
-        background: 'deepskyblue',
+        name: 'Trelly',
+        background: 'indianred',
         starred: false,
         starred_id: 0,
         href: ''
     },
     {
         id: 2,
-        name: 'Pepsi',
-        background: 'plum',
-        starred: true,
+        name: 'KMITL',
+        background: 'dodgerblue',
+        starred: false,
         starred_id: 0,
         href: ''
     },
     {
         id: 3,
+        name: 'Pepsi',
+        background: 'palevioletred',
+        starred: true,
+        starred_id: 0,
+        href: ''
+    },
+    {
+        id: 4,
         name: 'Meo Germany',
-        background: 'limegreen',
+        background: 'forestgreen',
         starred: false,
         starred_id: 0,
         href: ''
@@ -41,6 +49,17 @@ export default (state = initState, action)=> {
     switch (action.type) {
         case 'ADD_BOARD': 
             const newState = [...state];
+ 
+            let maxId = 0;
+            /// search max id.
+            newState.map(state => {
+                if (state.id > maxId)
+                    maxId = state.id;
+                return ({});
+            })
+
+            action.boardData.id = maxId + 1; 
+
             newState.push(action.boardData)
 
             /// post to backend.

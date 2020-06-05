@@ -1,7 +1,3 @@
-const red = '#f25f5c';
-const kram = '#5fa8d3';
-const yellow = '#ffe66d';
-
 export default [
     {
         id: 0,
@@ -9,34 +5,34 @@ export default [
     },
     {
         id: 1,
-        background: kram
+        background: 'steelblue'
     },
     {
         id: 2,
-        background: 'deepskyblue'
+        background: 'dodgerblue'
     },
     {
         id: 3,
-        background: 'limegreen'
+        background: 'forestgreen'
     },
     {
         id: 4,
-        background: yellow
+        background: 'goldenrod'
     },
     {
         id: 5,
-        background: 'salmon'
+        background: 'chocolate'
     },
     {
         id: 6,
-        background: red
+        background: 'indianred'
     },
     {
         id: 7,
-        background: 'lightgray'
+        background: 'gray'
     },
     {
         id: 8,
-        background: 'whitesmoke'
+        background: 'palevioletred'
     }
 ];

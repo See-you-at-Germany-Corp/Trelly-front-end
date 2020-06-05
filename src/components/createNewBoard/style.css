@@ -4,7 +4,7 @@
     height: 91.5vh;
     width: 100%;
     z-index: 1;
-    background-color: rbga(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .create-new-board-box {
@@ -28,6 +28,43 @@
     border-radius: 3px;
 }
 
+.create-new-board-box .new-board-detail-box > i {
+    color: white;
+    font-size: 14px; 
+    float: right;
+    margin: 12px;
+}
+
+.create-new-board-box .new-board-detail-box > i:hover {
+    cursor: pointer;  
+}
+
+.create-new-board-box .new-board-detail-box > input {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    padding: 7px 0px 4px 8px;
+    margin: 11px 0px 0px 9px;
+    width: 228px;
+    color: white;
+    font-weight: 750;
+    font-size: 16px;
+}
+
+.create-new-board-box .new-board-detail-box > input:hover {
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+.create-new-board-box .new-board-detail-box > input:focus {
+    background-color: rgba(255, 255, 255, 0.25); 
+    outline: none;
+}
+
+.create-new-board-box .new-board-detail-box > input::placeholder {
+    color: lightgray;
+    font-weight: 750;
+    font-size: 16px;
+}
+
 .create-new-board-box .new-board-bg-list {
     /* background-color: lightpink; */
     width: 110px;
@@ -48,8 +85,8 @@
     color: white;
     z-index: 1;
     position: absolute;
-    margin-top: 7px;
-    margin-left: 7.5px;
+    margin-top: 7.5px;
+    margin-left: 8px;
     font-size: 12px;
 }
 
@@ -64,8 +101,8 @@
 
 .create-new-board-box .create-button { 
     width: 105px;
-    height: 35px;   
-    background-color: salmon;
+    height: 32.5px;   
+    background-color: forestgreen;
     margin-top: 10px;
     border-radius: 3px;
     display: flex; 
@@ -95,8 +132,9 @@
 .create-new-board-box .create-button > p { 
     padding: 0;
     margin: 0;
+    margin-top: 2px;
     margin-left: -2px;
     font-size: 14px; 
     align-self: center;
-    color: whitesmoke;
+    color: whitesmoke; 
 }

@@ -1,8 +1,7 @@
 const initState = {
     name: '',
-    is_on: true,
-    background: 'mediumorchid',
-    ref: ''
+    is_on: false,
+    background: 'mediumorchid'
 }
 
 export default (state = initState, action)=> {
@@ -24,13 +23,7 @@ export default (state = initState, action)=> {
                 ...state,
                 background: action.background
             }
-
-        case 'SET_REF':
-            return {
-                ...state,
-                ref: action.ref
-            }
-
+  
         case 'SET_NAME': 
             return {
                 ...state,
