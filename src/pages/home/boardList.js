@@ -5,8 +5,6 @@ import './boardListStyle.css';
 import { starBoard, unStarBoard } from '../../redux/actions/personalBoardList';
 import { createOn } from '../../redux/actions/createNewBoard';
 
-import { useWindowSize } from '../../function/useWindowSize.js';
-
 const BoardList = (props) => {
     
     const keyId = props.listName === 'Personal Boards' ? '1' : '2'; 
