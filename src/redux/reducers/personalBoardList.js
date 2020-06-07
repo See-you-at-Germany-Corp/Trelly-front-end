@@ -23,13 +23,13 @@ const initState = [
         id: 2,
         name: 'KMITL',
         background: 'dodgerblue',
-        starred: false,
+        starred: true,
         starred_id: 0,
         href: ''
     },
     {
         id: 3,
-        name: 'Pepsi',
+        name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
         background: 'palevioletred',
         starred: true,
         starred_id: 0,

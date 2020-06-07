@@ -7,5 +7,5 @@ import personalBoardList from './personalBoardList.js';
 export default combineReducers ({
     loggedIn,
     createNewBoard,
-    personalBoardList,
+    personalBoardList
 });
