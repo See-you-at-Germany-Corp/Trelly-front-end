@@ -1,6 +1,6 @@
 /// get board list data from backend.
 /// set it to initial state.
-
+ 
 /// mockup initState.
 const initState = [
     {
@@ -9,7 +9,7 @@ const initState = [
         background: '#cccccc',
         starred: false,
         starred_id: 0,
-        href: ''
+        href: '/0/sampleboard'
     },
     {
         id: 1,
@@ -17,7 +17,7 @@ const initState = [
         background: 'indianred',
         starred: false,
         starred_id: 0,
-        href: ''
+        href: '/1/Trelly'
     },
     {
         id: 2,
@@ -25,7 +25,7 @@ const initState = [
         background: 'dodgerblue',
         starred: true,
         starred_id: 0,
-        href: ''
+        href: '/2/KMITL'
     },
     {
         id: 3,
@@ -33,7 +33,7 @@ const initState = [
         background: 'palevioletred',
         starred: true,
         starred_id: 0,
-        href: ''
+        href: '/3/ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART'
     },
     {
         id: 4,
@@ -41,7 +41,7 @@ const initState = [
         background: 'forestgreen',
         starred: false,
         starred_id: 0,
-        href: ''
+        href: '/4/Meo-Germany'
     }
 ]
 
@@ -58,8 +58,18 @@ export default (state = initState, action)=> {
                 return ({});
             })
 
+            /// wait auto gen id, href from backend.
+            /// now use mockup gen.
+            
+            /// auto gen id.
             action.boardData.id = maxId + 1; 
 
+            /// auto decrease space in name.about
+            action.boardData.name = spaceDecrement(action.boardData.name);
+ 
+            /// auto gen href.
+            action.boardData.href = `/${action.boardData.id}/${spaceToDash(action.boardData.name)}`
+            
             newState.push(action.boardData)
 
             /// post to backend.
@@ -84,7 +94,7 @@ export default (state = initState, action)=> {
             
             if (changeIndex >= 0)
             {
-                newState3[changeIndex].name = action.name; 
+                newState3[changeIndex].name = spaceDecrement(action.name); 
 
                 /// post to backend.
             }
@@ -129,4 +139,26 @@ export default (state = initState, action)=> {
         default:
             return state;
     }
+}
+
+const spaceToDash = (strWithSpace) => { 
+    let strWithDash = strWithSpace.replace(/ /g, '-');
+ 
+    return (
+        strWithDash
+    ); 
+}
+
+const spaceDecrement = (strWithSpace) => {
+    const strArray = strWithSpace.split(' ');
+    let strWithDecrease = '';
+
+    strArray.forEach((element) => {
+        strWithDecrease = (strWithDecrease !== '' && element !== '') ? strWithDecrease + ' ' : strWithDecrease;
+        strWithDecrease = (element !== ' ' && element !== '') ? strWithDecrease + element : strWithDecrease;
+    });
+
+    return (
+        strWithDecrease
+    );
 }
