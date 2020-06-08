@@ -43,18 +43,18 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
     
     const setNewDataAndAddBoard = () => {  
         dataForCreating.name = currentName;
-        dataForCreating.background = createBackground;
-        /// generating path of new board.
-        dataForCreating.href = '';
+        dataForCreating.background = createBackground; 
+        /// id, href gen with backend.
         
         dispatch(addBoard(dataForCreating));
         dispatch(createOff());
         dispatch(setName(''));
         
         /// redirect to new board.
-        setTimeout (() => {
-            //window.location = dataForCreating.href;
-        }, 500)
+        /// wait for pull data from backend.
+        // setTimeout (() => {
+        //     window.location = dataForCreating.href;
+        // }, 2000)
             
     }
         
