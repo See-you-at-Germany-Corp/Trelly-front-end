@@ -32,6 +32,7 @@ const BoardList = (props) => {
                             <Link to={board.href} className='board-list-item' style={{ background: `${board.background}` }}>
                                 <p><b>{board.name}</b></p>
 
+                                <Link to=''>
                                 {
                                     board.starred === false ?
                                     /// click to star board.
@@ -40,6 +41,7 @@ const BoardList = (props) => {
                                     /// click to unstar board.
                                     <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(board.id))} style={starredStyle}></i>
                                 }
+                                </Link>
 
                             </Link>
 
