@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { useWindowSize } from '../../function/useWindowSize'
 import { TextField, FormControl, Divider } from '@material-ui/core'
 import { BackgroundDecorate, FormSection, FormButton, HeaderLogo, FormLayout, Footer, LinkCover } from './styled'
-import { connect } from 'react-redux'
 
 export default function Signup() {
     const windowSize = useWindowSize()
@@ -23,10 +22,6 @@ export default function Signup() {
         // Signup then Login -> redirect to home
     }
 
-    const login = () => {
-        //
-    }
-
     const form = {
         email: ['email', 'Email', 'Enter Email Address'],
         fullname: ['text', 'Full name', 'Enter Full name'],
@@ -35,8 +30,8 @@ export default function Signup() {
 
     const smallClient = windowSize.height < 350
 
-    const termOfServices = <LinkCover><a>Cloud Terms of Service</a></LinkCover>
-    const policies = <LinkCover><a>Privacy Policies</a></LinkCover>
+    const termOfServices = <LinkCover><a href='/signup'>Cloud Terms of Service</a></LinkCover>
+    const policies = <LinkCover><a href='/signup'>Privacy Policies</a></LinkCover>
 
     return (
         <div style={{ overflow: 'visible', height: '100vh' }}>
@@ -55,6 +50,7 @@ export default function Signup() {
                             Object.keys(form).map((item, i) => {
                                 return (
                                     <TextField variant='outlined'
+                                        key={`form-signup${i}`}
                                         type={form[item][0]}
                                         label={form[item][1]}
                                         placeholder={form[item][2]}

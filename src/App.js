@@ -11,6 +11,7 @@ import Signup from './pages/user-account/signup'
 import Forgot from './pages/user-account/forgot'
 
 import CreateNewBoard from './components/createNewBoard';
+import moveObj from './function/moveObject'
 
 function App() {
   return (

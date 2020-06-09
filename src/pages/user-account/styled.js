@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Divider } from '@material-ui/core'
-import { Link } from 'react-router-dom'
 
 /* -------------------------------------------------------------------------- */
 /*                                  Component                                 */
@@ -53,7 +52,7 @@ export const Footer = (props) => {
                         return (
                             <li style={{ marginRight: 12 }} key={`footer${i}`}>
                                 <LinkCover>
-                                    <a style={{ fontSize: 12, color: '#5E6C84' }}>{item}</a>
+                                    <a href='/' style={{ fontSize: 12, color: '#5E6C84' }}>{item}</a>
                                 </LinkCover>
                             </li>
                         )
