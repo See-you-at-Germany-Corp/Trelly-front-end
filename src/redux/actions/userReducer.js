@@ -1,9 +1,18 @@
+// import {
+//   SET_USER,
+//   SET_ERRORS,
+//   CLEAR_ERRORS,
+//   LOADING_UI,
+//   SET_UNAUTHENTICATED,
+//   LOADING_USER,
+// } from '../types';
+
 
 const initialState = {
-  fullName: "",
-  initials: "",
-  userName: "",
-  bio: "",
+  fullName: "Madusa",
+  initials: "Sniper",
+  userName: "Riki",
+  bio: "Pudge",
   // loading: false,
   // error: {},
 };
@@ -26,3 +35,8 @@ export default function (state = initialState, action) {
       return state;
   }
 };
+
+// export const getUserData = () => (dispatch) => {
+//   //dispatch({ type: LOADING_USER})
+//   //API getData
+// }

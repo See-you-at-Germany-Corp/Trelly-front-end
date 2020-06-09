@@ -187,7 +187,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     SUMMIT: (fullName, initials, userName, bio) => {
       dispatch({
-        type: "SUMMIT",
+        type: "SUBMIT",
         fullName: fullName,
         initials: initials,
         userName: userName,
