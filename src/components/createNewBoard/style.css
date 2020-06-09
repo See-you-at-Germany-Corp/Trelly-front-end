@@ -23,7 +23,7 @@
 .create-new-board-box .new-board-detail-box {
     /* background-color: mediumorchid; */
     width: 295px;
-    height: 13vh;    
+    height: 97px;    
     float: left;
     border-radius: 3px;
 }
@@ -68,7 +68,7 @@
 .create-new-board-box .new-board-bg-list {
     /* background-color: lightpink; */
     width: 110px;
-    height: 13vh;  
+    height: 97px;  
     display: flex;
     flex-wrap: wrap; 
     /* padding-left: 8px; */
@@ -77,17 +77,18 @@
 .create-new-board-box .new-board-bg-list .bg-selector {
     width: 28px;
     height: 27px;  
-    margin: 0px 0px 6.5px 8px;
+    margin: 0px 0px 6.5px 8px; 
     border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .create-new-board-box .new-board-bg-list .bg-selector > i {
     color: white;
     z-index: 1;
-    position: absolute;
-    margin-top: 7.5px;
-    margin-left: 8px;
-    font-size: 12px;
+    position: absolute; 
+    font-size: 10px;
 }
 
 .create-new-board-box .new-board-bg-list .bg-selector:hover {
@@ -103,7 +104,7 @@
     width: 105px;
     height: 32.5px;   
     background-color: forestgreen;
-    margin-top: 10px;
+    margin-top: 7px;
     border-radius: 3px;
     display: flex; 
     justify-content: center;

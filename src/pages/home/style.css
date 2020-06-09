@@ -1,18 +1,24 @@
-.homepage-main-container {
-    /* background: lightblue;  */
+body {
     background: snow;
+    overflow: hidden;
+}
+
+.homepage-main-container {
+    /* background: lightblue;  */ 
     position: relative;
-    height: 91.5vh; 
+    /* max-height: 91.5vh;  */
+    max-height: 91.5vh; 
     display: flex;
     flex-direction: row ;
     padding-top: 22px;  
-    overflow: auto;
+    overflow: auto; 
+    justify-content: center;
 }
 
 .homepage-main-container .homepage-menu-bar {
-    /* !background: wheat;    */
+    /* background: wheat;    */
     height: 200px;    
-    width: 30%;
+    /* width: 30%; */
     min-width: 267px; 
     position: sticky; 
     top: 40px;
@@ -55,7 +61,7 @@
 
 .homepage-main-container .homepage-sub-container {
     /* background: lightcoral;  */
-    width: 70%;    
+    /* width: 70%;     */
 }
 
 @media only screen and (max-width: 600px) {

@@ -11,21 +11,33 @@ import Signup from './pages/user-account/signup'
 import Forgot from './pages/user-account/forgot'
 
 import CreateNewBoard from './components/createNewBoard';
+import BoardDetail from './pages/board-detail';
 import moveObj from './function/moveObject'
 
 function App() {
   return (
     <Router>
+
       <div style={{ background: 'rgb(2, 106, 167)', height: '5.5vh', width: '100%', position: 'sticky', top: '0', zIndex: '1' }}></div>
       <CreateNewBoard />
+
       <Switch>
         <Route path='/login/' component={Login} />
+
         <Route path='/signup/' component={Signup} />
+
         <Route path='/forgot/' component={Forgot} />
+
+        <Route exact path='/:boardId/:boardName'>
+          <BoardDetail />
+        </Route>
+
         <Route exact path='/'>
           <Home />
         </Route>
+
       </Switch>
+
     </Router>
   );
 }

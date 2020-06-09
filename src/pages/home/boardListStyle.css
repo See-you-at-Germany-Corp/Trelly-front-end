@@ -1,7 +1,7 @@
 .board-list {
     display: flex;  
     flex-flow: row wrap;
-    !background: lightsteelblue;
+    /* background: lightsteelblue; */
     width: 100%; 
     padding: 20px 0% 25px 0px;    
     max-width: 900px;
@@ -23,7 +23,7 @@
 }
 
 .board-list .board-list-item {
-    !background-color: lightpink; 
+    /* background-color: lightpink;  */
     height: 95px;  
     width: 21%;   
     margin: 10px 0px 8px 18px;   
@@ -32,30 +32,31 @@
     overflow: hidden;  
 }
 
-.board-list .board-list-item > p {
+.board-list .board-list-item > p { 
     color: white;
-    width: 11%;
+    /* background-color: antiquewhite;  */
     padding: 0;
-    margin: 5px 0px 0px 10px;
-    position: absolute; 
+    margin: 5px 10px 0px 10px; 
     word-break: break-all; 
+    min-height: 50%; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
 }
-
-.board-list .board-list-item:hover > p { 
-    width: 90%; 
-}
-
+ 
 .board-list .board-list-item .board-star {
     font-size: 12px; 
     float: right;
     color: white;
-    margin-top: 61px;
+    margin-top: 7px;
     padding: 10px;
     transform: translateX(13px);
     transition: transform 0.2s, opacity 0.2s, filter 0.2s, font-size 0.1s;
     opacity: 0;
-    filter: brightness(95%);  
-}
+    filter: brightness(95%);   
+} 
 
 .board-list .board-list-item .board-star:hover {
     filter: brightness(100%); 

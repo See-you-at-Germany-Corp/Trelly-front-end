@@ -7,10 +7,10 @@ import { createOn } from '../../redux/actions/createNewBoard';
 
 const BoardList = (props) => {
     
-    const keyId = props.listName === 'Personal Boards' ? '1' : '2';
-
+    const keyId = props.listName === 'Personal Boards' ? '1' : '2'; 
+ 
     return (
-        <div className={`${props.listName}-board-list board-list`}>
+        <div className={`${props.listName} board-list`}>
             <div className={`${props.listName}-board-name board-name-group`}>
                 <i className={`board-icon fas fa-${props.icon}`}></i>
                 <p className={`${props.listName}-board board-name`}><b>{`${props.listName}`}</b></p>
@@ -26,14 +26,13 @@ const BoardList = (props) => {
                         opacity: '100',
                         color: 'khaki', 
                     } : {};
-
-                    const boardNameDisplay = board.name.length < 35 ? board.name : `${board.name.substring(0, 34)}...`
-
+ 
                     return (
                         <React.Fragment key={`${keyId}-${index}`}>
                             <Link to={board.href} className='board-list-item' style={{ background: `${board.background}` }}>
-                                <p><b>{boardNameDisplay}</b></p>
+                                <p><b>{board.name}</b></p>
 
+                                <Link to=''>
                                 {
                                     board.starred === false ?
                                     /// click to star board.
@@ -42,6 +41,7 @@ const BoardList = (props) => {
                                     /// click to unstar board.
                                     <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(board.id))} style={starredStyle}></i>
                                 }
+                                </Link>
 
                             </Link>
 
@@ -49,7 +49,7 @@ const BoardList = (props) => {
                                 /// create new personal board card.
                                 props.boardListData.length - 2 === index && props.listName === 'Personal Boards' &&
                                 <div onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
-                                    <p style={{ marginTop: '35px', color: 'slategray', marginLeft: '9px', width: '170px' }}>Create new board</p> 
+                                    <p style={{ marginTop: '38px', color: 'slategray', marginLeft: '9px', fontSize: '14px' }}>Create new board</p> 
                                 </div>
                             }
                         </React.Fragment>
