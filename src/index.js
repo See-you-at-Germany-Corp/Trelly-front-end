@@ -10,6 +10,10 @@ import { createStore } from 'redux';
 import rootReducer from './redux/reducers';
 
 const store = createStore(rootReducer);
+store.subscribe(() => {
+  console.log("Update Store:", store.getState());
+});
+
 
 ReactDOM.render(
   <Provider store={store}>
@@ -17,6 +21,8 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

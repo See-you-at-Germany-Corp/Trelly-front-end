@@ -1,38 +1,28 @@
-import {
-  SET_USER,
-  SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED,
-  LOADING_USER,
-} from "../types";
 
 const initialState = {
-  authenticated: false,
-  loading: false,
+  fullName: "",
+  initials: "",
+  userName: "",
+  bio: "",
+  // loading: false,
+  // error: {},
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_AUTHENTICATED:
+    case "SUBMIT":
       return {
         ...state,
-        authenticated: true,
+        fullName: action.fullName,
+        initials: action.initials,
+        userName: action.userName,
+        bio: action.bio,
+        // loading: true,
+        // error: {},
       };
-    case SET_UNAUTHENTICATED:
-      return initialState;
-    case SET_USER:
-      return {
-        ...state,
-        authenticated: true,
-        loading: false,
-        ...action.payload,
-      };
-    case LOADING_USER:
-      return {
-        ...state,
-        loading: true,
-      };
+      break;
 
     default:
       return state;
   }
-}
+};

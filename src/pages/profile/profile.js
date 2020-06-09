@@ -1,17 +1,20 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
-import styled from 'styled-components'
-import AppIcon from "../../image/icon.png";
+import styled from "styled-components";
+//import AppIcon from "../../image/icon.png";
 //MUI Stuff
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import './profileStyle.css';
+import "./profileStyle.css";
+import BarProfile from "../../components/barProfile/barProfile";
+import { connect } from "react-redux";
 const styles = {
   form: {
     textAlign: "center",
+    margin: "20px auto 20px auto",
   },
   image: {
     margin: "40px auto 40px auto",
@@ -42,7 +45,10 @@ class profile extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
-      loading: true,
+      fullName: this.state.fullName,
+      initials: this.state.initials,
+      userName: this.state.userName,
+      bio: this.state.bio,
     });
     const userData = {
       fullName: this.state.fullName,
@@ -50,136 +56,116 @@ class profile extends Component {
       userName: this.state.userName,
       bio: this.state.bio,
     };
+    console.log(userData);
+
     //Rest
   };
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    //console.log(this.setState);
   };
   render() {
     const { classes } = this.props;
     return (
       <div>
-        <div class="tabbed-pane-nav u-clearfix js-nav">
-            <ul>
-              <li class="tabbed-pane-nav-item">
-                <a
-                  class="tabbed-pane-nav-item-button js-member-profile active"
-                  data-tab="profile"
-                  href="/marklatthapol"
+        <BarProfile />
+        <ProfileContainer container className={classes.form}>
+          <Grid item sm />
+          <Grid item sm>
+            <div className="_8STAxwEhTLw06E" data-test-id="profile-avatar">
+              <h3 className="_1q9WuasQoqE_tI">Avatar</h3>
+              <div className="rsiNque2CCqtPE">
+                <div
+                  className="MrFeHFqEkuBP9W _1FekJJAz6Hu32v"
+                  title="Mark Latthapol (marklatthapol)"
                 >
-                  Profile and Visibility
-                </a>
-              </li>
-              <li class="tabbed-pane-nav-item">
-                <a
-                  class="tabbed-pane-nav-item-button js-member-activity"
-                  data-tab="cards"
-                  href="/marklatthapol/activity"
-                >
-                  Activity
-                </a>
-              </li>
-              <li class="tabbed-pane-nav-item">
-                <a
-                  class="tabbed-pane-nav-item-button js-member-cards"
-                  data-tab="cards"
-                  href="/marklatthapol/cards"
-                >
-                  Cards
-                </a>
-              </li>
-              <li class="tabbed-pane-nav-item">
-                <a
-                  class="tabbed-pane-nav-item-button js-member-account"
-                  data-tab="settings"
-                  href="/marklatthapol/account"
-                >
-                  Settings
-                </a>
-              </li>
-              <li class="tabbed-pane-nav-item">
-                <a
-                  class="tabbed-pane-nav-item-button js-billing"
-                  data-tab="trello-gold"
-                  href="/marklatthapol/billing"
-                >
-                  <span class="icon-sm icon-trello-gold mod-inline icon-trello-gold-color"></span>{" "}
-                  Trello Gold
-                </a>
-              </li>
-            </ul>
-          </div>
-      <ProfileContainer container className={classes.form}>
-          
-        <Grid item sm />
-        <Grid item sm>
-          <img
-            src={AppIcon}
-            alt="Test"
-            className={classes.image}
-            width="100"
-            height="100"
-          />
-          <Typography variant="h3" className={classes.pageTitle}>
-            Profile
-            <hr width="60%" />
-          </Typography>
+                  <span
+                    className="namePicture"
+                    style={{
+                      fontSize: "48px",
+                      height: "100px",
+                      width: "100px",
+                      lineHeight: "100px",
+                    }}
+                  >
+                    ML
+                  </span>
+                </div>
+                <button className="_2e97X7K2YRLv4Q">Change Avatar…</button>
+              </div>
+            </div>
+            <div>
+              <button className="_2e97X7K2YRLv4Q">Change Avatar…</button>
+            </div>
+            <Typography variant="h3" className={classes.pageTitle}>
+              Profile
+              <hr width="60%" />
+            </Typography>
 
-          <form noValidate onSubmit={this.handleSubmit}>
-            <TextField
-              id="full-name"
-              name="full-name"
-              type="text"
-              label="full-name"
-              className={classes.TextField}
-              value={this.state.fullName}
-              onChange={this.handleChange}
-              fullWidth
-            />
-            <TextField
-              id="initials"
-              name="initials"
-              type="text"
-              label="initials"
-              className={classes.TextField}
-              value={this.state.initials}
-              onChange={this.handleChange}
-              fullWidth
-            />
-            <TextField
-              id="username"
-              name="username"
-              type="text"
-              label="username"
-              className={classes.TextField}
-              value={this.state.userName}
-              onChange={this.handleChange}
-              fullWidth
-            />
-            <TextField
-              id="bio"
-              name="bio"
-              type="text"
-              label="bio"
-              className={classes.TextField}
-              value={this.state.bio}
-              onChange={this.handleChange}
-              fullWidth
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.button}
-            >
-              Save
-            </Button>
-          </form>
-        </Grid>
-        <Grid item sm />
-      </ProfileContainer>
+            <form noValidate onSubmit={this.handleSubmit}>
+              <TextField
+                id="full-name"
+                name="fullName"
+                type="text"
+                label="full-name"
+                className={classes.TextField}
+                value={this.state.fullName}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <TextField
+                id="initials"
+                name="initials"
+                type="text"
+                label="initials"
+                className={classes.TextField}
+                value={this.state.initials}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <TextField
+                id="username"
+                name="userName"
+                type="text"
+                label="username"
+                className={classes.TextField}
+                value={this.state.userName}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <TextField
+                id="bio"
+                name="bio"
+                type="text"
+                label="bio"
+                className={classes.TextField}
+                value={this.state.bio}
+                onChange={this.handleChange}
+                fullWidth
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={() => {
+                  //this.handleSubmit();
+                  this.props.SUMMIT(
+                    this.state.fullName,
+                    this.state.initials,
+                    this.state.userName,
+                    this.state.bio
+                  );
+                }}
+              >
+                Save
+              </Button>
+            </form>
+          </Grid>
+          <Grid item sm />
+        </ProfileContainer>
       </div>
     );
   }
@@ -189,14 +175,36 @@ profile.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+const mapStatetoProps = (state) => {
+  return {
+    fullName: state.fullName,
+    initials: state.initials,
+    userName: state.userName,
+    bio: state.bio,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    SUMMIT: (fullName, initials, userName, bio) => {
+      dispatch({
+        type: "SUMMIT",
+        fullName: fullName,
+        initials: initials,
+        userName: userName,
+        bio: bio,
+      });
+    },
+  };
+};
 const ProfileContainer = styled.div`
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    overflow: visible;
-    float: left
-`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  overflow: visible;
+  float: left;
+`;
 
-export default withStyles(styles)(profile);
+export default connect(mapStatetoProps,mapDispatchToProps)(withStyles(styles)(profile));
+

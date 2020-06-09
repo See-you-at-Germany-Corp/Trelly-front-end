@@ -10,6 +10,7 @@ function App() {
         <div className="Container">
           <Switch>
             <Route exact path="/" component={profile} />
+            <Route exact path="/marklatthapol/activity" component={profile} />
           </Switch>
         </div>
       </div>
