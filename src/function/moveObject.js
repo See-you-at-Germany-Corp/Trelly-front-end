@@ -25,16 +25,15 @@ const testList = [
     },
 ]
 
-moveObj(testList, 1, -1)
+//moveObj(testList, 1, -1)      // Unit test
 
 export default function moveObj(obj, source = 1, dest = 4) {
-
     if (source < dest) {
         const [before, center, after] = [obj.slice(0, source), obj.slice(source + 1, dest + 1), obj.slice(dest + 1)]
-        console.log([...before, ...center, obj[source], ...after]);
+        return [...before, ...center, obj[source], ...after]
     }
     else {
         const [before, center, after] = [obj.slice(0, dest), obj.slice(dest, source), obj.slice(source + 1)]
-        console.log([...before, obj[source], ...center, ...after]);
+        return [...before, obj[source], ...center, ...after]
     }
 }
