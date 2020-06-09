@@ -12,6 +12,7 @@ import Forgot from './pages/user-account/forgot'
 
 import CreateNewBoard from './components/createNewBoard';
 import BoardDetail from './pages/board-detail';
+import moveObj from './function/moveObject'
 
 function App() {
   return (

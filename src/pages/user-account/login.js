@@ -49,6 +49,7 @@ function Login(props) {
                             Object.keys(form).map((item, i) => {
                                 return (
                                     <TextField variant='outlined'
+                                        key={`form${i}`}
                                         type={form[item][0]}
                                         label={form[item][1]}
                                         placeholder={form[item][2]}
@@ -78,13 +79,13 @@ function Login(props) {
                 <StyledList style={{ fontSize: 12 }}>
                     <li style={{ marginRight: 7 }}>
                         <LinkCover>
-                            <a style={{ fontSize: 'inherit' }}>Privacy Policy</a>
+                            <a href='/login' style={{ fontSize: 'inherit' }}>Privacy Policy</a>
                         </LinkCover>
                     </li>
                         ᛫
                     <li style={{ marginLeft: 7 }}>
                         <LinkCover>
-                            <a style={{ fontSize: 'inherit' }}>Terms of Service</a>
+                            <a href='/login' style={{ fontSize: 'inherit' }}>Terms of Service</a>
                         </LinkCover>
                     </li>
                 </StyledList>
