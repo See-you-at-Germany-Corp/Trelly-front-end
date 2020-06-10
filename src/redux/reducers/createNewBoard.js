@@ -1,7 +1,7 @@
 const initState = {
     name: '',
     is_on: false,
-    background: 'mediumorchid'
+    picture: 'mediumorchid'
 }
 
 export default (state = initState, action)=> {
@@ -21,7 +21,7 @@ export default (state = initState, action)=> {
         case 'SET_BACKGROUND':
             return {
                 ...state,
-                background: action.background
+                picture: action.picture
             }
   
         case 'SET_NAME': 
