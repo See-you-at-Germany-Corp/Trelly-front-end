@@ -80,6 +80,9 @@ export default (state = initState, action) => {
 
             return newState3;
 
+        case 'OVERWRITE_STAR_BOARD':
+            return action.newState;
+
         default:
             return state;
     }

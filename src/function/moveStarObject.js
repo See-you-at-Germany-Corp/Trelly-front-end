@@ -1,38 +1,60 @@
 import personalToStarred from './personalToStarred.js';
 import { starBoard } from '../redux/actions/personalBoardList.js';
 
-const moveStarObject = (personal, source, destination, dispatch) => {
-    console.log('personal, source, destination');
-    console.log(personal, source, destination);
- 
-    const starredBoard = personalToStarred(personal);
-    console.log('starredBoard');
-    console.log(starredBoard);
-    
+const moveStarObject = (starredBoard, source, destination, dispatch) => {
+    // console.log('starredBoard, source, destination');
+    // console.log(starredBoard, source, destination);
+   
     if (source < destination) {
         dispatch({
             type: 'SET_STAR_ID',
-            boardId: starredBoard[source].id,
-            starId: starredBoard[destination].starred_id + 2
+            boardId: starredBoard[source + 1].id,
+            starId: starredBoard[destination + 1].starred_id + 2
         });
-
-        const newPersonal = [...personal];
-        // console.log('newPersonal[source].starred_id');
-        // console.log(newPersonal[source].starred_id);
-
-        for (let i = destination + 1; i < starredBoard.length ; i++) {
-            console.log('run');
+  
+        for (let i = destination + 2; i < starredBoard.length ; i++) {
             dispatch({
                 type: 'SET_STAR_ID',
                 boardId: starredBoard[i].id,
                 starId: starredBoard[i].starred_id + 2
             });
-        }
-
-        dispatch({ type: 'OVERWRITE', newState: newPersonal });
+        } 
     }
 
-    // console.log(dispatch({type: 'UNSTAR_BOARD', boardId: 2}));
+    if (source > destination) {
+        starredBoard.forEach(board => {
+            if (board.id > 0) {
+                dispatch({
+                    type: 'SET_STAR_ID',
+                    boardId: board.id,
+                    starId: board.starred_id + 2
+                })
+            }
+        })
+  
+        dispatch({
+            type: 'SET_STAR_ID',
+            boardId: starredBoard[source + 1].id,
+            starId: starredBoard[destination + 1].starred_id - 2
+        });
+
+        for (let i = 1; i < source; i++) {
+            dispatch({
+                type: 'SET_STAR_ID',
+                boardId: starredBoard[i].id,
+                starId: starredBoard[i].starred_id - 1
+            });
+        } 
+    }
+ 
+    if (source != destination) {
+        const newStarred = [...starredBoard];
+        newStarred.sort(function (a, b) {
+            return a.starred_id - b.starred_id;
+        });
+
+        dispatch({ type: 'OVERWRITE_STAR_BOARD', newState: newStarred });
+    }
 
     return ({})
 }
