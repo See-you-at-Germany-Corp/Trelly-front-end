@@ -23,3 +23,8 @@ export const unStarBoard =(boardId)=> ({
     type: 'UNSTAR_BOARD',
     boardId, 
 })
+
+export const overWrite =(newState)=> ({
+    type: 'OVERWRITE',
+    newState, 
+})

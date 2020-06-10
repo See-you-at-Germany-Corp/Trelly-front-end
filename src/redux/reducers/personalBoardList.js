@@ -15,8 +15,8 @@ const initState = [
         id: 1,
         name: 'Trelly',
         background: 'indianred',
-        starred: false,
-        starred_id: 0,
+        starred: true,
+        starred_id: 3,
         href: '/1/Trelly'
     },
     {
@@ -24,7 +24,7 @@ const initState = [
         name: 'KMITL',
         background: 'dodgerblue',
         starred: true,
-        starred_id: 0,
+        starred_id: 2,
         href: '/2/KMITL'
     },
     {
@@ -32,14 +32,14 @@ const initState = [
         name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
         background: 'palevioletred',
         starred: true,
-        starred_id: 0,
+        starred_id: 1,
         href: '/3/ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART'
     },
     {
         id: 4,
         name: 'Meo Germany',
         background: 'forestgreen',
-        starred: false,
+        starred: true,
         starred_id: 0,
         href: '/4/Meo-Germany'
     }
@@ -136,6 +136,21 @@ export default (state = initState, action)=> {
 
             return newState5;
 
+        case 'SET_STAR_ID':
+            const newState6 = [...state];
+            const index = state.findIndex(data => data.id === action.boardId)
+
+            if (index >= 0) { 
+                newState6[index].starred_id = action.starId;
+
+                /// post to backend.
+            }
+
+            return newState6;
+
+        case 'OVERWRITE':
+            return action.newState
+  
         default:
             return state;
     }
