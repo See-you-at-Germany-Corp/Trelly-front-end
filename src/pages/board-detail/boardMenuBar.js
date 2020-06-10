@@ -6,13 +6,18 @@ import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
 import './boardMenuBarStyle.css';
-import { starBoard, unStarBoard } from '../../redux/actions/personalBoardList';
+import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
 
 const BoardMenuBar = (props) => {
 
+    const starredBoardList = props.starredBoardList;
+
     const boardData = props.boardData;
 
-    const starredStyle = boardData.starred === true ? {
+    const boardIndex = starredBoardList.findIndex(data => data.id === boardData.id)
+    const isStarredBoard = `${starredBoardList[boardIndex]}` !== 'undefined' && starredBoardList[boardIndex].starred_id > 0;
+
+    const starredStyle = isStarredBoard === true ? {
         opacity: '100',
         color: 'khaki'
     } : {};
@@ -28,10 +33,12 @@ const BoardMenuBar = (props) => {
                 <div className='board-star'>
                     <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
                         {
-                            boardData.starred === true ?
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(boardData.id))} style={starredStyle}></i>
-                                :
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(starBoard(boardData.id))}></i>
+                            isStarredBoard === true ?
+                            /// click to unstar board.
+                            <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(boardData.id))} style={starredStyle}></i>
+                            :
+                            /// click to star board.
+                            <i className='board-star fas fa-star' onClick={() => props.dispatch(starBoard(boardData.id, boardData))} style={starredStyle}></i>
                         }
                     </Link>
                 </div>
@@ -75,7 +82,11 @@ const BoardMenuBar = (props) => {
     );
 }
 
-const BoardMenuBarWithConnect = connect()(BoardMenuBar);
+const mapStateToProps = (state) => ({
+    starredBoardList: state.starredBoardList
+})
+
+const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
 
 export default BoardMenuBarWithConnect;
 

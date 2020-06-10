@@ -1,6 +1,6 @@
 const personalToStarred = (personalBoardList) => {
 
-    let starredBoardList = personalBoardList.filter(board => board.starred === true);
+    let starredBoardList = personalBoardList.filter(board => board.starred_id > 0);
     starredBoardList.sort(function (a, b) {
         /// sort lowest to highest.
         return a.starred_id - b.starred_id;

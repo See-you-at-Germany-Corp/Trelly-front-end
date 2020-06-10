@@ -6,42 +6,27 @@ const initState = [
     {
         id: 0,
         name: '//sampleboard//',
-        background: '#cccccc',
-        starred: false,
-        starred_id: 0,
-        href: '/0/sampleboard'
+        background: '#cccccc'
     },
     {
         id: 1,
         name: 'Trelly',
-        background: 'indianred',
-        starred: true,
-        starred_id: 3,
-        href: '/1/Trelly'
+        background: 'indianred'
     },
     {
         id: 2,
         name: 'KMITL',
-        background: 'dodgerblue',
-        starred: true,
-        starred_id: 2,
-        href: '/2/KMITL'
+        background: 'dodgerblue'
     },
     {
         id: 3,
         name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        background: 'palevioletred',
-        starred: true,
-        starred_id: 1,
-        href: '/3/ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART'
+        background: 'palevioletred'
     },
     {
         id: 4,
         name: 'Meo Germany',
-        background: 'forestgreen',
-        starred: true,
-        starred_id: 0,
-        href: '/4/Meo-Germany'
+        background: 'forestgreen'
     }
 ]
 
@@ -100,53 +85,6 @@ export default (state = initState, action)=> {
             }
 
             return newState3;
-
-        case 'STAR_BOARD':
-            const newState4 = [...state];
-            const starIndex = state.findIndex(data => data.id === action.boardId) 
-
-            if (starIndex >= 0) {
-                newState4[starIndex].starred = true;
-
-                let maxStarredId = 0;
-                /// search max starred_id.
-                newState4.map(state => { 
-                    if (state.starred_id > maxStarredId)
-                        maxStarredId =  state.starred_id;
-                    return ({});
-                })
-
-                newState4[starIndex].starred_id = maxStarredId + 1; 
-
-                /// post to backend.
-            }
-
-            return newState4;
-
-        case 'UNSTAR_BOARD':
-            const newState5 = [...state];
-            const unStarIndex = state.findIndex(data => data.id === action.boardId)
-
-            if (unStarIndex >= 0) {
-                newState5[unStarIndex].starred = false;
-                newState5[unStarIndex].starred_id = 0;
-
-                /// post to backend.
-            }
-
-            return newState5;
-
-        case 'SET_STAR_ID':
-            const newState6 = [...state];
-            const index = state.findIndex(data => data.id === action.boardId)
-
-            if (index >= 0) { 
-                newState6[index].starred_id = action.starId;
-
-                /// post to backend.
-            }
-
-            return newState6;
 
         case 'OVERWRITE':
             return action.newState
