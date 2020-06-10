@@ -19,7 +19,7 @@ const BoardDetail = (props) => {
     };
 
     return (
-        <div className={`${boardData.name}-board board-detail`} style={{background: boardData.background}}>
+        <div className={`${boardData.name}-board board-detail`} style={{ background: boardData.picture}}>
             <BoardMenuBar boardData={boardData} {...props} /> 
         </div>
     );

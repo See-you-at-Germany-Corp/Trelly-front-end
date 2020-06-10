@@ -2,31 +2,31 @@ const initState = [
     {
         id: 0,
         name: '//sampleboard//',
-        background: '#cccccc',
+        picture: '#cccccc',
         starred_id: 0
     },
     {
         id: 2,
         name: 'KMITL',
-        background: 'dodgerblue',
+        picture: 'dodgerblue',
         starred_id: 1
     },
     {
         id: 3,
         name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        background: 'palevioletred',
+        picture: 'palevioletred',
         starred_id: 2
     },
     {
         id: 1,
         name: 'Trelly',
-        background: 'indianred',
+        picture: 'indianred',
         starred_id: 3
     },
     {
         id: 4,
         name: 'Meo Germany',
-        background: 'forestgreen',
+        picture: 'forestgreen',
         starred_id: 4
     }
 ]

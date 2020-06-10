@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import './boardListStyle.css';
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
@@ -36,7 +37,7 @@ const BoardList = (props) => {
                         return (
                             <React.Fragment>
                                 <div className='board-list-item-box'>
-                                    <Link to={boardHref} className='board-list-item' style={{ background: `${board.background}` }}>
+                                    <Link to={boardHref} className='board-list-item' style={{ background: `${board.picture}` }}>
                                         <p><b>{board.name}</b></p>
                                         <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
                                             {

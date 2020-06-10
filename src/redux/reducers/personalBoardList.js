@@ -6,27 +6,27 @@ const initState = [
     {
         id: 0,
         name: '//sampleboard//',
-        background: '#cccccc'
+        picture: '#cccccc'
     },
     {
         id: 1,
         name: 'Trelly',
-        background: 'indianred'
+        picture: 'indianred'
     },
     {
         id: 2,
         name: 'KMITL',
-        background: 'dodgerblue'
+        picture: 'dodgerblue'
     },
     {
         id: 3,
         name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        background: 'palevioletred'
+        picture: 'palevioletred'
     },
     {
         id: 4,
         name: 'Meo Germany',
-        background: 'forestgreen'
+        picture: 'forestgreen'
     }
 ]
 
