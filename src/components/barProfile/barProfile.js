@@ -1,5 +1,15 @@
 import React from "react";
-const barProfile = () => {
+const BarProfile = () => {
+  const [
+    state = {
+      status: "",
+    },
+    setState,
+  ] = React.useState();
+  
+  const activeStatus = () => {
+    setState({ status: " active" });
+  };
   return (
     <div>
       <div className="tabbed-pane-header">
@@ -35,18 +45,20 @@ const barProfile = () => {
           <ul>
             <li className="tabbed-pane-nav-item">
               <a
-                className="tabbed-pane-nav-item-button js-member-profile active"
+                className={`tabbed-pane-nav-item-button js-member-profile ${state.status}`}
                 data-tab="profile"
                 href=""
+                onClick={()=>activeStatus()}
               >
                 Profile and Visibility
               </a>
             </li>
             <li className="tabbed-pane-nav-item">
               <a
-                className="tabbed-pane-nav-item-button js-member-activity"
+                className={`tabbed-pane-nav-item-button js-member-activity ${state.status}`}
                 data-tab="cards"
                 href=""
+                onClick={()=>activeStatus()}
               >
                 Activity
               </a>
@@ -86,4 +98,17 @@ const barProfile = () => {
   );
 };
 
-export default barProfile;
+export default BarProfile;
+
+const getActiveTap = (pushButton) => {
+  let temp = " active";
+  return temp;
+};
+
+function addNum() {
+  return 1 + 1;
+}
+
+const addNumber = () => {
+  return 1 + 2;
+};

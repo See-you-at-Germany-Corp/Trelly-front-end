@@ -38,8 +38,8 @@ class profile extends Component {
       initials: "",
       userName: "",
       bio: "",
-      loading: false,
-      error: {},
+      // loading: false,
+      // error: {},
     };
   }
   handleSubmit = (event) => {
@@ -57,10 +57,9 @@ class profile extends Component {
       bio: this.state.bio,
     };
     this.props.SUBMIT(
-        userData
-        // loading: false,
-        // error: {},
-      
+      userData
+      // loading: false,
+      // error: {},
     );
     console.log(userData);
 
@@ -104,11 +103,13 @@ class profile extends Component {
                     ML
                   </span>
                 </div>
-                <button className="_2e97X7K2YRLv4Q">Change Avatar…</button>
+                <button
+                  className="testButton"
+                  onClick={()=>{console.log("555")}}
+                >
+                  Change Avatar…
+                </button>
               </div>
-            </div>
-            <div>
-              <button className="_2e97X7K2YRLv4Q">Change Avatar…</button>
             </div>
             <Typography variant="h3" className={classes.pageTitle}>
               Profile
@@ -190,7 +191,7 @@ const mapDispatchToProps = (dispatch) => {
     SUBMIT: (state) => {
       dispatch({
         type: "SUBMIT",
-        state
+        state,
       });
     },
   };
