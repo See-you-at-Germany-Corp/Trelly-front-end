@@ -7,34 +7,32 @@
 //   LOADING_USER,
 // } from '../types';
 
-
 const initialState = {
   fullName: "Madusa",
   initials: "Sniper",
   userName: "Riki",
   bio: "Pudge",
+  //picture
   // loading: false,
   // error: {},
 };
 
-export default function (state = initialState, action) {
+const UserReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SUBMIT":
-      return {
-        ...state,
-        fullName: action.fullName,
-        initials: action.initials,
-        userName: action.userName,
-        bio: action.bio,
-        // loading: true,
-        // error: {},
-      };
-      break;
-
+      return action.state;
+      // loading: true,
+      // error: {},
+    case "CHANGEAVATAR":
+      return 
+      {
+      }
     default:
       return state;
   }
 };
+
+export default UserReducer;
 
 // export const getUserData = () => (dispatch) => {
 //   //dispatch({ type: LOADING_USER})

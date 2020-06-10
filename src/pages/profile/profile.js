@@ -56,6 +56,12 @@ class profile extends Component {
       userName: this.state.userName,
       bio: this.state.bio,
     };
+    this.props.SUBMIT(
+        userData
+        // loading: false,
+        // error: {},
+      
+    );
     console.log(userData);
 
     //Rest
@@ -68,6 +74,11 @@ class profile extends Component {
   };
   render() {
     const { classes } = this.props;
+    console.log("Hello props");
+
+    console.log(this.props);
+    console.log(this.props.UserReducer.fullName);
+
     return (
       <div>
         <BarProfile />
@@ -150,14 +161,8 @@ class profile extends Component {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                onClick={() => {
-                  //this.handleSubmit();
-                  this.props.SUMMIT(
-                    this.state.fullName,
-                    this.state.initials,
-                    this.state.userName,
-                    this.state.bio
-                  );
+                onClick={(event) => {
+                  this.handleSubmit(event);
                 }}
               >
                 Save
@@ -175,23 +180,17 @@ profile.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStatetoProps = (state) => {
+const mapStateToProps = (state) => {
   return {
-    fullName: state.fullName,
-    initials: state.initials,
-    userName: state.userName,
-    bio: state.bio,
+    UserReducer: state.UserReducer,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    SUMMIT: (fullName, initials, userName, bio) => {
+    SUBMIT: (state) => {
       dispatch({
         type: "SUBMIT",
-        fullName: fullName,
-        initials: initials,
-        userName: userName,
-        bio: bio,
+        state
       });
     },
   };
@@ -206,5 +205,7 @@ const ProfileContainer = styled.div`
   float: left;
 `;
 
-export default connect(mapStatetoProps,mapDispatchToProps)(withStyles(styles)(profile));
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(profile));
