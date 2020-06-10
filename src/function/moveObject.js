@@ -1,4 +1,5 @@
-const testList = [
+/* -------------------------------- Unit test ------------------------------- */
+/* const testList = [
     {
         id: 0,
         name: 'A',
@@ -24,10 +25,9 @@ const testList = [
         name: 'F',
     },
 ]
+moveObj(testList, 1, -1)*/
 
-//moveObj(testList, 1, -1)      // Unit test
-
-export default function moveObj(obj, source = 1, dest = 4) {
+export default function moveObj(obj, source, dest) {
     if (source < dest) {
         const [before, center, after] = [obj.slice(0, source), obj.slice(source + 1, dest + 1), obj.slice(dest + 1)]
         return [...before, ...center, obj[source], ...after]
