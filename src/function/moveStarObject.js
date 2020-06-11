@@ -1,6 +1,3 @@
-import personalToStarred from './personalToStarred.js';
-import { starBoard } from '../redux/actions/personalBoardList.js';
-
 const moveStarObject = (starredBoard, source, destination, dispatch) => {
     // console.log('starredBoard, source, destination');
     // console.log(starredBoard, source, destination);
@@ -47,7 +44,7 @@ const moveStarObject = (starredBoard, source, destination, dispatch) => {
         } 
     }
  
-    if (source != destination) {
+    if (source !== destination) {
         const newStarred = [...starredBoard];
         newStarred.sort(function (a, b) {
             return a.starred_id - b.starred_id;

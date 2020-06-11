@@ -35,10 +35,10 @@ const BoardMenuBar = (props) => {
                         {
                             isStarredBoard === true ?
                             /// click to unstar board.
-                            <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(boardData.id))} style={starredStyle}></i>
+                            <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardData.id))} style={starredStyle}></i>
                             :
                             /// click to star board.
-                            <i className='board-star fas fa-star' onClick={() => props.dispatch(starBoard(boardData.id, boardData))} style={starredStyle}></i>
+                            <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardData.id, boardData))} style={starredStyle}></i>
                         }
                     </Link>
                 </div>
