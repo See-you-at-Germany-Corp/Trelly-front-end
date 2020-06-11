@@ -11,9 +11,14 @@ export const mockupData = {
             id: 'list-1',
             title: 'First',
             cardIds: ['card-1', 'card-2', 'card-3',]
+        },
+        'list-2': {
+            id: 'list-2',
+            title: 'Second',
+            cardIds: ['card-4', 'card-5']
         }
     },
 
     // For re-order
-    listOrder: ['list-1'],
+    listOrder: ['list-1', 'list-2'],
 }

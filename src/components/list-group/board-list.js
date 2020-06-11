@@ -11,21 +11,35 @@ export default function List(props) {
 
     const list = boardState.list[props.listId]
 
+    // console.log('board list', props.listId);
+
     return (
-        <StyledList>
-            <TextName disabled={true} value={list.id} />
-            <Droppable droppableId={props.listId}>
-                {(provided, snapshot) => (
-                    <CardList
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                    >
-                        {list.cardIds.map((cardId, index) => <Card cardId={cardId} cardIndex={index} key={cardId} />)}
-                        {provided.placeholder}
-                    </CardList>
-                )}
-            </Droppable>
-        </StyledList>
+        <Draggable draggableId={props.listId} index={props.index}>
+            {(provided, snapshot) => (
+                <StyledList
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                >
+                    <TextName {...provided.dragHandleProps}>
+                        {/* <input value={list.id}/> */}
+                        {props.listId}
+                    </TextName>
+
+                    <Droppable droppableId={props.listId} type='card'>
+                        {(provided, snapshot) => (
+                            <CardList
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                                isDraggingOver={snapshot.isDraggingOver}
+                            >
+                                {list.cardIds.map((cardId, index) => <Card cardId={cardId} cardIndex={index} key={cardId} />)}
+                                {provided.placeholder}
+                            </CardList>
+                        )}
+                    </Droppable>
+                </StyledList>
+            )}
+        </Draggable>
     )
 }
 
@@ -34,25 +48,21 @@ const StyledList = styled.div`
     max-width: 280px;
     max-height: 95%;
 
-    z-index: 1;
-
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-radius: 5px;
     margin-right: 10px;
     background-color: beige;
 `
 
-const TextName = styled.input`
+const TextName = styled.div`
     width: 200px;
     height: 30px;
     font-size: 20px;
-
-    :disabled {
-        border: 0;
-        background-color: transparent;
-    }
 `
 
 const CardList = styled.div`
-    width: 100%;
+    width: calc(100% - 20px);
+    padding: 10px;
+    background-color: ${props => props.isDraggingOver ? 'green' : 'transparent'}
 `
