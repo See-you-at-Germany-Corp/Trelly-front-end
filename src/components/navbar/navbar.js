@@ -18,6 +18,13 @@ import NotificationsNoneRoundedIcon from '@material-ui/icons/NotificationsNoneRo
 import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
+import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
+import {starBoard, unStarBoard} from '../../redux/actions/personalBoardList';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
+
+import { createOn } from '../../redux/actions/createNewBoard';
+
 
 const buttonStyle = {
     backgroundColor: "hsla(0,0%,100%,.3)",
@@ -43,7 +50,8 @@ const MyButton = styled(motion.button)`
     justify-content: center;
     align-items: center;
     height:${props=>props.height};
-    margin-right: ${props=>props.nomargin ? '0px' : '4px'};
+    margin-right: ${props=>props.nomargin ? '0px' : '2px'};
+    margin-left: ${props=>props.nomargin ? '0px' : '2px'};
     &:hover{
         background-color: ${props=>props.hovercolor? props.hovercolor : "rgba(255, 255, 255, 0.1)"};
     }
@@ -54,20 +62,25 @@ const DropDownStyle = styled(motion.div)`
     flex-basis: 100px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.12);
-    boxShadow: 0px 0px 15px -10px rgba(1,1,1,0.75);
+    box-shadow: 0px 0px 15px -10px rgba(1,1,1,0.75);
     margin-top: 10px;
     margin-right: 4px;
     border-radius: 5px;
+    // position:absolute;
+    // left:0;
 `;
 
-const navbarstyle = {
+const Navbarstyle = styled.div`
 
-    width: "100%",
-    // height: "5.5vh",
-    height: "40px",
-    position: "sticky",
-    top: "0",
-}
+    width: 100%;
+    // height: 5.5vh;
+    height: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    pointer-events:${props => props.disable ? 'none' : 'all'};
+    filter:brightness(${props => props.disable ? '0.3' : '1'});
+`;
 
 const variants = {
     open: {
@@ -105,10 +118,12 @@ const hoverVar = {
 }
 const Column = styled(motion.div)`
     display: flex;
+    background-color:${props=>props.bg? 'white':'transparent'};
     flex-direction: column;
     box-sizing: border-box;
     transition-duration: 0.1s;
     border-radius: 3px;
+    left:0;
     align-items: ${props => props.align};
     overflow:hidden;
     width:${props=>props.width};
@@ -116,7 +131,8 @@ const Column = styled(motion.div)`
     max-width:${props=>props.maxWidth};
     margin: ${props => props.margin};
     padding: ${props => props.padding};
-    z-index:111111111;
+    // z-index:111111111;
+    // position:${props=>props.position};
 `;
 const LinkBox = styled(motion.div)`
     background: ${props=>props.backgroundColor? props.backgroundColor : "white"};
@@ -136,7 +152,7 @@ const LinkBox = styled(motion.div)`
     // height:20px;
 `;
 
-const LinkStyle = styled.a`
+const LinkStyle = styled(Link)`
     text-decoration:${props => props.underline ? 'underline' : 'none'};
     color: black;
 `;
@@ -144,7 +160,7 @@ const LinkStyle = styled.a`
 const Linkable = ({ link, children, padding, margin, underline, onClick,backgroundColor }) => {
     return (
         <LinkBox padding={padding} margin={margin} backgroundColor={backgroundColor}>
-            <LinkStyle href={link} underline={underline} onClick={onClick}>
+            <LinkStyle to={link} underline={underline} onClick={onClick}>
                 {children}
             </LinkStyle>
         </LinkBox>
@@ -155,7 +171,7 @@ const Row = styled(motion.div)`
     display: flex;
     flex-direction: row;
     justify-content:${props => props.justifyContent ? props.justifyContent : "center"};
-    boxSizing: border-box;
+    box-sizing: border-box;
     transition-duration: 0.1s;
     border-radius: 3px;
     position:relative;
@@ -166,6 +182,8 @@ const Row = styled(motion.div)`
     max-height:${props=>props.maxHeight}
     margin: ${props => props.margin};
     padding: ${props => props.padding};
+    // z-index:11;
+    background-color:${props=>props.backgroundColor? props.backgroundColor : 'transparent'};
 `;
 
 const Title = styled.div`
@@ -335,32 +353,60 @@ const LogoOnly =({config,size})=>{
     );
 }
 
-const Navbar = () => {
+const Navbars = ({personalBoardList,on}) => {
     const [isType, setType] = useState(false);
+    const [search,setSearch] = useState('');
     const inputRef = useRef();
     const [isOpen, setOpen] = useReducer(reducers,initState);
+    const OnChange =(event)=>{
+        let keyword = event.target.value;
+        setSearch(keyword);
+    }
+    const searchItem = personalBoardList.filter((data)=>{
+        if(search == null || search == ''){
+            return null;
+        }
+        else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
+            console.log(data);
+            return data;
+        }
+    })
     return (
         <OpenContext.Provider value={[isOpen,setOpen]}>
-        <div className="navbar-container" style={navbarstyle}>
+        <Navbarstyle disable={on.is_on}>
             <div className="navbar-inside" style={{ backgroundColor: "#0079bf", height: "100%", display: "flex" }}>
                 <Row justifyContent="flex-start" maxWidth="400px" minWidth="400px">
                 <MyDropdown
-                    isOpen={isOpen.left}
-                    setOpen={setOpen}
                     isType={isType}
-                    maxWidth="118px"
-                    minWidth="118px"
+                    maxWidth="38px"
+                    minWidth="38px"
                     children={
                         <Row align="flex-start" minHeight="32px">
-                            <MyButton>
+                            <Link to="/">
+                            <MyButton onClick={()=>console.log(on)}>
                                 <HomeOutlinedIcon />
                             </MyButton>
-                            <MyButton height="32px" nomargin onClick={() => {setOpen({type:'left'}); setType('board')}}>
+                            </Link>
+                        </Row>
+                    }
+                    board={<Board />}
+                
+                />
+                <MyDropdown
+                    isOpen={isOpen.board}
+                    setOpen={setOpen}
+                    isType={isType}
+                    maxWidth="78.25px"
+                    minWidth="78.25px"
+                    children={
+                        <Row align="flex-start" minHeight="32px">
+                            <MyButton height="32px" onClick={() => {setOpen({type:'board'}); setType('board')}}>
                                 <LogoOnly size="16px"/>
                                 <div style={{marginLeft:"4px"}}>Boards</div>
                             </MyButton>
                         </Row>
                     }
+                    board={<Board />}
                 
                 />
                 <MyDropdown 
@@ -368,11 +414,12 @@ const Navbar = () => {
                     setOpen={setOpen}
                     isType={isType}
                     mode="search"
+                    margin="0px 2px 0px 3px"
                     children={
                         <Row
                             minHeight="32px"
                             maxHeight="32px"
-                            animate={isOpen.search ? { backgroundColor: "white" } : { backgroundColor: "rgba(255, 255, 255, 0.3)" }}
+                            animate={isOpen.search ? { backgroundColor: "rgba(255, 255, 255, 1)",transition:{duration:0.1} } : { backgroundColor: "rgba(255, 255, 255, 0.3)",transition:{duration:0.1} }}
                         >
                             <div onClick={() => { setOpen({type:'search'}); inputRef.current.focus(); setType('search'); }} style={{ height: "32px", padding: "8px", boxSizing: "border-box", display: "flex", justifyContent: "center" }} >
                                 <motion.input
@@ -389,6 +436,7 @@ const Navbar = () => {
                                         width: "130px"
                                         // height:"32px"
                                     }}
+                                    onChange={(event)=>OnChange(event)}
                                 >
                                 </motion.input>
                             </div>
@@ -402,35 +450,79 @@ const Navbar = () => {
                             </div>
                         </Row>
                     }    
+                    board={<SearchDropDown searchItem={searchItem} search={search}/>}
                 />
                 </Row>
                 
                 {/* <RightDropdown /> */}
                 <MyDropdown
-                    isOpen={isOpen.right}
+                    isOpen={isOpen.create}
                     setOpen={setOpen}
                     isType={isType}
-                    maxWidth="148px"
-                    minWidth="148px"
+                    maxWidth="38px"
+                    minWidth="38px"
                     mode="right"
                     children={
                         <Row align="flex-start" minHeight="32px">
-                            <MyButton onClick={() => { setOpen({type:'right'}); setType('create') }}>
+                            <MyButton onClick={() => { setOpen({type:'create'}); setType('create') }}>
                                 <AddIcon />
                             </MyButton>
-                            <MyButton onClick={() => { setOpen({type:'right'}); setType('info') }}>
+                            
+                        </Row>
+                    }
+                    board={<Create />}
+                />
+                <MyDropdown
+                    isOpen={isOpen.info}
+                    setOpen={setOpen}
+                    isType={isType}
+                    maxWidth="38px"
+                    minWidth="38px"
+                    mode="right"
+                    children={
+                        <Row align="flex-start" minHeight="32px">
+                            <MyButton onClick={() => { setOpen({type:'info'}); setType('info') }}>
                                 <InfoOutlinedIcon />
                             </MyButton>
-                            <MyButton onClick={() => { setOpen({type:'right'}); setType('noti') }}>
+                        </Row>
+                    }
+                    board={<Info />}
+                />
+                <MyDropdown
+                    isOpen={isOpen.noti}
+                    setOpen={setOpen}
+                    isType={isType}
+                    maxWidth="38px"
+                    minWidth="38px"
+                    mode="right"
+                    children={
+                        <Row align="flex-start" minHeight="32px">
+                            
+                            <MyButton onClick={() => { setOpen({type:'noti'}); setType('noti') }}>
                                 <NotificationsNoneRoundedIcon />
                             </MyButton>
+                        </Row>
+                    }
+                    board={<Notification />}
+                />
+                <MyDropdown
+                    isOpen={isOpen.user}
+                    setOpen={setOpen}
+                    isType={isType}
+                    maxWidth="38px"
+                    minWidth="38px"
+                    mode="right"
+                    children={
+                        <Row align="flex-start" minHeight="32px">
+                            
                             <motion.button style={{ outline: "none", border: "none", backgroundColor: "transparent", margin: "auto", padding: "0px" }}
-                                onClick={() => { setOpen({type:'right'}); setType('user') }}
+                                onClick={() => { setOpen({type:'user'}); setType('user') }}
                             >
                                 <Avatar style={{ width: "32px", height: "32px", margin: "auto" }} />
                             </motion.button>
                         </Row>
                     }
+                    board={<UserCard />}
                 />
             </div>
             <div style={{maxWidth:"100px",top:"0",margin:"0px",position:"absolute",left:"50%",transform:"translateX(-50%)",alignItems:"center"}}>
@@ -438,12 +530,12 @@ const Navbar = () => {
                     <LogoBut />
                 </div>
             </div>
-        </div>
+        </Navbarstyle>
         </OpenContext.Provider>
     )
 
 }
-export default Navbar;
+
 
 const Info = () => {
     const linkList = [
@@ -521,7 +613,8 @@ const Info = () => {
     );
 }
 
-const Create = () => {
+const Creates = ({dispatch}) => {
+    const [open,setOpen] = useContext(OpenContext);
     return (
         <DropDownCard
             title="create"
@@ -529,6 +622,7 @@ const Create = () => {
                 <div>
                     <Linkable
                         margin="10px 0px 0px 0px"
+                        onClick={() => {dispatch(createOn()); setOpen({type:''})}}
                         // onClick={setOpen(false)}
                         children={
                             <Column padding="4px 10px 10px 10px">
@@ -639,20 +733,33 @@ const UserCard = () => {
     );
 }
 
-const SearchDropDown = () => {
+const SearchDropDowns = ({searchItem,personalBoardList,dispatch,search}) => {
+    
     return (
-        <DropDownCard
-            title="Search"
-            children={
                 <div>
-                    <Column padding="5px 20px 5px 20px">
-
+                    <Column padding="5px 20px 5px 20px" maxWidth="330px" minWidth="330px">
+                    { search.length > 0 ?  null :
+                        <div>
+                            Nothing
+                        </div>
+                    }
+                    {
+                    searchItem.length > 0 ? 
+                    <HidableDiv open={true} initial="init" animate="open" variants={flyUpDiv} >
+                        Board
+                        {
+                            searchItem.map((board,index)=>{
+                                return (
+                                        <BoardPreview board={board} dispatch={dispatch} index={index} open={false}/>
+                                );
+                            })
+                        }
+                        </HidableDiv>:null
+                    }
                     </Column>
 
                 </div>
 
-            }
-        />
     );
 }
 
@@ -660,24 +767,61 @@ const SearchStyle = styled(motion.input)`
     background-color: transparent;
     align-self: flex-start;
     height:20px;
-    padding: 0px;
+    padding: 15px;
+    box-sizing: border-box;
     // width: 130px;
     width: 98%;
+    min-width: 300px;
     height: 30px;
-    border: 2px solid red;
+    
+    border: 2px solid rgba(201, 201, 201,0.3);
+    outline: none;
     &:focus{
-        border-color:blue;
+        outline: none;
+        border: 2px solid rgb(0, 121, 191);
       }
 `;
 
-const Board =()=>{
+const Boards =({personalBoardList,dispatch})=>{
+    const [search,setSearch] = useState('');
+    const [openStar,setOpenStar] = useState(false);
+    const [openPers,setOpenPers] = useState(false);
+    const OnChange =(event)=>{
+        let keyword = event.target.value;
+        setSearch(keyword);
+    }
+    const searchItem = personalBoardList.filter((data)=>{
+        if(search == null || search == ''){
+            return null;
+        }
+        else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
+            console.log(data);
+            return data;
+        }
+    })
     return (
         <Column padding="10px">
-            <SearchStyle>
+            <SearchStyle placeholder="Enter a keyword" onChange={(event)=>OnChange(event)}>
             </SearchStyle>
-            <Hidable type="starred"/>
-            <Hidable type="recent"/>
-            <Hidable type="personal"/>
+            { search.length > 0 ?  null :
+                <div>
+                <ConnectedHidable type="starred" open={openStar} setOpen={setOpenStar}/>
+                <ConnectedHidable type="personal" open={openPers} setOpen={setOpenPers}/>
+                </div>
+            }
+            <HidableDiv open={true} initial="init" animate="open" variants={flyUpDiv} >
+            {
+                searchItem.length == 0 && search.length > 0 ?
+                <Column minWidth="300px">
+                    Not Found
+                </Column>:
+                searchItem.map((board,index)=>{
+                    return (
+                            <BoardPreview board={board} dispatch={dispatch} index={index} open={false}/>
+                    );
+                })
+            }
+            </HidableDiv>
         </Column>
     );
 }
@@ -692,31 +836,41 @@ const HidableButton =({children,onClick})=>{
     );
 }
 
-const HidableDiv = styled.div`
-    display:${props=>props.open ? "block" : "none"};
+const HidableDiv = styled(motion.div)`
+    display:${props=>props.open ? "block" : "block"};
+    max-width: 300px;
 `;
 const HidableCon = styled.div`
     width:100%;
     padding-left:4px;
 `;
-const Hidable =({type})=>{
-    const [open,setOpen] = useState(false);
+const Hidable =({personalBoardList,type,dispatch,open,setOpen})=>{
     
     const item = {
         starred:{
-            title:'StarredBoard',
-            icon:<StarBorderRoundedIcon/>,
-            child:<div>{<BoardPreview />}</div>
+            title:'Starred Board',
+            icon:<StarBorderRoundedIcon style={{color:"rgb(0, 121, 191)"}}/>,
+            child:<div>{
+                personalBoardList.filter(board => board.id > 0 && board.starred === true).map((board,index)=>
+                    <BoardPreview board={board}
+                    dispatch={dispatch} index={index} open={open}
+                    />
+                )}
+                </div>
         },
         recent:{
-            title:'RecentBoard',
+            title:'Recent Board',
             icon:<QueryBuilderRoundedIcon />,
             child:<div>Recent</div>
         },
         Personal:{
-            title:'PersonalBoard',
+            title:'Personal Board',
             icon:<LogoOnly />,
-            child:<div>Story</div>
+            child:<div style={{display:"block"}}>{
+                personalBoardList.filter(board => board.id > 0).map((board,index)=>
+                    <BoardPreview board={board} dispatch={dispatch} index={index} open={open}/>
+                )}
+                </div>
         }
     }
     const getTy =(type)=>{
@@ -732,15 +886,17 @@ const Hidable =({type})=>{
         }
     }
     return (
-            <Column minWidth="300px">
-            <Row align="center" justifyContent="space-between">
+            <Column minWidth="300px" >
+            <div style={{zIndex:"1"}}>    
+            <Row align="center" justifyContent="space-between" backgroundColor="white" >
                 {getTy(type).icon}
                 <HidableCon>
-                    StarredBoard
+                    {getTy(type).title}
                 </HidableCon>
-                <HidableButton children={<AddIcon />} onClick={()=>setOpen(!open)}/>
+                <HidableButton children={<AddIcon />} onClick={()=>{setOpen(!open); console.log(personalBoardList)}}/>
             </Row>
-            <HidableDiv open={open}>
+            </div>
+            <HidableDiv open={open} initial="init" animate={open?"open":"init"} variants={flyUpDiv} >
                 {getTy(type).child}
             </HidableDiv>
             </Column>
@@ -748,6 +904,25 @@ const Hidable =({type})=>{
     );
 }
 
+const flyUpDiv = {
+    init:{
+        height:"0px",
+        opacity:0,
+        transition:{
+            duration:0.3,
+            staggerChildren:0.01,
+            staggerDirection: -1
+        }
+    },
+    open:{
+        height:"100%",
+        opacity:1,
+        transition:{
+            duration:0.2,
+            staggerChildren:0.01,
+        }
+    }
+}
 const BoardPreviewTitle = styled(motion.div)`
     display:flex;
     width: 100%;
@@ -812,14 +987,54 @@ const CloseButtonHover ={
     }
 }
 
-const StarButtonHover = {
+
+const StarredHover ={
     init:{
-        y:100
+        y:0,
+        transition:{
+            type:"spring",
+            stiffness: 500,
+            damping: 30 ,
+            duration: 0.3
+        }
     },
     hover:{
         y:0,
         transition:{
-            delay:0.05,
+            type:"spring",
+            stiffness: 500,
+            damping: 30 ,
+            duration: 0.3
+        }
+    }
+}
+
+const personalToStarred = (personalBoardList) => {
+
+    let starredBoardList = personalBoardList.filter(board => board.starred === true);
+    starredBoardList.sort(function (a, b) {
+        /// sort lowest to highest.
+        return a.starred_id - b.starred_id;
+    });
+
+    return (
+        /// return starredBoardList with sort lowest to highest starred_id.
+        starredBoardList
+    );
+}
+const StarButtonHover = {
+    init:{
+        y:100,
+        transition:{
+            type:"spring",
+            stiffness: 500,
+            damping: 30 ,
+            duration: 0.3
+        }
+    },
+    hover:{
+        y:0,
+        transition:{
             type:"spring",
             stiffness: 500,
             damping: 30 ,
@@ -829,39 +1044,117 @@ const StarButtonHover = {
 
 }
 
-const BoardPreview =()=>{
-    return (
-        <Linkable
-            padding="0px"
-            children={
-                <Row maxHeight="40px" minHeight="40px" overflow="hidden" whileHover="hover" initial="init">
-                    <Imgpreview src={require("./test.jpg")} variants={ImgPreviewHover}/>
-                    {/* <img src={require("./test.jpg")}/> */}
-                    <div style={{display:"block" ,width:"80%",alignSelf:"center"}}>
-                    <BoardPreviewBg variants={BoardPreviewBgHover}></BoardPreviewBg>
-                    <BoardPreviewTitle>
-                        <Column minWidth="60%" maxWidth="60%">
-                            Test
-                        </Column>
-                        
-                        <Row  width="40%">
-                            <motion.div variants={CloseButtonHover}>
-                                <CloseIcon />
-                            </motion.div>
-                            <motion.div variants={StarButtonHover}>
-                                <StarBorderRoundedIcon />
-                            </motion.div>
-                        </Row>
-                        
-                    </BoardPreviewTitle>
-                    
-                    </div>
-                </Row>
+const FlyUpDiv = styled(motion.div)`
+    transform: translateY(calc(-40*${props=>props.index}px));
+    box-shadow: 0px 0px 8px -5px rgba(1,1,1,0.75);
+    // margin-left: 10px;
+    // margin-right: 10px;
+    min-width: 280px;
+    max-width: 280px;
+    margin:0 auto;
+`;
+
+const BoardPreview =({board,dispatch,index,open})=>{
+    const [openP,setOpenP] = useContext(OpenContext);
+    const StarButton =({board,dispatch})=>{
+        return (
+            <motion.div 
+            variants={
+                {
+                    init:{
+                        y:board.starred ? 0: 100,
+                        transition:{
+                            type:"spring",
+                            stiffness: 500,
+                            damping: 30 ,
+                            duration: 0.3
+                        }
+                    },
+                    hover:{
+                        y:0,
+                        transition:{
+                            type:"spring",
+                            stiffness: 500,
+                            damping: 30 ,
+                            duration: 0.3
+                        }
+                    }
+                }
             }
-        />
-        
+            style={{position:"absolute",left:"250px",marginTop:"-33px" }}>
+            <motion.div whileHover={{scale:1.3}} whileTap={{scale:0.8}} onClick={()=>{
+                        if(!board.starred){
+                            dispatch(starBoard(board.id))
+                        }
+                        else{
+                            dispatch(unStarBoard(board.id))
+                        }
+                        
+                    }
+                }>
+                <StarBorderRoundedIcon style={{color:board.starred? "rgb(133,133,0)" : "rgb(0,1,61)"}} />
+                </motion.div>
+            </motion.div> 
+        );
+    }
+    return (
+            <FlyUpDiv index={index} 
+                
+                variants={
+                    {
+                        init:{
+                            y:-55*(index+1),
+                            transition:{
+                                // delay:1,
+                                duration:0.2,
+                            }
+                        },
+                        open:{
+                            y:0,
+                            transition:{
+                                // delay:1,
+                                duration:0.2,
+                            }
+                        }
+                    }
+                } >
+                <motion.div 
+                    whileHover="hover"
+                    initial="init" 
+                    style={{position:"relative",overflow:"hidden",margin:"15px 0px 15px 0px",border:"1px solid rgba(0, 0, 0, 0.1)",borderRadius:"5px" }}>
+                    <Linkable
+                        padding="0px"
+                        onClick={()=>setOpenP({type:''})}
+                        link={board.href}
+                        children={
+                            <Row maxHeight="40px" minHeight="40px" overflow="hidden" >
+                                
+                                <Imgpreview src={require("./test.jpg")} variants={ImgPreviewHover}/>
+                                {/* <img src={require("./test.jpg")}/> */}
+                                <div style={{display:"block" ,width:"80%",alignSelf:"center"}}>
+                                <BoardPreviewBg variants={BoardPreviewBgHover}></BoardPreviewBg>
+                                <BoardPreviewTitle>
+                                    <Column minWidth="60%" maxWidth="60%">
+                                        {board.name}
+                                    </Column>
+                                    
+                                    <Row  width="40%">
+                                        
+                                    </Row>
+                                    
+                                </BoardPreviewTitle>
+                                
+                                </div>
+                            </Row>
+                        }/>
+                    <StarButton board={board} dispatch={dispatch} />
+                </motion.div>
+            
+            </FlyUpDiv>
     );
 }
+
+
 
 
 const Smth = () => {
@@ -945,7 +1238,7 @@ const visibility = {
     }
 }
 
-const MyDropdown = ({onChange,setOpen,isOpen,children,mode,isType,maxWidth,minWidth}) => {
+const MyDropdown = ({margin,onChange,setOpen,board,isOpen,children,mode,isType,maxWidth,minWidth}) => {
     const ref = useRef();
     let align = 'flex-start';
     const handleClickOutside = e => {
@@ -987,6 +1280,7 @@ const MyDropdown = ({onChange,setOpen,isOpen,children,mode,isType,maxWidth,minWi
             variants={visibility}
             ref={ref} 
             align={align}
+            margin={margin}
             minWidth= {minWidth}
             maxWidth= {maxWidth}
             padding="4px 0px 4px 0px">
@@ -996,7 +1290,11 @@ const MyDropdown = ({onChange,setOpen,isOpen,children,mode,isType,maxWidth,minWi
                     animate={isOpen ? 'open' : 'closed'}
                     variants={DropDownVariants}
                 >
-                    {getDropDown(isType)}
+                    <div style={{maxHeight:"calc(100vh - 50px)",overflowY:"auto"}}>
+                        {board}
+                    </div>
+                    {/* {getDropDown(isType)} */}
+                    
                 </DropDownStyle>
                 </div>
         </Column>
@@ -1004,37 +1302,58 @@ const MyDropdown = ({onChange,setOpen,isOpen,children,mode,isType,maxWidth,minWi
 };
 
 const initState = {
-    left:false,
+    board:false,
     search:false,
-    right:false,
+    create:false,
+    info:false,
+    noti:false,
+    user:false,
 }
 
 const reducers =(state,action)=>{
     switch(action.type){
-        case 'left':
-            return {
-                left:true,
-                search:false,
-                right:false,
-            };
+        case 'board':
+            if(state.board){
+                return {...initState,board:false};
+            }
+            return {...initState,board:true};
         case 'search':
-            return {
-                left:false,
-                search:true,
-                right:false,
-            };
-        case 'right':
-            return {
-                left:false,
-                search:false,
-                right:true,
-            };return state;
+            return {...initState,search:true};
+        case 'create':
+            if(state.create){
+                return {...initState,create:false};
+            }
+            return {...initState,create:true};
+        case 'info':
+            if(state.info){
+                return {...initState,info:false};
+            }
+            return {...initState,info:true};
+        case 'noti':
+            if(state.noti){
+                return {...initState,noti:false};
+            }
+            return {...initState,noti:true};
+        case 'user':
+            if(state.user){
+                return {...initState,user:false};
+            }
+            return {...initState,user:true};
         default:
-            return {
-                left:false,
-                search:false,
-                right:false,
-            };
+            return {...initState};
     }
 }
 const OpenContext = createContext(initState);
+
+const mapStateToProps =(state)=> ({
+    personalBoardList: state.personalBoardList,
+    createCurrent: state.createNewBoard.ref,
+    on:state.createNewBoard,
+})
+
+const ConnectedHidable = connect(mapStateToProps)(Hidable);
+const Create = connect(mapStateToProps)(Creates);
+const Board = connect(mapStateToProps)(Boards);
+const SearchDropDown = connect(mapStateToProps)(SearchDropDowns);
+const Navbar = connect(mapStateToProps)(Navbars);
+export default Navbar;
