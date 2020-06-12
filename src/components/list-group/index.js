@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 
 import List from './board-list'
@@ -7,7 +7,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 export default function ListGroup(props) {
     const { boardState, boardDispatch } = useContext(BoardContext)
-    const [state, setstate] = useState('blue')
 
     const onDragEnd = result => {
         if (!result.destination) return

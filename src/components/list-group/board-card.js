@@ -7,7 +7,7 @@ import { Draggable } from 'react-beautiful-dnd'
 import { BoardContext } from '../../context/board-context/board-context'
 
 export default function Card(props) {
-    const { boardState, boardDispatch } = useContext(BoardContext)
+    const { boardState } = useContext(BoardContext)
 
     const card = boardState.card[props.cardId]
 

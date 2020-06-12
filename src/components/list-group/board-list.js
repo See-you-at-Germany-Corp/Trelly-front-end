@@ -2,16 +2,14 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 // import Draggable from 'react-draggable'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardContext } from '../../context/board-context/board-context'
 import Card from './board-card'
 
 export default function List(props) {
-    const { boardState, boardDispatch } = useContext(BoardContext)
+    const { boardState } = useContext(BoardContext)
 
     const list = boardState.list[props.listId]
-
-    // console.log('board list', props.listId);
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>
