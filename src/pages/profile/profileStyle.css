@@ -142,7 +142,6 @@ button {
   white-space: nowrap;
 }
  ._8STAxwEhTLw06E .rsiNque2CCqtPE {
-  border-radius: 50%;
   cursor: pointer;
   overflow: hidden;
   position: relative;
@@ -224,26 +223,4 @@ button {
   /* visibility: hidden; */
   opacity: 0;
   width: 100%;
-}
-
-.testButton:hover {
-  background: linear-gradient(0deg,rgba(0,0,0,.5) 50%,transparent 0);
-  border-radius: 0;
-  border: none;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 400;
-  height: 100%;
-  line-height: 2.5em;
-  margin: 0;
-  padding-bottom: 8px;
-  padding-top: 50%;
-  position: absolute;
-  text-decoration: underline;
-  top: 0;
-  left: 0;
-  /* visibility: visible; */
-  opacity: 1;
-  width: 100%;
-  cursor: pointer;
 }

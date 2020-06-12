@@ -12,7 +12,7 @@ const initialState = {
   initials: "Sniper",
   userName: "Riki",
   bio: "Pudge",
-  //picture
+  picture: "Test.png",
   // loading: false,
   // error: {},
 };
@@ -23,10 +23,11 @@ const UserReducer = (state = initialState, action) => {
       return action.state;
       // loading: true,
       // error: {},
-    case "CHANGEAVATAR":
-      return 
-      {
-      }
+    // case "CHANGEPICTURE":
+    //   state = {
+    //     ...state,
+    //     picture: action.picture
+    //   }
     default:
       return state;
   }

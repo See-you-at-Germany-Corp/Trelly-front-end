@@ -11,6 +11,9 @@ import Button from "@material-ui/core/Button";
 import "./profileStyle.css";
 import BarProfile from "../../components/barProfile/barProfile";
 import { connect } from "react-redux";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from "@material-ui/core/Tooltip";
 const styles = {
   form: {
     textAlign: "center",
@@ -38,6 +41,7 @@ class profile extends Component {
       initials: "",
       userName: "",
       bio: "",
+      picture:"",
       // loading: false,
       // error: {},
     };
@@ -49,12 +53,14 @@ class profile extends Component {
       initials: this.state.initials,
       userName: this.state.userName,
       bio: this.state.bio,
+      picture: this.state.picture,
     });
     const userData = {
       fullName: this.state.fullName,
       initials: this.state.initials,
       userName: this.state.userName,
       bio: this.state.bio,
+      picture: this.state.picture,
     };
     this.props.SUBMIT(
       userData
@@ -70,6 +76,19 @@ class profile extends Component {
       [event.target.name]: event.target.value,
     });
     //console.log(this.setState);
+  };
+  handleImageChange = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image',image,image.name);
+    console.log("form",formData);
+    
+    //this.props.uploadImage(formData);
+    //send rest
+  };
+  handleEditPicture = (event) => {
+    const fileInput = document.getElementById("imageInput");
+    fileInput.click();
   };
   render() {
     const { classes } = this.props;
@@ -103,12 +122,26 @@ class profile extends Component {
                     ML
                   </span>
                 </div>
-                <button
+                <div className="inputPicture">
+                <input
                   className="testButton"
-                  onClick={()=>{console.log("555")}}
-                >
-                  Change Avatar…
-                </button>
+                  onClick={() => {
+                    console.log("555");
+                  }}
+                  type="file"
+                  id="imageInput"
+                  onChange={this.handleImageChange}
+                  hidden="hidden"
+                />
+                <Tooltip title="Edit Profile Picture" placement="bottom">
+                  <IconButton
+                    onClick={this.handleEditPicture}
+                    className="button"
+                  >
+                    <EditIcon color="primary" />
+                  </IconButton>
+                </Tooltip>
+                </div>
               </div>
             </div>
             <Typography variant="h3" className={classes.pageTitle}>
