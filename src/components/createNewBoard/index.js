@@ -7,18 +7,18 @@ import backgroundSelectorData from './backgroundSelectData.js';
 import { setBackground, setName, createOff } from '../../redux/actions/createNewBoard';
 import { addBoard } from '../../redux/actions/personalBoardList';
 
-const BackgroundSelector = ({ background, createBackground, id, dispatch }) => {
+const BackgroundSelector = ({ picture, createBackground, id, dispatch }) => {
  
     /// if background in bg selector === background in bg preview -> isSelected is true.
-    const isSelected = background === createBackground; 
+    const isSelected = picture === createBackground; 
 
     const bgStyle = {
-        background: background,
+        background: picture,
         filter: isSelected ? 'brightness(85%)' : ''
     }; 
 
     return ( 
-        <div onClick={() => dispatch(setBackground(background))} className='bg-selector' style={bgStyle}>
+        <div onClick={() => dispatch(setBackground(picture))} className='bg-selector' style={bgStyle}>
 
         {
             isSelected &&
@@ -43,7 +43,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
     
     const setNewDataAndAddBoard = () => {  
         dataForCreating.name = currentName;
-        dataForCreating.background = createBackground; 
+        dataForCreating.picture = createBackground; 
         /// id, href gen with backend.
         
         dispatch(addBoard(dataForCreating));
@@ -95,7 +95,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
                         .map(bg => (
                             <BackgroundSelector 
                                 key={bg.id}
-                                background={bg.background} 
+                                picture={bg.picture} 
                                 createBackground={createBackground} 
                                 dispatch={dispatch} 
                                 id={bg.id}
@@ -124,7 +124,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
 
 const mapStateToProps = (state) => ({
     createStatus: state.createNewBoard.is_on,
-    createBackground: state.createNewBoard.background,
+    createBackground: state.createNewBoard.picture,
     currentName: state.createNewBoard.name,
     sampleBoardData: state.personalBoardList[0]
 })

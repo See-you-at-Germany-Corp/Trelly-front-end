@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';  
 
 import './style.css';
 
 import BoardList from './boardList.js'; 
 
-import { addBoard, delBoard, changeName, starBoard, unStarBoard } from '../../redux/actions/personalBoardList.js';
+import { addBoard, delBoard, changeName } from '../../redux/actions/personalBoardList.js';
+import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js'; 
 
 import homeMenuBarData from './homeMenuBarData.js';
 
@@ -27,21 +28,7 @@ const ReducersBoardListTest =({ sample, dispatch })=> {
         </>
     );
 }
-
-const personalToStarred = (personalBoardList) => {
-
-    let starredBoardList = personalBoardList.filter(board => board.starred === true);
-    starredBoardList.sort(function (a, b) {
-        /// sort lowest to highest.
-        return a.starred_id - b.starred_id;
-    });
-
-    return (
-        /// return starredBoardList with sort lowest to highest starred_id.
-        starredBoardList
-    );
-}
-
+  
 const HomeMenuBar = () => {
     const navLinkActiveStyle = {
         color: 'rgb(2, 106, 167)',
@@ -64,7 +51,7 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, dispatch})=> {    
+const Home = ({ personalBoardList, starredBoardList, dispatch})=> {    
   
     return (  
         <div className='homepage-main-container'> 
@@ -74,8 +61,13 @@ const Home = ({ personalBoardList, dispatch})=> {
 
             { 
                 /// starred board lists.
-                personalToStarred(personalBoardList).length > 0 &&
-                    <BoardList listName='Starred Boards' icon='star' boardListData={personalToStarred(personalBoardList)} dispatch={dispatch} />
+                starredBoardList.length > 0 &&
+                    <BoardList 
+                        listName='Starred Boards' 
+                        icon='star' 
+                        boardListData={starredBoardList} 
+                        dispatch={dispatch} 
+                    />
             }
 
             {
@@ -102,6 +94,7 @@ const Home = ({ personalBoardList, dispatch})=> {
 
 const mapStateToProps =(state)=> ({
     personalBoardList: state.personalBoardList,
+    starredBoardList: state.starredBoardList,
     createCurrent: state.createNewBoard.ref
 })
 
