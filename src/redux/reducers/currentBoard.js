@@ -30,7 +30,8 @@ const initState = {
             picture: ''
         }, 
     ],
-    lists: {
+    lists: [
+        {
             id: 1,
             name: "To do",
             order_number: 1,
@@ -56,17 +57,26 @@ const initState = {
                     ],
                     members: [
                         {
-                            id: 1,
-                            picture: null,
-                            full_name: ' '
+                            account_id: 1
+                        },
+                        {
+                            account_id: 2
                         }
                     ],
                     is_description: false,
                     is_watching: true,
                     checklist: null
                 }
-            ]
-        },
+            ],
+        }
+    ],
+    activities: [
+        {
+            account_id: 1,
+            action: 'create this board',
+            created: '2020-06-12T11:26:02.678534Z'
+        }
+    ]
 };
 
 export default (state = initState, action) => {
