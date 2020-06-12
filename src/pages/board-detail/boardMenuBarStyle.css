@@ -70,13 +70,13 @@
 
 .board-menu-bar .board-menu-left .board-avatar-box > div {
     display: flex;
-    max-width: 25px;
-    max-height: 25px;
+    max-width: 28px;
+    max-height: 28px;
     margin-left: 0px;
     margin-right: -3px;
     color: midnightblue;
     background-color: gainsboro;
-    border-color: gainsboro;
+    border-width: 0; 
     font-size: 12px;
     font-weight: 700;
 }

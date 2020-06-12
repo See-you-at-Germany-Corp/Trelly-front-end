@@ -161,19 +161,7 @@ const BoardSmallBox = styled(Link)`
     }
 
 `   
-
-const BoardStar = styled.div`
-    font-size: 12px; 
-    float: right;
-    color: white;
-    margin-top: 7px;
-    padding: 10px;
-    transform: translateX(13px);
-    transition: transform 0.2s, opacity 0.2s, filter 0.2s, font-size 0.1s;
-    opacity: 0;
-    filter: brightness(95%);
-`
-
+  
 const mapStateToProps = (state) => ({
     personalBoardList: state.personalBoardList,
     starredBoardList: state.starredBoardList

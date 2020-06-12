@@ -7,12 +7,26 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
 import './boardMenuBarStyle.css';
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
+import { memberOverWrite, /*changeCurrentBoard*/ } from '../../redux/actions/currentBoard.js';
 
 const BoardMenuBar = (props) => {
 
+    // const [isOverWrite, setIsOverWrite] = React.useState(false);
+    const [isReordered, setIsReordered] = React.useState(false);
+
     const starredBoardList = props.starredBoardList;
 
-    const boardData = props.boardData;
+    /// send api to get real board detail from backend.
+    /// overwrite data in currentBoard.
+    // if (isOverWrite === false) {
+    //     props.dispatch(changeCurrentBoard(/*data from backend.*/));
+    // }
+
+    let boardData = props.currentBoard; 
+    boardData = {
+        ...boardData,
+        privilege: 'Private'
+    };
 
     const boardIndex = starredBoardList.findIndex(data => data.id === boardData.id)
     const isStarredBoard = `${starredBoardList[boardIndex]}` !== 'undefined' && starredBoardList[boardIndex].starred_id > 0;
@@ -21,6 +35,14 @@ const BoardMenuBar = (props) => {
         opacity: '100',
         color: 'khaki'
     } : {};
+
+    /// wait to use redux.
+    let myId = 1;  /// mockup myId.
+    /// reorder members.
+    if (isReordered === false) {
+        props.dispatch(memberOverWrite(memberSortByInit(boardData.members, myId)));
+        setIsReordered(true);
+    } 
 
     return (
         <div className={`${boardData.name}-menu board-menu-bar`}>
@@ -65,8 +87,11 @@ const BoardMenuBar = (props) => {
 
                 {/* wait to use avatar data from profile. */}
                 <AvatarGroup className='board-avatar-box' max={5}>
-                    <Avatar>WS</Avatar>
-                    <Avatar>PB</Avatar> 
+                    {
+                        boardData.members.map((member, index) => 
+                            <Avatar key={index} src={member.picture}>{member.init}</Avatar> 
+                        )
+                    }
                 </AvatarGroup>
 
                 <div className='board-invite'>
@@ -83,7 +108,8 @@ const BoardMenuBar = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    starredBoardList: state.starredBoardList
+    starredBoardList: state.starredBoardList,
+    currentBoard: state.currentBoard
 })
 
 const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
@@ -124,3 +150,23 @@ const P_BUTTON = styled.p`
         background-color: rgba(255, 255, 255, 0.35);
     }
 `;
+
+/* --------------- function --------------- */
+
+const memberSortByInit = ( members, myId ) => {
+
+    const newMembers = [...members];
+    const myIndex = members.findIndex(member => member.id === myId);
+ 
+    const copyMyData = newMembers[myIndex];
+    /// remove my data from members array.
+    newMembers.splice(myIndex, 1);
+
+    let sortedMembers = newMembers.sort(function (a, b) {
+        /// sort lowest to highest. 
+        return a.init[0].charCodeAt() - b.init[0].charCodeAt();
+    }); 
+ 
+    /// return merge myData in first index with sorted members array.
+    return [copyMyData, ...sortedMembers]
+}
