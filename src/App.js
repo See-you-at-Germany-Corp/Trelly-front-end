@@ -12,7 +12,6 @@ import Forgot from './pages/user-account/forgot'
 
 import CreateNewBoard from './components/createNewBoard';
 import BoardDetail from './pages/board-detail';
-import moveObj from './function/moveObject'
 
 function App() {
   return (
@@ -28,13 +27,9 @@ function App() {
 
         <Route path='/forgot/' component={Forgot} />
 
-        <Route exact path='/:boardId/:boardName'>
-          <BoardDetail />
-        </Route>
+        <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
-        <Route exact path='/'>
-          <Home />
-        </Route>
+        <Route exact path='/' component={Home} />
 
       </Switch>
 
