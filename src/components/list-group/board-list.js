@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 
 // import Draggable from 'react-draggable'
@@ -10,8 +10,22 @@ export default function List(props) {
     const { boardState, boardDispatch } = useContext(BoardContext)
 
     const list = boardState.list[props.listId]
+    const [name, rename] = useState(list.title)
+    const [nameSwitch, setNameSwitch] = useState(true)
 
-    // console.log('board list', props.listId);
+    const handleChangeName = e => {
+        rename(e.target.value)
+        boardDispatch({
+            type: 'CHANGE_LIST_NAME',
+            id: e.target.id,
+            name: e.target.value,
+        })
+    }
+
+    const toggleInput = () => {
+        setNameSwitch(!nameSwitch)
+        console.log(nameSwitch);
+    }
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>
@@ -20,9 +34,8 @@ export default function List(props) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                 >
-                    <TextName {...provided.dragHandleProps}>
-                        {/* <input value={list.id}/> */}
-                        {props.listId}
+                    <TextName {...provided.dragHandleProps} onClick={toggleInput}>
+                        <input id={`${list.id}`} value={name} onChange={handleChangeName}/>
                     </TextName>
 
                     <Droppable droppableId={props.listId} type='card'>
@@ -59,6 +72,21 @@ const TextName = styled.div`
     width: 200px;
     height: 30px;
     font-size: 20px;
+
+    input {
+        width: 100%;
+        height: 100%;
+        font-size: inherit;
+
+        border: 0;
+        background-color: red;
+
+        :focus {
+            outline-color: #2F3F8F;
+            /* border-color: rgb(150,220,255); */
+            background-color: white;
+        }
+    }
 `
 
 const CardList = styled.div`

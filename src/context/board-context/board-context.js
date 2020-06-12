@@ -17,10 +17,11 @@ const boardReducer = (state, action) => {
             insertItem(state.list[dest.droppableId].cardIds, dest.index, action.item)
             return state
         case 'MOVE_LIST':
-            console.log('movelist');
-            
             const newListOrder = moveItem(state.listOrder, action.sourceIndex, action.destIndex)
             state.listOrder = newListOrder
+            return state
+        case 'CHANGE_LIST_NAME':
+            state.list[action.id].title = action.name            
             return state
         default:
             return state
