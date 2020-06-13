@@ -11,19 +11,14 @@ import { BoardProvider } from '../../context/board-context/board-context'
 const BoardDetail = (props) => {
 
     const { boardId } = useParams();
-    /// send api to get real board detail from backend.
-
-    /// mockup board detail.
-    let boardData = props.personalBoardList[boardId];
-    boardData = {
-        ...boardData,
-        privilege: 'Private'
-    };
-
+     
+    /// mockup board detail. 
+    let boardData = props.currentBoard; 
+ 
     return (
         <div className={`${boardData.name}-board board-detail`} style={{ background: boardData.picture }}>
-            <BoardMenuBar boardData={boardData} {...props} />
-
+            <BoardMenuBar boardId={boardId} {...props} />
+            
             {/* Board list */}
             <BoardProvider>
                 <ListGroup />
@@ -34,7 +29,8 @@ const BoardDetail = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    personalBoardList: state.personalBoardList
+    personalBoardList: state.personalBoardList,
+    currentBoard: state.currentBoard
 })
 
 const BoardDetailWithConnect = connect(mapStateToProps)(BoardDetail);
