@@ -4,10 +4,12 @@ import loggedIn from './login'
 import createNewBoard from './createNewBoard.js';
 import personalBoardList from './personalBoardList.js'; 
 import starredBoardList from './starredBoardList.js';
+import currentBoard from './currentBoard.js';
 
 export default combineReducers ({
     loggedIn,
     createNewBoard,
     personalBoardList, 
     starredBoardList,
+    currentBoard,
 });
