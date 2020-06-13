@@ -126,7 +126,7 @@ const StyledList = styled.div`
 
 const HeaderField = styled.div`
     width: 100%;
-    height: 40px;
+    min-height: 40px;
     font-size: 20px;
     position: relative;
 
