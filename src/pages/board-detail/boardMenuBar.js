@@ -37,7 +37,7 @@ const BoardMenuBar = (props) => {
     } : {};
 
     /// wait to use redux.
-    let myId = 1;  /// mockup myId.
+    let myId = 2;  /// mockup myId.
     /// reorder members.
     if (isReordered === false) {
         props.dispatch(memberOverWrite(memberSortByInit(boardData.members, myId)));
