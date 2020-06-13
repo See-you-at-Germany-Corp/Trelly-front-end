@@ -1,28 +1,34 @@
 import React, { useReducer, createContext } from 'react'
 import { mockupData } from './mockup-board'
-import { moveItem, insertItem, deleteItem } from '../../function/moveCard'
+import { moveItem, insertItem, deleteItem, findItem } from '../../function/moveCard'
 
 const BoardContext = createContext({})
 
 const boardReducer = (state, action) => {
     switch (action.type) {
-        case 'MOVE_CARDS_IN_LIST':
-            const newCardIds = moveItem(state.list[action.listId].cardIds, action.sourceIndex, action.destIndex)
-            state.list[action.listId].cardIds = newCardIds
+        case 'MOVE_CARDS_IN_LIST': {
+            const listIndex = findItem(state.lists, action.listId, 'list-')
+            const newCardIds = moveItem(state.lists[listIndex].cards, action.sourceIndex, action.destIndex)
+            state.lists[listIndex].cards = newCardIds
             return state
-        case 'MOVE_CARDS_OVER_LIST':
-            let source = action.source
-            let dest = action.dest
-            deleteItem(state.list[source.droppableId].cardIds, source.index)
-            insertItem(state.list[dest.droppableId].cardIds, dest.index, action.item)
+        }
+        case 'MOVE_CARDS_OVER_LIST': {
+            const destIndex = findItem(state.lists, action.dest.droppableId, 'list-')
+            const sourceIndex = findItem(state.lists, action.source.droppableId, 'list-')
+            const cardIndex = findItem(state.lists[sourceIndex].cards, action.item, 'card-')
+            insertItem(state.lists[destIndex].cards, action.dest.index, state.lists[sourceIndex].cards[cardIndex])
+            deleteItem(state.lists[sourceIndex].cards, action.source.index)
             return state
-        case 'MOVE_LIST':
-            const newListOrder = moveItem(state.listOrder, action.sourceIndex, action.destIndex)
-            state.listOrder = newListOrder
+        }
+        case 'MOVE_LIST': {
+            const newListOrder = moveItem(state.lists, action.sourceIndex, action.destIndex)
+            state.lists = newListOrder
             return state
-        case 'CHANGE_LIST_NAME':
-            state.list[action.id].title = action.name            
+        }
+        case 'CHANGE_LIST_NAME': {
+            state.lists[action.index].name = action.name
             return state
+        }
         default:
             return state
     }

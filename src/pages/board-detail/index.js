@@ -20,10 +20,10 @@ const BoardDetail = (props) => {
         privilege: 'Private'
     };
 
-    return 
+    return (
         <div className={`${boardData.name}-board board-detail`} style={{ background: boardData.picture }}>
             <BoardMenuBar boardData={boardData} {...props} />
-            
+
             {/* Board list */}
             <BoardProvider>
                 <ListGroup />

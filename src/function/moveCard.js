@@ -26,6 +26,11 @@
     },
 ]
 moveObj(testList, 1, -1)*/
+function findItem(obj, id, type) {
+    return obj.findIndex(element => (
+        element.id === parseInt(id.split(type)[1])
+    ));
+}
 
 function moveItem(obj, source, dest) {
     if (source < dest) {
@@ -46,4 +51,4 @@ function deleteItem(obj, index) {
     return obj.splice(index, 1)
 }
 
-export { moveItem, insertItem, deleteItem }
+export { moveItem, insertItem, deleteItem, findItem }
