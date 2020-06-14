@@ -7,19 +7,19 @@ import { Draggable } from 'react-beautiful-dnd'
 import { BoardContext } from '../../context/board-context/board-context'
 
 export default function Card(props) {
-    const { boardState, boardDispatch } = useContext(BoardContext)
+    const { boardState } = useContext(BoardContext)
 
-    const card = boardState.card[props.cardId]
+    const card = boardState.lists[props.listIndex].cards[props.index]
 
     return (
-        <Draggable draggableId={props.cardId} index={props.cardIndex}>
+        <Draggable draggableId={props.cardId} index={props.index}>
             {provided => (
                 <StyledCard
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                 >
-                    {card.title}
+                    {card.name}
                 </StyledCard>
             )}
         </Draggable>

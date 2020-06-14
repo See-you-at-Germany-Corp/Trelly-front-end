@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import './boardMenuBarStyle.css';
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
 import { memberOverWrite, /*changeCurrentBoard*/ } from '../../redux/actions/currentBoard.js';
+import { BoardContext } from '../../context/board-context/board-context';
 
 const BoardMenuBar = (props) => {
 
@@ -22,13 +23,9 @@ const BoardMenuBar = (props) => {
     //     props.dispatch(changeCurrentBoard(/*data from backend.*/));
     // }
 
-    let boardData = props.currentBoard; 
-    boardData = {
-        ...boardData,
-        privilege: 'Private'
-    };
+    const { boardState } = useContext(BoardContext)
 
-    const boardIndex = starredBoardList.findIndex(data => data.id === boardData.id)
+    const boardIndex = starredBoardList.findIndex(data => data.id === boardState.id)
     const isStarredBoard = `${starredBoardList[boardIndex]}` !== 'undefined' && starredBoardList[boardIndex].starred_id > 0;
 
     const starredStyle = isStarredBoard === true ? {
@@ -40,16 +37,16 @@ const BoardMenuBar = (props) => {
     let myId = 2;  /// mockup myId.
     /// reorder members.
     if (isReordered === false) {
-        props.dispatch(memberOverWrite(memberSortByInit(boardData.members, myId)));
+        props.dispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));
         setIsReordered(true);
     } 
 
     return (
-        <div className={`${boardData.name}-menu board-menu-bar`}>
+        <div className={`${boardState.name}-menu board-menu-bar`}>
 
             <div className='board-menu-left'>
                 <div className='board-name-box'>
-                    <p>{boardData.name}</p> 
+                    <p>{boardState.name}</p> 
                 </div>
 
                 <div className='board-star'>
@@ -57,10 +54,10 @@ const BoardMenuBar = (props) => {
                         {
                             isStarredBoard === true ?
                             /// click to unstar board.
-                            <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardData.id))} style={starredStyle}></i>
+                            <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardState.id))} style={starredStyle}></i>
                             :
                             /// click to star board.
-                            <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardData.id, boardData))} style={starredStyle}></i>
+                            <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardState.id, boardState))} style={starredStyle}></i>
                         }
                     </Link>
                 </div>
@@ -75,11 +72,7 @@ const BoardMenuBar = (props) => {
 
                 <div className='board-privilege'>
                     <P_BUTTON>
-                        <i
-                            className={`fas fa-${privilegeIcon[`${boardData.privilege}`]}`}
-                            style={{ color: 'white', marginRight: '10px', fontSize: '12px' }}>
-                        </i>
-                        {boardData.privilege}
+                        Private
                     </P_BUTTON>
                 </div>
 
@@ -88,7 +81,7 @@ const BoardMenuBar = (props) => {
                 {/* wait to use avatar data from profile. */}
                 <AvatarGroup className='board-avatar-box' max={5}>
                     {
-                        boardData.members.map((member, index) => 
+                        boardState.members.map((member, index) => 
                             <Avatar key={index} src={member.picture}>{member.init}</Avatar> 
                         )
                     }
@@ -115,13 +108,6 @@ const mapStateToProps = (state) => ({
 const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
 
 export default BoardMenuBarWithConnect;
-
-/* --------------- const --------------- */
-
-const privilegeIcon = {
-    Private: 'lock',
-    Public: 'globe-asia'
-}
 
 /* --------------- JSX --------------- */
 

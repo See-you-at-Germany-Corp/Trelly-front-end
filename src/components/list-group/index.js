@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components';
 
 import List from './board-list'
@@ -7,7 +7,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 export default function ListGroup(props) {
     const { boardState, boardDispatch } = useContext(BoardContext)
-    const [state, setstate] = useState('blue')
 
     const onDragEnd = result => {
         if (!result.destination) return
@@ -16,10 +15,9 @@ export default function ListGroup(props) {
             if (result.destination.droppableId === result.source.droppableId) {
                 boardDispatch({
                     type: 'MOVE_CARDS_IN_LIST',
-                    obj: boardState.list[result.source.droppableId].cardIds,
                     sourceIndex: result.source.index,
                     destIndex: result.destination.index,
-                    listId: result.source.droppableId
+                    listId: result.destination.droppableId
                 })
                 return
             }
@@ -54,13 +52,15 @@ export default function ListGroup(props) {
                             {...provided.droppableProps}
                         >
                             {
-                                boardState.listOrder.map((listId, index) => (
-                                    <List
-                                        key={`${listId}`}
-                                        listId={listId}
-                                        index={index}
-                                    />
-                                ))
+                                boardState.lists.map((list, index) => {
+                                    return (
+                                        <List
+                                            index={index}
+                                            key={`list-${list.id}`}
+                                            listId={`list-${list.id}`}
+                                        />
+                                    )
+                                })
                             }
                             {provided.placeholder}
                         </StyledListContainer>
