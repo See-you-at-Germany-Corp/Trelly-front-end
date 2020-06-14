@@ -15,10 +15,10 @@ const BarProfile = () => {
       <div className="tabbed-pane-header">
         <div className="tabbed-pane-header-wrapper u-clearfix js-header-wrapper">
           <div className="js-react-root">
-            <div className="BFvHU0I3_SHVGs">
-              <div className="_2VjAiapxpR45EU">
+            <div className="contain-picture-header">
+              <div className="contain-content-header">
                 <div
-                  className="_1FekJJAz6Hu32v"
+                  className="contain-title-header"
                   title="Mark Latthapol (marklatthapol)"
                 >
                   <span
@@ -34,9 +34,9 @@ const BarProfile = () => {
                   </span>
                 </div>
               </div>
-              <div className="_2MiqoEbHZgSlXq">
-                <span className="_32mB-ZO8fxjtUy">Mark Latthapol</span>
-                <span className="YGN7y_VVuqFYYB">@marklatthapol</span>
+              <div className="content-header">
+                <span className="content-name">Mark Latthapol</span>
+                <span className="content-nickname">@marklatthapol</span>
               </div>
             </div>
           </div>

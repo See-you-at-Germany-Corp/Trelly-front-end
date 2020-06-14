@@ -50,24 +50,24 @@ a {
   padding: 32px;
   position: relative;
 }
-.BFvHU0I3_SHVGs {
+.contain-picture-header {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px 0;
 }
-._2VjAiapxpR45EU {
+.contain-content-header {
   position: relative;
   margin-right: 16px;
 }
-._2MiqoEbHZgSlXq ._32mB-ZO8fxjtUy {
+.content-header .content-name {
   font-size: 24px;
   font-weight: 500;
   line-height: 28px;
   color: #0c3953;
   margin-right: 10px;
 }
-._2MiqoEbHZgSlXq .YGN7y_VVuqFYYB {
+.content-header .content-nickname {
   font-size: 12px;
   line-height: 20px;
   color: #5e6c84;
@@ -98,7 +98,7 @@ a {
 .tabbed-pane-header {
   background-color: #f4f5f7;
 }
-._8STAxwEhTLw06E .rsiNque2CCqtPE ._2e97X7K2YRLv4Q {
+.contain-avatar .contain-picture-avatar ._2e97X7K2YRLv4Q {
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 50%, transparent 0);
   border-radius: 0;
   border: none;
@@ -135,18 +135,18 @@ button {
   overflow: hidden;
   white-space: nowrap;
 }
-._1FekJJAz6Hu32v {
+.name-picture {
   position: relative;
   line-height: 10px;
   overflow: hidden;
   white-space: nowrap;
 }
- ._8STAxwEhTLw06E .rsiNque2CCqtPE {
+ .contain-avatar .rsiNque2CCqtPE {
   cursor: pointer;
   overflow: hidden;
   position: relative;
 }
-._8STAxwEhTLw06E {
+.contain-avatar {
   align-items: center;
   display: flex;
   flex-direction: column;

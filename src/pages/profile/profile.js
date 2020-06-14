@@ -94,7 +94,7 @@ class profile extends Component {
     const { classes } = this.props;
     console.log("Hello props");
 
-    console.log(this.props);
+    // console.log(this.props);
     console.log(this.props.UserReducer.fullName);
 
     return (
@@ -103,11 +103,11 @@ class profile extends Component {
         <ProfileContainer container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
-            <div className="_8STAxwEhTLw06E" data-test-id="profile-avatar">
-              <h3 className="_1q9WuasQoqE_tI">Avatar</h3>
-              <div className="rsiNque2CCqtPE">
+            <div className="contain-avatar" data-test-id="profile-avatar">
+              <h3 className="text-avatar">Avatar</h3>
+              <div className="contain-picture-avatar">
                 <div
-                  className="MrFeHFqEkuBP9W _1FekJJAz6Hu32v"
+                  className="MrFeHFqEkuBP9W name-picture"
                   title="Mark Latthapol (marklatthapol)"
                 >
                   <span
