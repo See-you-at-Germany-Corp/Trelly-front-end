@@ -40,7 +40,7 @@ const SortableItem = SortableElement((props) => {
             {
                 props.boardListData.length - 2 === index && props.listName === 'Personal Boards' &&
                 <BoardContainer className='board-list-item-box' key={`${keyId}-${index}`}>
-                    <BoardSmallBox onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
+                    <BoardSmallBox to='#' onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
                         <p style={{ marginTop: '38px', color: 'slategray', marginLeft: '9px', fontSize: '14px' }}>Create new board</p>
                     </BoardSmallBox>
                 </BoardContainer>
@@ -121,6 +121,8 @@ const BoardList = (props) => {
     );
 }
 
+/* ------------------------- Styled --------------------------- */
+
 const BoardContainer = styled.div` 
     width: 21%;
     display: flex;
@@ -161,6 +163,8 @@ const BoardSmallBox = styled(Link)`
     }
 
 `   
+
+/* ------------------------- Redux --------------------------- */
   
 const mapStateToProps = (state) => ({
     personalBoardList: state.personalBoardList,

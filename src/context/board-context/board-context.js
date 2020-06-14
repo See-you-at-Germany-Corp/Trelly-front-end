@@ -29,6 +29,20 @@ const boardReducer = (state, action) => {
             state.lists[action.index].name = action.name
             return state
         }
+
+        /*--------------------BOAT--------------------*/
+
+        case ('BOARD_RENAME'): 
+            state.name = action.name 
+            return state;
+
+        case ('MEMBER_OVERWRITE'): 
+            state.members = action.members 
+            return state;
+
+        case ('CHANGE_CURRENT_BOARD'):
+            return action.newState;
+
         default:
             return state
     }

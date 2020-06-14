@@ -6,24 +6,19 @@ import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
 import './boardMenuBarStyle.css';
-import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
-import { memberOverWrite, /*changeCurrentBoard*/ } from '../../redux/actions/currentBoard.js';
+import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/starredBoardList.js';
+import { changeName } from '../../redux/actions/personalBoardList';
+import { memberOverWrite, renameBoard } from '../../redux/actions/currentBoard.js';
 import { BoardContext } from '../../context/board-context/board-context';
 
 const BoardMenuBar = (props) => {
-
-    // const [isOverWrite, setIsOverWrite] = React.useState(false);
-    const [isReordered, setIsReordered] = React.useState(false);
-
+  
     const starredBoardList = props.starredBoardList;
 
     /// send api to get real board detail from backend.
-    /// overwrite data in currentBoard.
-    // if (isOverWrite === false) {
-    //     props.dispatch(changeCurrentBoard(/*data from backend.*/));
-    // }
+    /// overwrite data in currentBoard. 
 
-    const { boardState } = useContext(BoardContext)
+    const { boardState, boardDispatch } = useContext(BoardContext)
 
     const boardIndex = starredBoardList.findIndex(data => data.id === boardState.id)
     const isStarredBoard = `${starredBoardList[boardIndex]}` !== 'undefined' && starredBoardList[boardIndex].starred_id > 0;
@@ -33,20 +28,87 @@ const BoardMenuBar = (props) => {
         color: 'khaki'
     } : {};
 
-    /// wait to use redux.
-    let myId = 2;  /// mockup myId.
-    /// reorder members.
-    if (isReordered === false) {
-        props.dispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));
-        setIsReordered(true);
-    } 
+    const [focus, setFocus] = React.useState(false);
+    const [nameDisplay, setNameDisp] = React.useState(boardState.name);
+    const [nameLength, setNameLength] = React.useState(0); 
+    const nameDiv = React.useRef();
+    const nameInput = React.useRef();
+    
+    const changeAllName = (name) => {
+        if (name.length !== 0) {
+            /// set current board name.
+            boardDispatch(renameBoard(name));
+            /// set personal board name.
+            props.dispatch(changeName(boardState.id, name));
+            /// set starred board name.
+            props.dispatch(changeStarName(boardState.id, name)); 
+        }
+        else {
+            setNameDisp(boardState.name);
+        }
+    }
+
+    const onInputChange = (e) => {
+        setNameDisp(e.target.value); 
+    }
+
+    const onBlurHandler = (e) => {
+        if (focus === true) {
+            changeAllName(e.target.value);
+            setFocus(false);
+        }
+        
+    }
+
+    const renameHandler = (e) => { 
+        if (e.key === 'Enter') { 
+            changeAllName(e.target.value)
+            setFocus(false); 
+        }
+    }
+
+    const onDown = () => {
+        setFocus(true);  
+        const input = nameInput.current; 
+        input.setSelectionRange(0, input.value.length)
+    }
+  
+    // eslint-disable-next-line
+    React.useEffect(() => { 
+        setNameLength(nameDiv.current.offsetWidth);   
+        nameInput.current.focus();
+    });
+  
+    React.useEffect(() => {
+        /// wait to use redux.
+        let myId = 1;  /// mockup myId. 
+        /// reorder members. 
+        boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));  
+        // eslint-disable-next-line
+    }, []);
 
     return (
-        <div className={`${boardState.name}-menu board-menu-bar`}>
+        <div className='board-menu-bar'>
 
             <div className='board-menu-left'>
                 <div className='board-name-box'>
-                    <p>{boardState.name}</p> 
+                    <p 
+                        ref={nameDiv} 
+                        style={focus === false ? {opacity: '100'} : {opacity: '0'}}
+                        onMouseDown={() => onDown()}
+                    >
+                        {nameDisplay}
+                    </p>
+                    <NameEditInput 
+                        focus={focus} 
+                        onMouseDown={() => setFocus(true)}
+                        onKeyDown={(e) => renameHandler(e)}
+                        onChange={(e) => onInputChange(e)}
+                        onBlur={(e) => onBlurHandler(e)}
+                        length={nameLength}
+                        value={nameDisplay} 
+                        ref={nameInput}
+                    />
                 </div>
 
                 <div className='board-star'>
@@ -101,8 +163,7 @@ const BoardMenuBar = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    starredBoardList: state.starredBoardList,
-    currentBoard: state.currentBoard
+    starredBoardList: state.starredBoardList, 
 })
 
 const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
@@ -120,21 +181,53 @@ const SepLine = () => {
 /* --------------- styled --------------- */
 
 const P_BUTTON = styled.p`
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.3);
     color: white;
+
     border-radius: 3px;
-    padding: 7px 12px 7px 12px; 
-    margin: 8px 0px 0px 0px; 
+
+    padding: 5px 12px 7px 12px; 
+    margin: 0px 0px 8px 0px; 
+    
     font-size: 14px;
 
     &:hover {
         cursor: pointer;
-        background-color: rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.4);
     }
 
     &:active {
-        background-color: rgba(255, 255, 255, 0.35);
+        background-color: rgba(255, 255, 255, 0.5);
     }
+`;
+
+const NameEditInput = styled.input.attrs(props => ({ 
+    type: "text", 
+    spellCheck: false,
+    value: props.value
+}))`
+    display: ${props => props.focus === false ? 'none' : 'block'};;
+    margin-top: ${props => props.length !== 33 ? '-38.5px' : '-26px'};
+    margin-left: 0px; 
+    padding: 4.5px 10px 2px 10px;  
+
+    position: absolute; 
+    z-index: 2;
+
+    max-width: 97%; 
+    width: ${props => props.length !== 33 ? `${props.length - 24}px` : '10px'}; 
+
+    font-size: 18px; 
+    font-weight: 700;  
+    color: 'rgb(2, 106, 167)';
+
+    border-radius: 3px; 
+
+    &:focus {
+        outline: none;
+        border: 2px solid dodgerblue;
+    }  
+ 
 `;
 
 /* --------------- function --------------- */

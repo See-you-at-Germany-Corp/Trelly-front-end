@@ -80,6 +80,18 @@ export default (state = initState, action) => {
 
             return newState3;
 
+        case 'CHANGE_STAR_NAME':
+            const newState4 = [...state];
+            const changeIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (changeIndex >= 0) {
+                newState4[changeIndex].name = action.name;
+
+                /// post to backend.
+            }
+
+            return newState4;
+
         case 'OVERWRITE_STAR_BOARD':
             return action.newState;
 
