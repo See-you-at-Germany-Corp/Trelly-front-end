@@ -40,6 +40,20 @@ const boardReducer = (state, action) => {
             state.members = action.members 
             return state;
 
+        case ('ADD_MEMBER'):
+            state.members.push(action.member);
+            return state;
+
+        case ('REMOVE_MEMBER'):
+            const newState = {...state};
+            const rmvIndex = state.members.findIndex(member => member.id === action.id);
+
+            if (rmvIndex >= 0) {
+                newState.members.splice(rmvIndex, 1);
+            }
+
+            return newState;
+
         case ('CHANGE_CURRENT_BOARD'):
             return action.newState;
 

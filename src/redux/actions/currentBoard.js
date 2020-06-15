@@ -8,6 +8,16 @@ export const memberOverWrite = (members) => ({
     members
 })
 
+export const addMember = (member) => ({
+    type: 'ADD_MEMBER',
+    member
+})
+
+export const removeMember = (id) => ({
+    type: 'REMOVE_MEMBER',
+    id
+})
+
 export const changeCurrentBoard = (newState) => ({
     type: 'CHANGE_CURRENT_BOARD',
     newState
