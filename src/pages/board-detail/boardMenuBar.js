@@ -10,16 +10,16 @@ import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/star
 import { changeName } from '../../redux/actions/personalBoardList';
 import { memberOverWrite, renameBoard } from '../../redux/actions/currentBoard.js';
 import { BoardContext } from '../../context/board-context/board-context';
-
+ 
 const BoardMenuBar = (props) => {
-  
+
     const starredBoardList = props.starredBoardList;
 
     /// send api to get real board detail from backend.
     /// overwrite data in currentBoard. 
 
     const { boardState, boardDispatch } = useContext(BoardContext)
-
+ 
     const boardIndex = starredBoardList.findIndex(data => data.id === boardState.id)
     const isStarredBoard = `${starredBoardList[boardIndex]}` !== 'undefined' && starredBoardList[boardIndex].starred_id > 0;
 
@@ -28,12 +28,27 @@ const BoardMenuBar = (props) => {
         color: 'khaki'
     } : {};
 
+    /* ------------------ avatar -------------------- */
+
+    const [avatarState, setAvatar] = React.useState({ avatar: '', id: '', focus: false }); 
+    const avatarRef = React.useRef();
+    const avatarBoxRef = React.useRef();
+  
+    const avatarMouseDown = (e, id) => {
+        if (avatarState.avatar === e.target && avatarState.focus === true)
+            setAvatar({ ...avatarState, focus: false });
+        else 
+            setAvatar({ avatar: e.target, id: id, focus: true }); 
+    }
+
+    /* ------------------ board name -------------------- */
+ 
     const [focus, setFocus] = React.useState(false);
     const [nameDisplay, setNameDisp] = React.useState(boardState.name);
-    const [nameLength, setNameLength] = React.useState(0); 
+    const [nameLength, setNameLength] = React.useState(0);
     const nameDiv = React.useRef();
     const nameInput = React.useRef();
-    
+
     const changeAllName = (name) => {
         if (name.length !== 0) {
             /// set current board name.
@@ -41,7 +56,7 @@ const BoardMenuBar = (props) => {
             /// set personal board name.
             props.dispatch(changeName(boardState.id, name));
             /// set starred board name.
-            props.dispatch(changeStarName(boardState.id, name)); 
+            props.dispatch(changeStarName(boardState.id, name));
         }
         else {
             setNameDisp(boardState.name);
@@ -49,7 +64,7 @@ const BoardMenuBar = (props) => {
     }
 
     const onInputChange = (e) => {
-        setNameDisp(e.target.value); 
+        setNameDisp(e.target.value);
     }
 
     const onBlurHandler = (e) => {
@@ -57,33 +72,45 @@ const BoardMenuBar = (props) => {
             changeAllName(e.target.value);
             setFocus(false);
         }
-        
+
     }
 
-    const renameHandler = (e) => { 
-        if (e.key === 'Enter') { 
+    const renameHandler = (e) => {
+        if (e.key === 'Enter') {
             changeAllName(e.target.value)
-            setFocus(false); 
+            setFocus(false);
         }
     }
 
     const onDown = () => {
-        setFocus(true);  
-        const input = nameInput.current; 
+        setFocus(true);
+        const input = nameInput.current;
         input.setSelectionRange(0, input.value.length)
     }
-  
+
+    /* ------------------ working every render -------------------- */
+
     // eslint-disable-next-line
-    React.useEffect(() => { 
-        setNameLength(nameDiv.current.offsetWidth);   
+    React.useEffect(() => {
+        setNameLength(nameDiv.current.offsetWidth);
         nameInput.current.focus();
+
+        window.onmousedown = function (e) {
+            if (avatarState.focus === true) {
+                if (e.target !== avatarRef.current && avatarBoxRef.current.contains(e.target) === false) {
+                    setAvatar({ ...avatarState, focus: false });
+                }
+            }
+        } 
     });
-  
+
+    /* ------------------ working once -------------------- */
+
     React.useEffect(() => {
         /// wait to use redux.
         let myId = 1;  /// mockup myId. 
         /// reorder members. 
-        boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));  
+        boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId))); 
         // eslint-disable-next-line
     }, []);
 
@@ -92,21 +119,21 @@ const BoardMenuBar = (props) => {
 
             <div className='board-menu-left'>
                 <div className='board-name-box'>
-                    <p 
-                        ref={nameDiv} 
-                        style={focus === false ? {opacity: '100'} : {opacity: '0'}}
+                    <p
+                        ref={nameDiv}
+                        style={focus === false ? { opacity: '100' } : { opacity: '0' }}
                         onMouseDown={() => onDown()}
                     >
                         {nameDisplay}
                     </p>
-                    <NameEditInput 
-                        focus={focus} 
+                    <NameEditInput
+                        focus={focus}
                         onMouseDown={() => setFocus(true)}
                         onKeyDown={(e) => renameHandler(e)}
                         onChange={(e) => onInputChange(e)}
                         onBlur={(e) => onBlurHandler(e)}
                         length={nameLength}
-                        value={nameDisplay} 
+                        value={nameDisplay}
                         ref={nameInput}
                     />
                 </div>
@@ -115,11 +142,11 @@ const BoardMenuBar = (props) => {
                     <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
                         {
                             isStarredBoard === true ?
-                            /// click to unstar board.
-                            <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardState.id))} style={starredStyle}></i>
-                            :
-                            /// click to star board.
-                            <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardState.id, boardState))} style={starredStyle}></i>
+                                /// click to unstar board.
+                                <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardState.id))} style={starredStyle}></i>
+                                :
+                                /// click to star board.
+                                <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardState.id, boardState))} style={starredStyle}></i>
                         }
                     </Link>
                 </div>
@@ -141,12 +168,31 @@ const BoardMenuBar = (props) => {
                 <SepLine />
 
                 {/* wait to use avatar data from profile. */}
-                <AvatarGroup className='board-avatar-box' max={5}>
+                <AvatarGroup className='board-avatar-box' max={5} ref={avatarBoxRef}>
+                         
                     {
                         boardState.members.map((member, index) => 
-                            <Avatar key={index} src={member.picture}>{member.init}</Avatar> 
+                            <Avatar
+                                className='avatar'
+                                key={index}
+                                src={member.picture} 
+                                id={member.id}
+                                onMouseDown={(e) => avatarMouseDown(e, member.id)} 
+                            >
+                                {member.init}
+                            </Avatar> 
                         )
-                    }
+                    } 
+                    <AvatarDetailBox 
+                        id='avatar-box' 
+                        left={avatarState.avatar.offsetLeft === 0 ? avatarState.avatar.offsetParent.offsetLeft : avatarState.avatar.offsetLeft
+                        } 
+                        focus={avatarState.focus}
+                        ref={avatarRef}
+                    >
+
+                    </AvatarDetailBox>
+
                 </AvatarGroup>
 
                 <div className='board-invite'>
@@ -163,7 +209,7 @@ const BoardMenuBar = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    starredBoardList: state.starredBoardList, 
+    starredBoardList: state.starredBoardList,
 })
 
 const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
@@ -201,8 +247,8 @@ const P_BUTTON = styled.p`
     }
 `;
 
-const NameEditInput = styled.input.attrs(props => ({ 
-    type: "text", 
+const NameEditInput = styled.input.attrs(props => ({
+    type: "text",
     spellCheck: false,
     value: props.value
 }))`
@@ -230,13 +276,27 @@ const NameEditInput = styled.input.attrs(props => ({
  
 `;
 
+const AvatarDetailBox = styled.div`
+    width: 280px;
+    min-height: 170px;
+    background-color: snow;
+    border-radius: 4px;
+    opacity: ${props => props.focus === true ? '100' : '0'};
+    visibility: ${props => props.focus === true ? 'visible' : 'hidden'};
+
+    position: absolute;
+    margin-top: 34px; 
+    left: ${props => props.left !== 0 && `${props.left + 10}px`};
+    z-index: 2;
+`;
+
 /* --------------- function --------------- */
 
-const memberSortByInit = ( members, myId ) => {
+const memberSortByInit = (members, myId) => {
 
     const newMembers = [...members];
     const myIndex = members.findIndex(member => member.id === myId);
- 
+
     const copyMyData = newMembers[myIndex];
     /// remove my data from members array.
     newMembers.splice(myIndex, 1);
@@ -244,8 +304,8 @@ const memberSortByInit = ( members, myId ) => {
     let sortedMembers = newMembers.sort(function (a, b) {
         /// sort lowest to highest. 
         return a.init[0].charCodeAt() - b.init[0].charCodeAt();
-    }); 
- 
+    });
+
     /// return merge myData in first index with sorted members array.
     return [copyMyData, ...sortedMembers]
 }

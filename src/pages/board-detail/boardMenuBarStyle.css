@@ -83,7 +83,7 @@
     margin: 0px 11px 8px 4px; 
 }
 
-.board-menu-bar .board-menu-left .board-avatar-box > div {
+.board-menu-bar .board-menu-left .board-avatar-box .avatar {
     display: flex;
     max-width: 28px;
     max-height: 28px;
@@ -96,12 +96,12 @@
     font-weight: 700;
 }
 
-.board-menu-bar .board-menu-left .board-avatar-box > div:hover {
+.board-menu-bar .board-menu-left .board-avatar-box .avatar:hover {
     filter: brightness(88%);
     cursor: pointer;
 }
 
-.board-menu-bar .board-menu-left .board-avatar-box > div:active {
+.board-menu-bar .board-menu-left .board-avatar-box .avatar:active {
     filter: brightness(84%); 
 }
   

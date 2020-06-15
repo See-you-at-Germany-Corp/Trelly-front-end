@@ -60,18 +60,14 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
         
     /// create ref of createNewBoard parent.
     const createNewBoardRef = React.useRef();
-
-    /// setTimeout to deley for wait opening createNewBoard component.
-    /// if don't setTimeout, createNewBoard will open then close suddenly.
-    setTimeout(() => {
-        /// if click out of createNewBoard area -> close createNewBoard popup, reset name.
-        window.onclick = function (event) {
-            if (event.target === createNewBoardRef.current && createStatus === true) {
-                dispatch(createOff());
-                dispatch(setName(''));
-            }
+ 
+    /// if click out of createNewBoard area -> close createNewBoard popup, reset name.
+    window.onmousedown = function (event) {
+        if (event.target === createNewBoardRef.current && createStatus === true) {
+            dispatch(createOff());
+            dispatch(setName(''));
         }
-    }, 100);
+    } 
 
     return (
         <div className='create-new-board-container' ref={createNewBoardRef} style={createOnStyle}>
