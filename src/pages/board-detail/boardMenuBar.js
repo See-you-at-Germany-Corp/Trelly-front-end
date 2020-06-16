@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import Popup from "reactjs-popup";
 
 import './boardMenuBarStyle.css';
 import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/starredBoardList.js';
@@ -105,6 +106,10 @@ const BoardMenuBar = (props) => {
         const input = nameInput.current;
         input.setSelectionRange(0, input.value.length)
     }
+
+    /* ------------------ invite -------------------- */
+
+    const [inviteStat, setInvite] = React.useState(false); 
 
     /* ------------------ working every render -------------------- */
 
@@ -238,8 +243,34 @@ const BoardMenuBar = (props) => {
 
                 </AvatarGroup>
 
-                <div className='board-invite'>
-                    <P_BUTTON>Invite</P_BUTTON>
+                <div className='board-invite'>  
+                    <Popup
+                        trigger={<P_BUTTON>Invite</P_BUTTON>} 
+                        position="bottom left"
+                        contentStyle={inviteStyle} 
+                    >
+                        <InviteDes>
+                            <i className="fas fa-times close"></i>
+                            <div className='invite-header'>Invite To Board</div>
+                            <span className='split-line'></span>
+                            <div className='invite-body'>
+                                <input placeholder='Email address or name'></input>
+                                <div className='link-box'>
+                                    <i className="fas fa-link"></i>
+                                    <p className='invite'>Invite with Link</p>
+                                    <p className='link' onClick={() => setInvite(!inviteStat)}>{inviteStat ? 'Disable Link' : 'Create Link'}</p>
+                                    <p className='des'>Anyone with link can join as board member</p>
+                                    {
+                                        inviteStat === true &&
+                                        <div className='invite-link'>
+                                            <input value=''></input>
+                                            <button>Copy</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </InviteDes>
+                    </Popup>
                 </div>
 
             </div>
@@ -258,6 +289,16 @@ const mapStateToProps = (state) => ({
 const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
 
 export default BoardMenuBarWithConnect;
+
+/* --------------- const --------------- */
+
+const inviteStyle = {
+    borderRadius: '3px', 
+    boxShadow: '2px 4px 8px #888888',
+    height: '348px',
+    width: '280px',
+    padding: '10px'
+}
 
 /* --------------- JSX --------------- */
 
@@ -416,6 +457,159 @@ const AvatarDetailBox = styled.div`
         cursor: pointer;
     }
 
+`;
+
+const InviteDes = styled.div`
+
+    display: flex;
+    flex-direction: column;
+    /* background-color: lightpink; */
+    height: 343px;
+    width: 275px;
+
+    .close {
+        position: absolute; 
+        right: 10px;
+        color: lightgray;
+    }
+
+    .close:hover {
+        cursor: pointer;
+    }
+
+    .invite-header {
+        font-size: 14px;
+        /* background-color: lightsalmon; */
+        padding-bottom: 10px;
+        text-align: center;
+        color: gray;
+    }
+
+    .split-line {
+        width: 280px;
+        height: 1px;
+        background-color: rgb(222, 222, 222);
+        margin-bottom: 12px;
+        /* margin-left: 5px; */
+    }
+
+    .invite-body {
+        /* background-color: lightseagreen; */
+        height: 100%;
+    }
+
+    .invite-body > input {
+        box-sizing: border-box;
+        border: 1px solid lightgray;
+        border-radius: 3px;
+        width: 280px; 
+        padding: 10px 7px 10px 7px;
+        margin-bottom: 10px; 
+        /* margin-left: 5px; */
+    }
+
+    .invite-body > input::placeholder {
+        color: lightgray;
+    }
+
+    .invite-body > input:focus {
+        outline: none;
+        border-color: deepskyblue;
+    }
+
+    .invite-body .link-box {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-left: -5px;
+    }
+
+    .invite-body .link-box > i {
+        font-size: 14px;
+        align-self: center;
+        padding: 7px;
+        color: gray;
+    }
+
+    .invite-body .link-box .invite {
+        display: inline;
+        padding: 0;
+        margin: 0; 
+        align-self: center;
+        font-size: 14px;
+        font-weight: 700;
+        color: midnightblue; 
+    }
+
+    .invite-body .link-box .link {
+        display: inline;
+        padding: 0;
+        margin: 0; 
+        margin-top: 4px;
+        font-size: 14px; 
+        position: absolute;
+        right: 10px;
+        text-decoration: underline;
+        color: deepskyblue;
+    }
+
+    .invite-body .link-box .link:hover {
+        cursor: pointer;
+    }
+
+    .invite-body .link-box .des {
+        display: inline;
+        padding: 0;
+        margin: 0;
+        align-self: center;
+        font-size: 12px;
+        color: gray;
+        margin-left: 7px;
+    }
+
+    .invite-body .link-box .invite-link {
+        margin: 10px; 
+        width: 100%;
+        display: flex;
+        /* margin-left: 18px; */
+    }
+
+    .invite-body .link-box .invite-link > input {
+        box-sizing: border-box;
+        border: 1px solid lightgray;
+        border-radius: 3px; 
+        padding: 3px 7px 3px 7px;
+        align-self: center;
+        width: 220px;  
+        height: 34px;
+        margin-left: -5px;
+    }
+
+    .invite-body .link-box .invite-link > input:focus {
+        outline: none;
+        border-color: deepskyblue;
+    }
+
+    .invite-body .link-box .invite-link > button {
+        margin: 7px; 
+        background-color: forestgreen;
+        padding: 8px 14px 9px 14px;
+        border: none;
+        color: white;
+    }
+
+    .invite-body .link-box .invite-link > button:hover { 
+        filter: brightness(110%);
+        cursor: pointer;
+    }
+
+    .invite-body .link-box .invite-link > button:focus { 
+        outline: none;
+    }
+
+    .invite-body .link-box .invite-link > button:active { 
+        filter: brightness(80%);
+    }
 `;
 
 /* --------------- function --------------- */
