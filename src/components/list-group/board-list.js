@@ -5,23 +5,28 @@ import styled from 'styled-components'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import { BoardContext } from '../../context/board-context/board-context'
 import Card from './board-card'
-import { TextareaAutosize } from '@material-ui/core'
+import { TextareaAutosize, Button, } from '@material-ui/core'
 
 export default function List(props) {
     const { boardState, boardDispatch } = useContext(BoardContext)
 
     const list = boardState.lists[props.index]
+
+    const nameRef = useRef(null)
     const [name, rename] = useState({
         oldName: list.name,
         newName: list.name
     })
     const [edittingName, setEdittingName] = useState(false)
 
-    const inputRef = useRef(null)
+    const newCardRef = useRef(null)
+    const [newCardName, setNewCardName] = useState('')
+    const [edittingCardName, setEdittingCardName] = useState(false)
+
 
     useEffect(() => {
         if (edittingName) {
-            inputRef.current.focus()
+            nameRef.current.focus()
         }
     });
 
@@ -32,7 +37,11 @@ export default function List(props) {
         })
     }
 
-    const inputBlur = e => {
+    const handleNewCardName = e => {
+        setNewCardName(e.target.value)
+    }
+
+    const listNameBlur = e => {
         setEdittingName(!edittingName)
 
         if (!name.newName.length) {
@@ -59,86 +68,129 @@ export default function List(props) {
 
     const enterNewName = e => {
         if (e.key !== 'Enter') return
-        inputRef.current.blur()
+        nameRef.current.blur()
     }
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>
             {(provided) => (
-                <StyledList
+                <ListWrapper
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                 >
-                    <HeaderField {...provided.dragHandleProps}>
-                        <div
-                            className={`drag-target ${edittingName && 'hide'}`}
-                            onClick={() => (setEdittingName(!edittingName))}
-                        />
-                        <TextareaAutosize
-                            ref={inputRef}
-                            onBlur={inputBlur}
-                            value={name.newName}
-                            onKeyPress={enterNewName}
-                            onChange={handleChangeName}
-                            style={{ padding: '10px 5px 10px 5px' }}
-                        />
-                    </HeaderField>
+                    <ListContent>
+                        <HeaderField {...provided.dragHandleProps}>
+                            <div
+                                className={`drag-target ${edittingName ? 'hide' : ''}`}
+                                onClick={() => (setEdittingName(!edittingName))}
+                            />
+                            <TextareaAutosize
+                                rowsMax={5}
+                                ref={nameRef}
+                                onBlur={listNameBlur}
+                                value={name.newName}
+                                onKeyPress={enterNewName}
+                                onChange={handleChangeName}
+                            />
+                            <Button>
+                                <div className="fas fa-ellipsis-h" />
+                            </Button>
+                        </HeaderField>
 
-                    <Droppable droppableId={props.listId} type='card'>
-                        {(provided, snapshot) => (
-                            <CardList
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                                isDraggingOver={snapshot.isDraggingOver}
-                            >
-                                {
-                                    list.cards.map((card, index) => {
-                                        return (
-                                            <Card
-                                                index={index}
-                                                key={`card-${card.id}`}
-                                                cardId={`card-${card.id}`}
-                                                listIndex={props.index}
-                                            />
-                                        )
-                                    })
-                                }
-                                {provided.placeholder}
-                            </CardList>
-                        )}
-                    </Droppable>
-                </StyledList>
+                        <Droppable droppableId={props.listId} type='card'>
+                            {(provided, snapshot) => (
+                                <CardList
+                                    ref={provided.innerRef}
+                                    {...provided.droppableProps}
+                                    isDraggingOver={snapshot.isDraggingOver}
+                                >
+                                    {
+                                        list.cards.map((card, index) => {
+                                            return (
+                                                <Card
+                                                    index={index}
+                                                    key={`card-${card.id}`}
+                                                    cardId={`card-${card.id}`}
+                                                    listIndex={props.index}
+                                                />
+                                            )
+                                        })
+                                    }
+                                    {provided.placeholder}
+                                </CardList>
+                            )}
+                        </Droppable>
+                        <AddCard>
+                            {
+                                !edittingCardName ?
+                                    <div
+                                        className='add-composer'
+                                        onClick={() => setEdittingCardName(!edittingCardName)}
+                                    >
+                                        <i className="fas fa-plus" ></i> Add another card
+                                    </div>
+                                    :
+                                    <TextareaAutosize
+                                        value={newCardName}
+                                        onChange={handleNewCardName}
+                                    />
+                            }
+                        </AddCard>
+                    </ListContent>
+                </ListWrapper>
             )}
         </Draggable>
     )
 }
 
-const StyledList = styled.div`
+const ListWrapper = styled.div`
+    max-height: 95%;
     min-width: 250px;
     max-width: 280px;
-    max-height: 95%;
 
-    padding-bottom: 10px;
-    border-radius: 5px;
     margin-right: 10px;
-    background-color: beige;
+    border-radius: 10px;
+    padding-bottom: 10px;
+    background-color: transparent;
+`
+
+const ListContent = styled.div`
+    display: flex;
+    max-height: 100%;
+    position: relative;
+    border-radius: 5px;
+    flex-direction: column;
+    background-color: #ebecf0;
 `
 
 const HeaderField = styled.div`
-    width: 100%;
     min-height: 40px;
+
+    padding: 10px 8px;
     font-size: 20px;
     position: relative;
 
-    textarea {
-        width: 200px;
-        resize: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        font-size: inherit;
+    .MuiButton-root {
+        min-width: 30px;
+        width: 40px;
+        height: 40px;
+    }
+
+    textarea {
+        width: 180px;
+
+        resize: none;
+        font-size: 18px;
+        font-weight: 600;
         word-break: keep-all;
 
         border: 0;
-        padding: 0;
+        padding: 8px 8px;
+        border-radius: 5px;
         background-color: red;
 
         :focus {
@@ -154,7 +206,6 @@ const HeaderField = styled.div`
         left: 0;
         right: 0;
         bottom: 0;
-        /* background-color: blue; */
     }
 
     .hide {
@@ -163,7 +214,42 @@ const HeaderField = styled.div`
 `
 
 const CardList = styled.div`
-    width: calc(100% - 20px);
     padding: 10px;
+    overflow-y: auto;
     background-color: ${props => props.isDraggingOver ? 'green' : 'transparent'}
+`
+
+const AddCard = styled.div`
+    height: 40px;
+
+    margin: 10px 8px;
+    display: table;
+
+    .add-composer {
+        width: 100%;
+        height: 100%;
+
+        padding-left: 10px;
+        border-radius: 3px;
+
+        font-size: 15px;
+        display: table-cell;
+        vertical-align: middle;
+
+        color: #5e6c84;
+        cursor: pointer;
+
+        :hover {
+            background-color: rgba(9,30,66,.08);
+        }
+    }
+
+    textarea {
+        /* width: calc(100% - 8px); */
+        width: 100%;
+        min-height: 20px;
+        
+        resize: none;
+        background-color: white;
+    }
 `

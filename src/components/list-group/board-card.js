@@ -32,5 +32,5 @@ const StyledCard = styled.div`
     padding: 15px;
     vertical-align: middle;
     margin-bottom: 10px;
-    background-color: gainsboro;
+    background-color: white;
 `
