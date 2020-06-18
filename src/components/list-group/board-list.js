@@ -28,6 +28,9 @@ export default function List(props) {
         if (edittingName) {
             nameRef.current.focus()
         }
+        if (edittingCardName) {
+            newCardRef.current.focus()
+        }
     });
 
     const handleChangeName = e => {
@@ -69,6 +72,10 @@ export default function List(props) {
     const enterNewName = e => {
         if (e.key !== 'Enter') return
         nameRef.current.blur()
+    }
+
+    const createNewCard = () => {
+
     }
 
     return (
@@ -130,10 +137,21 @@ export default function List(props) {
                                         <i className="fas fa-plus" ></i> Add another card
                                     </div>
                                     :
-                                    <TextareaAutosize
-                                        value={newCardName}
-                                        onChange={handleNewCardName}
-                                    />
+                                    <div className='new-card-wrapper'>
+                                        <TextareaAutosize
+                                            ref={newCardRef}
+                                            value={newCardName}
+                                            onChange={handleNewCardName}
+                                        />
+                                        <Button
+                                            className='add-button'
+                                            onClick={() => setEdittingCardName(!edittingCardName)}>
+                                            Add card</Button>
+                                        <Button
+                                            className='x-button'
+                                            onClick={() => setEdittingCardName(!edittingCardName)}>
+                                            X</Button>
+                                    </div>
                             }
                         </AddCard>
                     </ListContent>
@@ -220,14 +238,14 @@ const CardList = styled.div`
 `
 
 const AddCard = styled.div`
-    height: 40px;
+    min-height: 40px;
 
     margin: 10px 8px;
     display: table;
 
     .add-composer {
         width: 100%;
-        height: 100%;
+        height: 40px;
 
         padding-left: 10px;
         border-radius: 3px;
@@ -244,12 +262,38 @@ const AddCard = styled.div`
         }
     }
 
-    textarea {
-        /* width: calc(100% - 8px); */
+    .new-card-wrapper {
         width: 100%;
+    }
+
+    .new-card-wrapper textarea {
         min-height: 20px;
+        width: calc(100% - 20px);
+        /* width: 100%; */
         
         resize: none;
+        padding: 10px;
+        border: 0;
+        font-size: 16px;
         background-color: white;
+    }
+
+    .MuiButton-root {
+        min-width: 30px;
+        text-transform: none;
+    }
+
+    .add-button {
+        min-width: 60px;
+        color: white;
+        background-color: #61AD4F;
+
+        :hover {
+            background-color: #65DD4F;
+        }
+    }
+
+    .x-button {
+        width: 40px;
     }
 `
