@@ -1,38 +1,38 @@
 export default [
     {
         id: 0,
-        background: 'mediumorchid'
+        picture: 'mediumorchid'
     },
     {
         id: 1,
-        background: 'steelblue'
+        picture: 'steelblue'
     },
     {
         id: 2,
-        background: 'dodgerblue'
+        picture: 'dodgerblue'
     },
     {
         id: 3,
-        background: 'forestgreen'
+        picture: 'forestgreen'
     },
     {
         id: 4,
-        background: 'goldenrod'
+        picture: 'goldenrod'
     },
     {
         id: 5,
-        background: 'chocolate'
+        picture: 'chocolate'
     },
     {
         id: 6,
-        background: 'indianred'
+        picture: 'indianred'
     },
     {
         id: 7,
-        background: 'gray'
+        picture: 'gray'
     },
     {
         id: 8,
-        background: 'palevioletred'
+        picture: 'palevioletred'
     }
 ];

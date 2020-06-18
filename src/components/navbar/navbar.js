@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect, createContext, useReducer, useContext } from 'react';
-import { Frame, Page, motion } from "framer-motion";
+import {motion } from "framer-motion";
 import styled, { css } from 'styled-components';
 
 
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import Button from '@material-ui/core/Button';
-import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
+// import Button from '@material-ui/core/Button';
+// import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import Card from '@material-ui/core/Card';
+// import Card from '@material-ui/core/Card';
 import { Divider, Avatar, Hidden, useIsFocusVisible } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import AppsIcon from '@material-ui/icons/Apps';
@@ -20,10 +20,13 @@ import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
-import {starBoard, unStarBoard} from '../../redux/actions/personalBoardList';
+import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/starredBoardList';
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import { useLocation } from 'react-router-dom'
+
 
 import { createOn } from '../../redux/actions/createNewBoard';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
 const buttonStyle = {
@@ -86,14 +89,14 @@ const variants = {
     open: {
         width: "200px",
         transition: {
-            duration: 0.1
+            duration: 0.2
         },
         outline: "none"
     },
     closed: {
         width: "100px",
         transition: {
-            duration: 0.1
+            duration: 0.2
         }
     },
     close: {
@@ -297,7 +300,7 @@ const LogoBut =()=>{
             whileHover="hover"
         >
             <LogoStyle variants={logoHover}>
-                <motion.div style={{height:"8px",width:"10px",backgroundColor:"rgb(0, 121, 191)",borderRadius:"1.5px",marginRight:"2px"}}
+                <motion.div style={{height:"8px",width:"10px",backgroundColor:"rgba(0, 121, 191)",borderRadius:"1.5px",marginRight:"2px"}}
                     animate="init1"
                     variants={logoVariants}
                 >
@@ -367,14 +370,32 @@ const Navbars = ({personalBoardList,on}) => {
             return null;
         }
         else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
-            console.log(data);
+            // console.log(data);
             return data;
         }
     })
+    let location = useLocation();
+    let transparent = false;
+    let boardIndex = 0;
+    for(let i = 0; i < personalBoardList.length; i++){
+        if(personalBoardList[i].href == location.pathname){
+            boardIndex = i;
+            break;
+        }
+    }
+    // console.log(location.pathname == '/');
+    if(location.pathname == '/'){
+        transparent = false;
+    }
+    else{
+        transparent = true;
+    }
+    let transparentBG = on.is_on ? "rgba(0,0,0,0.7)" :"rgba(0,0,0,0.15)" ;
+    // console.log(location.pathname);
     return (
         <OpenContext.Provider value={[isOpen,setOpen]}>
-        <Navbarstyle disable={on.is_on}>
-            <div className="navbar-inside" style={{ backgroundColor: "#0079bf", height: "100%", display: "flex" }}>
+        <Navbarstyle disable={on.is_on} >
+            <div className="navbar-inside" style={{ backgroundColor: transparent ? transparentBG: "#0079bf" , height: "100%", display: "flex"}}>
                 <Row justifyContent="flex-start" maxWidth="400px" minWidth="400px">
                 <MyDropdown
                     isType={isType}
@@ -383,7 +404,7 @@ const Navbars = ({personalBoardList,on}) => {
                     children={
                         <Row align="flex-start" minHeight="32px">
                             <Link to="/">
-                            <MyButton onClick={()=>console.log(on)}>
+                            <MyButton>
                                 <HomeOutlinedIcon />
                             </MyButton>
                             </Link>
@@ -419,7 +440,7 @@ const Navbars = ({personalBoardList,on}) => {
                         <Row
                             minHeight="32px"
                             maxHeight="32px"
-                            animate={isOpen.search ? { backgroundColor: "rgba(255, 255, 255, 1)",transition:{duration:0.1} } : { backgroundColor: "rgba(255, 255, 255, 0.3)",transition:{duration:0.1} }}
+                            animate={isOpen.search ? { backgroundColor: "rgba(255, 255, 255, 1)"} : { backgroundColor: "rgba(255, 255, 255, 0.3)"}}
                         >
                             <div onClick={() => { setOpen({type:'search'}); inputRef.current.focus(); setType('search'); }} style={{ height: "32px", padding: "8px", boxSizing: "border-box", display: "flex", justifyContent: "center" }} >
                                 <motion.input
@@ -734,31 +755,101 @@ const UserCard = () => {
 }
 
 const SearchDropDowns = ({searchItem,personalBoardList,dispatch,search}) => {
+    const [open,setOpen] = useState(false);
+    const suggestionData = [
+        {
+            title:"@name",
+            des:"Returns cards assigned to a member. If you start typing @, Trello will suggest members for you. member: also works. @me will include only your cards."
+        },
+        {
+            title:"#label",
+            des:"Returns labeled cards. label: also works."
+        },
+        {
+            title:"board:id",
+            des:"Returns cards within a specific board. If you start typing board:, Trello will suggest boards for you. You can search by board name, too, such as “board:Trello” to search only cards on boards with Trello in the board name."
+        },
+        {
+            title:"created:day",
+            des:"Returns cards due within 24 hours. due:week, due:month, and due:overdue also work as expected. You can search for a specific day range. For example, adding due:14 to search will include cards due in the next 14 days."
+        },
+        {
+            title:"edited:day",
+            des:"Returns cards edited in the last 24 hours. edited:week and edited:month also work as expected. You can search for a specific day range. For example, adding edited:21 to the search will include cards edited in the last 21 days."
+        },
+        {
+            title:"description:, checklist:, comment:, and name:",
+            des:"Returns cards matching the text of card descriptions, checklists, comments, or names. For example, comment:\"FIX IT\" will return cards with “FIX IT” in a comment."
+        },
+        {
+            title:"is:open and is:archived",
+            des:"Returns cards that are either open or archived. Trello returns both types by default."
+        },
+        {
+            title:"is:starred",
+            des:"Only include cards on starred boards."
+        },
+        {
+            title:"sort:created",
+            des:"Sorts cards by date created. sort:edited and sort:due also work as expected."
+        }
+    ]
+    const SearchList =({title,des})=>{
+        return (
+            <FlyUpDiv>
+            <Column minHeigh="100px">
+                <dt style={{fontSize:"15px",marginTop:"15px",fontWeight:"bold",color:"#5e6c84"}}>{title}</dt>
+                <div style={{fontSize:"13px",paddingLeft: "20px",marginTop:"15px",color:"#5e6c84"}}>
+                    {des}
+                </div>
+            </Column>
+            </FlyUpDiv>
+        );
+    };
+    const searchSuggestion = (
+        <div>
+            <div style={{fontSize:"13px",color:"#5e6c84"}}>
+                Search operators help you find specific cards and create highly tailored lists. Trello will suggest operators for you as you type, but here’s a full list to keep in mind. You can add “-” to any operator to do a negative search, such as -has:members to search for cards without any members assigned.
+            </div>
+            {suggestionData.map((data)=>(
+                <SearchList title={data.title} des={data.des} />
+            ))}
+        </div>
+    );
     
     return (
+        <div>
+            <Column padding="20px 20px 20px 20px" maxWidth="330px" minWidth="330px">
+            { search.length > 0 ?  null :
                 <div>
-                    <Column padding="5px 20px 5px 20px" maxWidth="330px" minWidth="330px">
-                    { search.length > 0 ?  null :
-                        <div>
-                            Nothing
-                        </div>
-                    }
-                    {
-                    searchItem.length > 0 ? 
-                    <HidableDiv open={true} initial="init" animate="open" variants={flyUpDiv} >
-                        Board
-                        {
-                            searchItem.map((board,index)=>{
-                                return (
-                                        <BoardPreview board={board} dispatch={dispatch} index={index} open={false}/>
-                                );
-                            })
-                        }
-                        </HidableDiv>:null
-                    }
-                    </Column>
-
+                    <div style={{color:"#5e6c84",background:"url(https://a.trellocdn.com/prgb/dist/images/empty-states/comb.65864547b3e6ae50d7ff.svg) no-repeat 0",paddingLeft:"50px"}}>
+                        Refine your search with operators like @member, #label, is:archived, and has:attachments.
+                        
+                    </div>
+                    <div style={{maxWidth: "100px",float:"right"}}>
+                    <Linkable onClick={()=>setOpen(!open)} children={<Row>{open ? "Close" : "Learn More"}</Row>} backgroundColor="rgba(0,0,0,0.03)"/>
+                    </div>
                 </div>
+            }
+            {
+                open? searchSuggestion : null
+            }
+            {
+            searchItem.length > 0 ? 
+            <HidableDiv open={true} initial="init" animate="open" variants={flyUpDiv} >
+                Board
+                {
+                    searchItem.map((board,index)=>{
+                        return (
+                                <BoardPreview board={board} dispatch={dispatch} index={index} open={false}/>
+                        );
+                    })
+                }
+                </HidableDiv>:null
+            }
+            </Column>
+
+        </div>
 
     );
 }
@@ -791,11 +882,14 @@ const Boards =({personalBoardList,dispatch})=>{
         setSearch(keyword);
     }
     const searchItem = personalBoardList.filter((data)=>{
+        if (search == 'is:starred'){
+            // return starred list
+        }
         if(search == null || search == ''){
             return null;
         }
         else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
-            console.log(data);
+            // console.log(data);
             return data;
         }
     })
@@ -844,19 +938,64 @@ const HidableCon = styled.div`
     width:100%;
     padding-left:4px;
 `;
-const Hidable =({personalBoardList,type,dispatch,open,setOpen})=>{
+const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})=>{
+    const [test,setTest] = useState(starredBoardList)
+    const onDragEnd =(result)=> {
+        let temp = starredBoardList;
+        // dropped outside the list
+        if (!result.destination) {
+          return;
+        }
     
+        const items = reorder(
+          temp,
+          result.source.index,
+          result.destination.index
+        );
+        // setTest(items)
+        dispatch(overWriteStarBoard(items));
+        // console.log(starredBoardList);
+        
+      }
     const item = {
         starred:{
             title:'Starred Board',
             icon:<StarBorderRoundedIcon style={{color:"rgb(0, 121, 191)"}}/>,
-            child:<div>{
-                personalBoardList.filter(board => board.id > 0 && board.starred === true).map((board,index)=>
-                    <BoardPreview board={board}
-                    dispatch={dispatch} index={index} open={open}
-                    />
-                )}
-                </div>
+            child:
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                        <div 
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            >
+                            {
+                                starredBoardList.filter(board => board.id > 0 ).map((board,index)=>
+                                    <Draggable key={board.id} draggableId={String(board.id)} index={starredBoardList.findIndex(i => i.id == board.id)}>
+                                    {(provided,snapshot)=>{
+                                        let starred = starredBoardList.some(sboard=>sboard.id == board.id);
+                                        return(
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                >
+                                                
+                                                    <BoardPreview board={board}
+                                                    dispatch={dispatch} index={index} open={open} star={starred}
+                                                    />
+                                            </div>
+                                            );
+                                        }
+                                    }
+                                    
+                                </Draggable>
+                            )}
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
         },
         recent:{
             title:'Recent Board',
@@ -867,8 +1006,13 @@ const Hidable =({personalBoardList,type,dispatch,open,setOpen})=>{
             title:'Personal Board',
             icon:<LogoOnly />,
             child:<div style={{display:"block"}}>{
-                personalBoardList.filter(board => board.id > 0).map((board,index)=>
-                    <BoardPreview board={board} dispatch={dispatch} index={index} open={open}/>
+                personalBoardList.filter(board => board.id > 0 ).map((board,index)=>{
+                    let starred = starredBoardList.some(sboard=>sboard.id == board.id);
+                    return(
+                        <BoardPreview board={board} dispatch={dispatch} index={index} open={open} star={starred}/>
+                    );
+                }
+                    
                 )}
                 </div>
         }
@@ -893,7 +1037,7 @@ const Hidable =({personalBoardList,type,dispatch,open,setOpen})=>{
                 <HidableCon>
                     {getTy(type).title}
                 </HidableCon>
-                <HidableButton children={<AddIcon />} onClick={()=>{setOpen(!open); console.log(personalBoardList)}}/>
+                <HidableButton children={<AddIcon />} onClick={()=>{setOpen(!open); }}/>
             </Row>
             </div>
             <HidableDiv open={open} initial="init" animate={open?"open":"init"} variants={flyUpDiv} >
@@ -1045,24 +1189,25 @@ const StarButtonHover = {
 }
 
 const FlyUpDiv = styled(motion.div)`
-    transform: translateY(calc(-40*${props=>props.index}px));
-    box-shadow: 0px 0px 8px -5px rgba(1,1,1,0.75);
+    // transform: translateY(calc(-40*${props=>props.index}px));
+    // box-shadow: 0px 0px 8px -5px rgba(1,1,1,0.75);
     // margin-left: 10px;
     // margin-right: 10px;
+    padding: 5px 0px 5px 0px;
     min-width: 280px;
     max-width: 280px;
     margin:0 auto;
 `;
 
-const BoardPreview =({board,dispatch,index,open})=>{
+const BoardPreview =({board,star,dispatch,index,open})=>{
     const [openP,setOpenP] = useContext(OpenContext);
-    const StarButton =({board,dispatch})=>{
+    const StarButton =({board,dispatch,star})=>{
         return (
             <motion.div 
             variants={
                 {
                     init:{
-                        y:board.starred ? 0: 100,
+                        y:star ? 0: 100,
                         transition:{
                             type:"spring",
                             stiffness: 500,
@@ -1083,8 +1228,8 @@ const BoardPreview =({board,dispatch,index,open})=>{
             }
             style={{position:"absolute",left:"250px",marginTop:"-33px" }}>
             <motion.div whileHover={{scale:1.3}} whileTap={{scale:0.8}} onClick={()=>{
-                        if(!board.starred){
-                            dispatch(starBoard(board.id))
+                        if(!star){
+                            dispatch(starBoard(board.id,board))
                         }
                         else{
                             dispatch(unStarBoard(board.id))
@@ -1092,14 +1237,14 @@ const BoardPreview =({board,dispatch,index,open})=>{
                         
                     }
                 }>
-                <StarBorderRoundedIcon style={{color:board.starred? "rgb(133,133,0)" : "rgb(0,1,61)"}} />
+                <StarBorderRoundedIcon style={{color:star? "rgb(133,133,0)" : "rgb(0,1,61)"}} />
                 </motion.div>
             </motion.div> 
         );
     }
     return (
             <FlyUpDiv index={index} 
-                
+                whileTap={{scale:0.95}}
                 variants={
                     {
                         init:{
@@ -1117,11 +1262,14 @@ const BoardPreview =({board,dispatch,index,open})=>{
                             }
                         }
                     }
-                } >
+                } 
+                >
                 <motion.div 
                     whileHover="hover"
                     initial="init" 
-                    style={{position:"relative",overflow:"hidden",margin:"15px 0px 15px 0px",border:"1px solid rgba(0, 0, 0, 0.1)",borderRadius:"5px" }}>
+                    style={{position:"relative",overflow:"hidden",border:"1px solid rgba(0, 0, 0, 0.1)",borderRadius:"5px" }}
+                    whileTap={{boxShadow:"0px 0px 20px -10px"}}
+                    >   
                     <Linkable
                         padding="0px"
                         onClick={()=>setOpenP({type:''})}
@@ -1147,7 +1295,7 @@ const BoardPreview =({board,dispatch,index,open})=>{
                                 </div>
                             </Row>
                         }/>
-                    <StarButton board={board} dispatch={dispatch} />
+                    <StarButton board={board} dispatch={dispatch} star={star}/>
                 </motion.div>
             
             </FlyUpDiv>
@@ -1242,7 +1390,7 @@ const MyDropdown = ({margin,onChange,setOpen,board,isOpen,children,mode,isType,m
     const ref = useRef();
     let align = 'flex-start';
     const handleClickOutside = e => {
-        console.log("clicking anywhere");
+        // console.log("clicking anywhere");
         if (ref.current.contains(e.target)) {
             // inside click
             return;
@@ -1301,6 +1449,17 @@ const MyDropdown = ({margin,onChange,setOpen,board,isOpen,children,mode,isType,m
     );
 };
 
+
+//reorder list
+const reorder = (list, startIndex, endIndex) => {
+    
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);  
+    return result;
+  };
+
+
 const initState = {
     board:false,
     search:false,
@@ -1348,6 +1507,7 @@ const OpenContext = createContext(initState);
 const mapStateToProps =(state)=> ({
     personalBoardList: state.personalBoardList,
     createCurrent: state.createNewBoard.ref,
+    starredBoardList: state.starredBoardList,
     on:state.createNewBoard,
 })
 

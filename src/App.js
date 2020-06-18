@@ -28,14 +28,9 @@ function App() {
 
         <Route path='/forgot/' component={Forgot} />
 
-        <Route exact path='/:boardId/:boardName'>
-          <BoardDetail />
-        </Route>
+        <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
-        <Route exact path='/'>
-          
-          <Home />
-        </Route>
+        <Route exact path='/' component={Home} />
 
       </Switch>
 

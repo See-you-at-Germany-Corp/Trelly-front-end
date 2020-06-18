@@ -1,34 +1,41 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import React, { useContext } from 'react';
+// import { useParams } from 'react-router-dom';
 
 import './style.css';
 
 import BoardMenuBar from './boardMenuBar.js';
+import ListGroup from '../../components/list-group/index'
+import { BoardProvider, BoardContext } from '../../context/board-context/board-context'
+// import { changeCurrentBoard } from '../../redux/actions/currentBoard';
 
 const BoardDetail = (props) => {
-
-    const { boardId } = useParams();
-    /// send api to get real board detail from backend.
-
-    /// mockup board detail.
-    let boardData = props.personalBoardList[boardId]; 
-    boardData = { 
-        ...boardData, 
-        privilege: 'Private' 
-    };
+ 
+    /// mockup board detail.  
+    // const { boardId } = useParams();
+    const { boardState, /*boardDispatch*/ } = useContext(BoardContext)
+    console.log(boardState)
+    // React.useEffect(() => {
+    //     /// send api to get current board data.
+    //     /// then overwrite current board data.
+    //     boardDispatch(changeCurrentBoard({}));
+    //     // eslint-disable-next-line
+    // }, []);
+    document.body.style.backgroundColor = boardState.picture;
 
     return (
-        <div className={`${boardData.name}-board board-detail`} style={{background: boardData.background}}>
-            <BoardMenuBar boardData={boardData} {...props} /> 
+        <div className='board-detail' >
+            <BoardMenuBar {...props} />
+            <ListGroup />
         </div>
     );
 }
 
-const mapStateToProps = (state) => ({
-    personalBoardList: state.personalBoardList
-})
+const BoardDetailProvider = () => { 
+    return (
+        <BoardProvider>
+            <BoardDetail />
+        </BoardProvider>
+    )
+}
 
-const BoardDetailWithConnect = connect(mapStateToProps)(BoardDetail);
-
-export default BoardDetailWithConnect;
+export default BoardDetailProvider;
