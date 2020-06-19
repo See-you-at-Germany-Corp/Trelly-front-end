@@ -254,12 +254,13 @@ const logoVariants = {
 const LogoStyle = styled(motion.div)`
     height:${props=> props.size? props.size : "18px"};
     width:${props=> props.size? props.size : "18px"};
-    padding:2px;
+    // padding:2px;
     margin:${props=> props.margin? props.margin: "2px"};
     border-radius:2px;
     box-sizing:border-box;
     display:flex;
-    background-color:${props=>props.white ? "white": "rgba(255, 255, 255, 0.5)"};
+    overflow:hidden;
+    // background-color:${props=>props.white ? "white": "rgba(255, 255, 255, 0.5)"};
     box-shadow:0px 0px 2px 0px rgb(0, 121, 191);
 `;
 const LogoLetter = styled(motion.div)`
@@ -270,9 +271,21 @@ const LogoLetter = styled(motion.div)`
 `
 const logoHover = {
     hover:{
-        backgroundColor:"rgba(255, 255, 255, 1)"
+        // backgroundColor:"rgba(255, 255, 255, 1)"
+        boxShadow:"0px 0px 0px 2000px rgba(255,255,255,1)"
     },
-    
+    init1:{
+        height: ["8px","14px","8px"],
+        transition:{
+            duration:0.6
+        }
+    },
+    init2:{
+        height: ["14px","8px","14px"],
+        transition:{
+            duration:0.6
+        }
+    }
 }
 const textHover={
     hover:{
@@ -286,6 +299,9 @@ const LogoContainer = styled(motion.div)`
         height:100%;
         max-width:100px;
         justify-content:center;
+        overflow:hidden;
+        // box-shadow:0px 0px 0px 2000px; 
+        // clip-path: circle(10px);
     `;
 const LogoBut =()=>{
     const config={
@@ -299,23 +315,38 @@ const LogoBut =()=>{
         <LogoContainer
             whileHover="hover"
         >
-            <LogoStyle variants={logoHover}>
-                <motion.div style={{height:"8px",width:"10px",backgroundColor:"rgba(0, 121, 191)",borderRadius:"1.5px",marginRight:"2px"}}
-                    animate="init1"
-                    variants={logoVariants}
-                >
-                </motion.div>
-                <motion.div style={{width:"10px",backgroundColor:"rgb(0, 121, 191)",borderRadius:"1.5px"}}
-                    animate="init2"
-                    variants={logoVariants}
-                >
-                </motion.div>
-            </LogoStyle>
-
+            <LogoTest />
             <LogoLetter variants={textHover} >
                 Trelly
             </LogoLetter>
         </LogoContainer>
+    );
+}
+
+const LogoTest =({statc})=>{
+    return (
+        <LogoStyle >
+            <div style={{height:"100%",overflow:"hidden",padding: "2px 1px 2px 2px",}}>
+                <motion.div style={{boxShadow:statc ?"0px 0px 0px 2000px rgba(255,255,255,0.9)": "0px 0px 0px 2000px rgba(255,255,255,0.4)"}} variants={logoHover}>
+                    <motion.div style={{height:"8px",width:"6px",backgroundColor:"transparent",borderRadius:"1.5px"}}
+                        // animate="init1"
+                        animate={!statc ? "init1" : null}
+                        variants={logoVariants}
+                    >
+                    </motion.div>
+                </motion.div>
+            </div>
+            <div style={{padding:"2px 2px 2px 1px",height:"100%",overflow:"hidden"}}>
+                <motion.div style={{boxShadow:statc ?"0px 0px 0px 2000px rgba(255,255,255,0.9)":"0px 0px 0px 2000px rgba(255,255,255,0.4)",boxSizing: "border-box"}} variants={logoHover} >
+                    <motion.div style={{height:"14px",width:"6px",backgroundColor:"transparent",borderRadius:"1.5px"}}
+                        // animate="init2"
+                        animate={!statc ? "init2" : null}
+                        variants={logoVariants}
+                    >
+                    </motion.div>
+                </motion.div>
+            </div>
+        </LogoStyle>
     );
 }
 
@@ -330,33 +361,41 @@ const Logodiv = styled(motion.div)`
 `;
 const NormalLeftLogo = styled(Logodiv)`
     height: 60%;
+    width: 100%;
+    box-sizing:border-box;
+    // margin: 2px 0px 2px 2px;
     // background-color: rgba(255,255,255,1);
 `;
 const NormalRightLogo = styled(Logodiv)`
-    height: 100%};
+    height: 100%;
+    width: 100%;
+    // margin: 2px 2px 2px 0px;
 `;
 const NormalStyle = styled(LogoStyle)`
     background-color:white
 `
-const LogoOnly =({config,size})=>{
+const LogoOnly =({variant,size})=>{
     
-    if(config != undefined){
+    if(variant=="transparent"){
         return (
-            <LogoStyle variants={config.hover}>
-                <Logodiv margin variants={config.animation} animate={config.animate[0]}></Logodiv>
-                <Logodiv variants={config.animation} animate={config.animate[1]}></Logodiv>
-            </LogoStyle>
+            <LogoTest statc/>
         );
     }
     return (
+        <div>
         <LogoStyle white size={size}>
-            <NormalLeftLogo margin></NormalLeftLogo>
-            <NormalRightLogo></NormalRightLogo>
+            <div style={{padding:"2px 1px 2px 2px",width: "50%"}}>
+                <NormalLeftLogo margin></NormalLeftLogo>
+            </div>
+            <div style={{padding:"2px 2px 2px 1px",width: "50%"}}>
+                <NormalRightLogo></NormalRightLogo>
+            </div>
         </LogoStyle>
+        </div>
     );
 }
 
-const Navbars = ({personalBoardList,on}) => {
+const Navbars = ({personalBoardList,starredBoardList,on}) => {
     const [isType, setType] = useState(false);
     const [search,setSearch] = useState('');
     const inputRef = useRef();
@@ -422,7 +461,7 @@ const Navbars = ({personalBoardList,on}) => {
                     children={
                         <Row align="flex-start" minHeight="32px">
                             <MyButton height="32px" onClick={() => {setOpen({type:'board'}); setType('board')}}>
-                                <LogoOnly size="16px"/>
+                                <LogoOnly variant="transparent" size="16px"/>
                                 <div style={{marginLeft:"4px"}}>Boards</div>
                             </MyButton>
                         </Row>
@@ -470,7 +509,8 @@ const Navbars = ({personalBoardList,on}) => {
                                 }
                             </div>
                         </Row>
-                    }    
+                    }
+                    
                     board={<SearchDropDown searchItem={searchItem} search={search}/>}
                 />
                 </Row>
@@ -754,7 +794,7 @@ const UserCard = () => {
     );
 }
 
-const SearchDropDowns = ({searchItem,personalBoardList,dispatch,search}) => {
+const SearchDropDowns = ({searchItem,personalBoardList,starredBoardList,dispatch,search}) => {
     const [open,setOpen] = useState(false);
     const suggestionData = [
         {
@@ -840,8 +880,9 @@ const SearchDropDowns = ({searchItem,personalBoardList,dispatch,search}) => {
                 Board
                 {
                     searchItem.map((board,index)=>{
+                        let star = starredBoardList.some(sboard=>sboard.id == board.id);
                         return (
-                                <BoardPreview board={board} dispatch={dispatch} index={index} open={false}/>
+                                <BoardPreview board={board} dispatch={dispatch} index={index} open={false} star={star}/>
                         );
                     })
                 }
@@ -873,7 +914,7 @@ const SearchStyle = styled(motion.input)`
       }
 `;
 
-const Boards =({personalBoardList,dispatch})=>{
+const Boards =({personalBoardList,starredBoardList,dispatch})=>{
     const [search,setSearch] = useState('');
     const [openStar,setOpenStar] = useState(false);
     const [openPers,setOpenPers] = useState(false);
@@ -910,8 +951,9 @@ const Boards =({personalBoardList,dispatch})=>{
                     Not Found
                 </Column>:
                 searchItem.map((board,index)=>{
+                    let star = starredBoardList.some(sboard=>sboard.id == board.id);
                     return (
-                            <BoardPreview board={board} dispatch={dispatch} index={index} open={false}/>
+                            <BoardPreview board={board} dispatch={dispatch} index={index} open={false} star={star}/>
                     );
                 })
             }
