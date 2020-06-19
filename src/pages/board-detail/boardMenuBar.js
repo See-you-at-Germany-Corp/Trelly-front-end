@@ -9,8 +9,10 @@ import Popup from "reactjs-popup";
 import './boardMenuBarStyle.css';
 import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/starredBoardList.js';
 import { changeName } from '../../redux/actions/personalBoardList';
-import { memberOverWrite, renameBoard, removeMember } from '../../redux/actions/currentBoard.js';
+import { memberOverWrite, renameBoard, removeMember, addMember } from '../../redux/actions/currentBoard.js';
 import { BoardContext } from '../../context/board-context/board-context';
+
+import RightDrawer from './rightDrawer.js';
 
 const BoardMenuBar = (props) => {
 
@@ -110,6 +112,42 @@ const BoardMenuBar = (props) => {
     /* ------------------ invite -------------------- */
 
     const [inviteStat, setInvite] = React.useState(false); 
+    const [inviteValue, setInviteValue] = React.useState('');
+
+    const onInviteChange = (e) => {
+        setInviteValue(e.target.value);
+    }
+
+    const onSubmitInvite = () => {
+        const name = inviteValue;
+
+        /// can find name in this board.
+        if (boardState.members.findIndex(member => member.full_name === name || member.username === name) > -1) {
+            alert('เป็นสมาชิกอยู่แล้ว !');
+        }
+
+        /// can't find name in this board.
+        else {
+            /// post 'name' to backend.
+            /// wait member data from backend.
+            /// get response and member data.
+            boardDispatch(addMember({
+                id: 4,
+                full_name: 'Wittawin',
+                init: 'WM',
+                username: 'wittawin',
+                bio: 'taete',
+                picture: ''
+            }));
+
+            /// can't get response and member data.
+            alert('ไม่พบข้อมูล !');
+        }
+    }
+
+    /* ------------------ drawer -------------------- */
+
+    const [drawerStat, setDrawer] = React.useState(true);
 
     /* ------------------ working every render -------------------- */
 
@@ -189,7 +227,7 @@ const BoardMenuBar = (props) => {
                 <SepLine />
 
                 {/* wait to use avatar data from profile. */}
-                <AvatarGroup className='board-avatar-box' max={5} ref={avatarBoxRef}>
+                <AvatarGroup className='board-avatar-box' max={999} ref={avatarBoxRef}>
 
                     {
                         boardState.members.map((member, index) =>
@@ -247,14 +285,17 @@ const BoardMenuBar = (props) => {
                     <Popup
                         trigger={<P_BUTTON>Invite</P_BUTTON>} 
                         position="bottom left"
-                        contentStyle={inviteStyle} 
+                        contentStyle={inviteStyle}  
                     >
-                        <InviteDes>
-                            <i className="fas fa-times close"></i>
+                        <InviteDes> 
                             <div className='invite-header'>Invite To Board</div>
                             <span className='split-line'></span>
                             <div className='invite-body'>
-                                <input placeholder='Email address or name'></input>
+                                <input 
+                                    placeholder='Enter Username' 
+                                    value={inviteValue}
+                                    onChange={(e) => onInviteChange(e)}
+                                ></input>
                                 <div className='link-box'>
                                     <i className="fas fa-link"></i>
                                     <p className='invite'>Invite with Link</p>
@@ -263,19 +304,26 @@ const BoardMenuBar = (props) => {
                                     {
                                         inviteStat === true &&
                                         <div className='invite-link'>
-                                            <input value=''></input>
+                                            <input value='https://trelly.com/invite/b/eehan_niH'></input>
                                             <button>Copy</button>
                                         </div>
                                     }
                                 </div>
                             </div>
+                            <SubmitInviteBtn onMouseDown={() => onSubmitInvite()} disabled={inviteValue === ''} off={inviteValue === ''}>Send Invitation</SubmitInviteBtn>
                         </InviteDes>
                     </Popup>
+                    
                 </div>
-
+  
             </div>
 
             <div className='board-menu-right'>
+                <P_BUTTON onClick={() => setDrawer(!drawerStat)} style={{ display: `${drawerStat ? 'none' : 'block'}` }}>
+                    <i className="fas fa-ellipsis-h" style={{alignSelf: 'center', margin: '4px 10px 0 0'}}></i>
+                    Show Menu
+                </P_BUTTON>
+                <RightDrawer open={drawerStat} setDrawer={() => setDrawer(false)} />
             </div>
 
         </div>
@@ -609,6 +657,31 @@ const InviteDes = styled.div`
 
     .invite-body .link-box .invite-link > button:active { 
         filter: brightness(80%);
+    }
+`;
+
+const SubmitInviteBtn = styled.button`
+    padding: 8px;
+    font-size: 15px;
+    color: white;
+    background: ${props => props.off ? 'lightgray' : 'forestgreen'};
+    border: none;
+
+    &:hover {
+        filter: ${props => props.off ? '' : 'brightness(115%)'};
+        cursor: pointer;
+    }
+
+    &:active {
+        filter: brightness(90%); 
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
     }
 `;
 
