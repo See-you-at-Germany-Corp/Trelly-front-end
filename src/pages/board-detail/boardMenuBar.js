@@ -64,54 +64,66 @@ const BoardMenuBar = (props) => {
 
     /* ------------------ board name -------------------- */
 
-    const [focus, setFocus] = React.useState(false);
+    function useName() {
+        const [focus, setFocus] = React.useState(false);
+
+        const changeAllName = (name) => {
+            if (name.length !== 0) {
+                /// set current board name.
+                boardDispatch(renameBoard(name));
+                /// set personal board name.
+                props.dispatch(changeName(boardState.id, name));
+                /// set starred board name.
+                props.dispatch(changeStarName(boardState.id, name));
+            }
+            else {
+                setNameDisp(boardState.name);
+            }
+        }
+
+        const onInputChange = (e) => {
+            setNameDisp(e.target.value);
+        }
+
+        const onBlurHandler = (e) => {
+            if (focus === true) {
+                changeAllName(e.target.value);
+                setFocus(false);
+            }
+
+        }
+
+        const renameHandler = (e) => {
+            if (e.key === 'Enter') {
+                changeAllName(e.target.value)
+                setFocus(false);
+            }
+        }
+
+        const onDown = () => {
+            setFocus(true);
+            const input = nameInput.current;
+            input.setSelectionRange(0, input.value.length)
+        }
+
+        React.useEffect(() => {
+            setNameLength(nameDiv.current.offsetWidth);
+            nameInput.current.focus();
+        });
+
+        return [focus, setFocus, onInputChange, renameHandler, onDown, onBlurHandler];
+    }
+
+    // const [focus, setFocus] = React.useState(false);
+    const [focus, setFocus, onInputChange, renameHandler, onDown, onBlurHandler] = useName(); 
     const [nameDisplay, setNameDisp] = React.useState(boardState.name);
     const [nameLength, setNameLength] = React.useState(0);
     const nameDiv = React.useRef();
     const nameInput = React.useRef();
-
-    const changeAllName = (name) => {
-        if (name.length !== 0) {
-            /// set current board name.
-            boardDispatch(renameBoard(name));
-            /// set personal board name.
-            props.dispatch(changeName(boardState.id, name));
-            /// set starred board name.
-            props.dispatch(changeStarName(boardState.id, name));
-        }
-        else {
-            setNameDisp(boardState.name);
-        }
-    }
-
-    const onInputChange = (e) => {
-        setNameDisp(e.target.value);
-    }
-
-    const onBlurHandler = (e) => {
-        if (focus === true) {
-            changeAllName(e.target.value);
-            setFocus(false);
-        }
-
-    }
-
-    const renameHandler = (e) => {
-        if (e.key === 'Enter') {
-            changeAllName(e.target.value)
-            setFocus(false);
-        }
-    }
-
-    const onDown = () => {
-        setFocus(true);
-        const input = nameInput.current;
-        input.setSelectionRange(0, input.value.length)
-    }
-
+ 
     /* ------------------ invite -------------------- */
 
-    const [inviteStat, setInvite] = React.useState(false); 
+    const [inviteStat, setInvite] = React.useState(false);
     const [inviteValue, setInviteValue] = React.useState('');
 
     const onInviteChange = (e) => {
@@ -153,8 +165,8 @@ const BoardMenuBar = (props) => {
 
     // eslint-disable-next-line
     React.useEffect(() => {
-        setNameLength(nameDiv.current.offsetWidth);
-        nameInput.current.focus();
+        // setNameLength(nameDiv.current.offsetWidth);
+        // nameInput.current.focus();
 
         window.onmousedown = function (e) {
             if (avatarState.focus === true) {
@@ -281,18 +293,18 @@ const BoardMenuBar = (props) => {
 
                 </AvatarGroup>
 
-                <div className='board-invite'>  
+                <div className='board-invite'>
                     <Popup
-                        trigger={<P_BUTTON>Invite</P_BUTTON>} 
+                        trigger={<P_BUTTON>Invite</P_BUTTON>}
                         position="bottom left"
-                        contentStyle={inviteStyle}  
+                        contentStyle={inviteStyle}
                     >
-                        <InviteDes> 
+                        <InviteDes>
                             <div className='invite-header'>Invite To Board</div>
                             <span className='split-line'></span>
                             <div className='invite-body'>
-                                <input 
-                                    placeholder='Enter Username' 
+                                <input
+                                    placeholder='Enter Username'
                                     value={inviteValue}
                                     onChange={(e) => onInviteChange(e)}
                                 ></input>
@@ -313,14 +325,14 @@ const BoardMenuBar = (props) => {
                             <SubmitInviteBtn onMouseDown={() => onSubmitInvite()} disabled={inviteValue === ''} off={inviteValue === ''}>Send Invitation</SubmitInviteBtn>
                         </InviteDes>
                     </Popup>
-                    
+
                 </div>
-  
+
             </div>
 
             <div className='board-menu-right'>
                 <P_BUTTON onClick={() => setDrawer(!drawerStat)} style={{ display: `${drawerStat ? 'none' : 'block'}` }}>
-                    <i className="fas fa-ellipsis-h" style={{alignSelf: 'center', margin: '4px 10px 0 0'}}></i>
+                    <i className="fas fa-ellipsis-h" style={{ alignSelf: 'center', margin: '4px 10px 0 0' }}></i>
                     Show Menu
                 </P_BUTTON>
                 <RightDrawer open={drawerStat} setDrawer={() => setDrawer(false)} />
@@ -341,7 +353,7 @@ export default BoardMenuBarWithConnect;
 /* --------------- const --------------- */
 
 const inviteStyle = {
-    borderRadius: '3px', 
+    borderRadius: '3px',
     boxShadow: '2px 4px 8px #888888',
     height: '348px',
     width: '280px',
@@ -495,7 +507,7 @@ const AvatarDetailBox = styled.div`
     .menu > p {
         margin: 0px 0px 0px 0px;
         width: 270px;
-        padding: 8px 4px 8px 10px;  
+        padding: 8px 14px 8px 10px;  
 
         font-size: 14px;
     }
