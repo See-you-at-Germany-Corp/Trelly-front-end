@@ -4,6 +4,34 @@ import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar'; 
 import { keyframes } from 'styled-components';
 
+const menuData = [
+    {
+        id: 2,
+        name: 'About This Board',
+        icon: 'chalkboard'
+    },
+    {
+        id: 3,
+        name: 'Change Background',
+        icon: 'image'
+    },
+    {
+        id: 4,
+        name: 'Search Cards',
+        icon: 'search'
+    },
+    {
+        id: 5,
+        name: 'Stickers',
+        icon: 'sticky-note'
+    },
+    {
+        id: 6,
+        name: 'More',
+        icon: 'ellipsis-h'
+    }, 
+];
+
 function useMenu(name, id) {
     const [state, setState] = React.useState({
         id: id,
@@ -73,13 +101,17 @@ const MainBox = (props) => {
                 <div>
                     <div className='menu-bar-name-box'><p>{state.name}</p></div>
 
-                    <div className='menu-box'>
-                        <MenuContent onClick={() => props.setId(2)}>
-                            About This Board
-                        </MenuContent>
-                        <MenuContent>
-                            Change Background
-                        </MenuContent>
+                    <div className='menu-box' style={{ marginTop: '15px', borderBottom: '1px solid lightgray', paddingBottom: '15px' }}>
+                         {
+                             menuData.map(menu => 
+                                 <MenuContent onClick={() => props.setId(menu.id)}>
+                                     <i className={`fas fa-${menu.icon} menu-icon`}></i>
+                                     <SmallDefaultText className='menu-name'>
+                                         {menu.name}
+                                     </SmallDefaultText>
+                                 </MenuContent>
+                             )
+                         }
                     </div>
                 </div>
             }
@@ -233,7 +265,7 @@ const DrawerBox = styled.div`
         top: 15px;
     }
 
-    i:hover { 
+    .fa-times:hover { 
         color: dimgray; 
         cursor: pointer;
     }
@@ -243,6 +275,11 @@ const DrawerBox = styled.div`
         color: gray;
         position: absolute;
         margin-left: 5px; 
+    }
+
+    .fa-chevron-left:hover {
+        color: dimgray; 
+        cursor: pointer;
     }
 
     .menu-bar-name-box {
@@ -260,6 +297,26 @@ const DrawerBox = styled.div`
 `;
 
 const MenuContent = styled.div`
+    padding: 6px;
+    border-radius: 3px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(222, 222, 222);
+    }
+
+    &:active {
+        background-color: rgb(215, 215, 215);
+    }
+
+    .menu-icon {
+        margin: 0 0 0 6px;
+        width: 30px;
+    }
+
+    .menu-name {
+        margin-left: 4px;
+    }
 `;
  
 const slide = keyframes`
@@ -286,6 +343,10 @@ const DefaultText = styled.p`
     
     text-align: center;
     font-weight: 500;
+`;
+
+const SmallDefaultText = styled(DefaultText)`
+    font-size: 14px;
 `;
 
 const DefaultLink = styled(Link)`
@@ -374,7 +435,8 @@ const moveOut = keyframes`
 const BackBox = styled.div` 
     animation: ${props => props.moveIn ? moveIn : moveOut} 0.15s linear; 
     opacity: ${props => props.moveIn ? '100' : '0'}; 
-    transition: opacity 0.2s;
+    visibility: ${props => props.moveIn ? 'visible' : 'hidden'}; 
+    transition: all 0.2s;
 `;
    
 export default RightDrawer;
