@@ -39,6 +39,9 @@ export default function List(props) {
         else if (selectFocus === 'card') {
             newCardRef.current.focus()
         }
+        if (edittingCardName) {
+            newCardRef.current.focus()
+        }
     });
 
     const handleChangeName = e => {
@@ -92,6 +95,7 @@ export default function List(props) {
         }
     }
 
+<<<<<<< HEAD
     const setAnchor = (e, type) => {
         setAnchorEl({
             listOpen: type === 'LIST',
@@ -113,6 +117,11 @@ export default function List(props) {
     }
 
     console.log('re-render', ListStyle);
+=======
+    const createNewCard = () => {
+
+    }
+>>>>>>> origin/hin/draggable-list
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>
