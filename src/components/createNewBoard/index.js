@@ -85,7 +85,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
                         /// strict max number to render.
                         .filter(bg => { 
                             return (
-                                bg.id < 9
+                                bg.id <= 9
                             );
                         })
                         .map(bg => (

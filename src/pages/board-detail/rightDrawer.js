@@ -1,10 +1,18 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Avatar from '@material-ui/core/Avatar'; 
+import Avatar from '@material-ui/core/Avatar';
 import { keyframes } from 'styled-components';
 
-const menuData = [
+import backgroundData from '../../components/createNewBoard/backgroundSelectData.js';
+
+import { BoardContext } from '../../context/board-context/board-context';
+import { changePicture } from '../../redux/actions/currentBoard.js';
+import { changePicturePersonal } from '../../redux/actions/personalBoardList.js';
+import { changePictureStarred } from '../../redux/actions/starredBoardList.js';
+
+const mainMenuData = [
     {
         id: 2,
         name: 'About This Board',
@@ -29,7 +37,7 @@ const menuData = [
         id: 6,
         name: 'More',
         icon: 'ellipsis-h'
-    }, 
+    },
 ];
 
 function useMenu(name, id) {
@@ -52,6 +60,7 @@ const RightDrawer = (props) => {
     const [idHis] = React.useState([]);
 
     const idChangeHandler = (newId) => {
+        /// push old id to store history.
         idHis.push(id);
         setId(newId);
     }
@@ -70,15 +79,17 @@ const RightDrawer = (props) => {
     });
 
     return (
-        <DrawerBox open={props.open}> 
-                <i className="fas fa-times" onMouseDown={() => props.setDrawer(false)}></i> 
-            { 
+        <DrawerBox open={props.open}>
+            <i className="fas fa-times" onMouseDown={() => props.setDrawer(false)}></i>
+            {
                 <BackBox moveIn={idHis.length > 0}>
                     <i className="fas fa-chevron-left" onMouseDown={() => backHandler()}></i>
                 </BackBox>
             }
-            <MainBox id={id} setId={(id) => idChangeHandler(id)} />
-            <AboutBox id={id} setId={(id) => idChangeHandler(id)} />
+            <MainBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=1 */}
+            <AboutBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=2 */}
+            <ChangeBackgroundBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=3 */}
+            <ColorPickerBox id={id} setId={(id) => idChangeHandler(id)} dispatch={props.dispatch} /> {/* id=3.1 */}
         </DrawerBox>
     );
 }
@@ -102,16 +113,16 @@ const MainBox = (props) => {
                     <div className='menu-bar-name-box'><p>{state.name}</p></div>
 
                     <div className='menu-box' style={{ marginTop: '15px', borderBottom: '1px solid lightgray', paddingBottom: '15px' }}>
-                         {
-                             menuData.map(menu => 
-                                 <MenuContent onClick={() => props.setId(menu.id)}>
-                                     <i className={`fas fa-${menu.icon} menu-icon`}></i>
-                                     <SmallDefaultText className='menu-name'>
-                                         {menu.name}
-                                     </SmallDefaultText>
-                                 </MenuContent>
-                             )
-                         }
+                        {
+                            mainMenuData.map((menu, index) =>
+                                <MenuContent key={index} onClick={() => props.setId(menu.id)}>
+                                    <i className={`fas fa-${menu.icon} menu-icon`}></i>
+                                    <SmallDefaultText className='menu-name'>
+                                        {menu.name}
+                                    </SmallDefaultText>
+                                </MenuContent>
+                            )
+                        }
                     </div>
                 </div>
             }
@@ -144,8 +155,8 @@ const AboutBox = (props) => {
     const founderMember = mockupFounder;
 
     const [isEdit, setEdit] = React.useState(false);
-    const [des, setDes] = React.useState(mockupDes);  
-    const [cpyDes, setCpy] = React.useState(mockupDes);  
+    const [des, setDes] = React.useState(mockupDes);
+    const [cpyDes, setCpy] = React.useState(mockupDes);
 
     const onInputChange = (e) => {
         setCpy(e.target.value);
@@ -188,47 +199,137 @@ const AboutBox = (props) => {
                                     <p style={{ margin: '0', padding: '0', color: 'gray', fontSize: '14px' }}>
                                         {`@${founderMember.username}`}
                                     </p>
-                                </div> 
+                                </div>
 
                             </div>
 
-                            <div className='description' style={{ display: 'flex', flexDirection: 'column', marginTop: '18px' }}> 
+                            <div className='description' style={{ display: 'flex', flexDirection: 'column', marginTop: '18px' }}>
                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <i className="fas fa-align-left" style={{ color: '#172b4d', marginRight: '16px', alignSelf: 'center' }}></i>
                                     <DefaultText>Description</DefaultText>
                                     {
                                         !isEdit &&
                                         <EditButton onMouseDown={() => setEdit(true)}>Edit</EditButton>
-                                    } 
+                                    }
                                 </div>
 
                                 {
                                     isEdit ?
-                                    <div style={{ display: 'flex', flexDirection: 'column', wordBreak: 'break-all', maxWidth: '300px' }}>
-                                        <textarea 
-                                            value={cpyDes} 
-                                            onChange={onInputChange}
-                                            style={{ 
-                                                resize: 'none', 
-                                                borderRadius: '3px', 
-                                                minHeight: '108px', 
-                                                border: 'none',
-                                                margin: '15px 0 10px 0', 
-                                            }}
-                                        >
-                                        </textarea> 
+                                        <div style={{ display: 'flex', flexDirection: 'column', wordBreak: 'break-all', maxWidth: '300px' }}>
+                                            <textarea
+                                                value={cpyDes}
+                                                onChange={onInputChange}
+                                                style={{
+                                                    resize: 'none',
+                                                    borderRadius: '3px',
+                                                    minHeight: '108px',
+                                                    border: 'none',
+                                                    margin: '15px 0 10px 0',
+                                                }}
+                                            >
+                                            </textarea>
 
-                                        <div style={{ flexDirection: 'row' }}>
-                                            <SubmitInviteBtn onMouseDown={onSubmit} style={{ marginRight: '12px' }}>Save</SubmitInviteBtn>
-                                            <i className="fas fa-times" onMouseDown={() => setEdit(false)} style={{ position: 'inherit', alignSelf: 'center' }}></i>
+                                            <div style={{ flexDirection: 'row' }}>
+                                                <SubmitInviteBtn onMouseDown={onSubmit} style={{ marginRight: '12px' }}>Save</SubmitInviteBtn>
+                                                <i className="fas fa-times" onMouseDown={() => setEdit(false)} style={{ position: 'inherit', alignSelf: 'center' }}></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    :
-                                    <p style={{ fontSize: '14px', color: 'gray' }}>{des}</p>
+                                        :
+                                        <p style={{ fontSize: '14px', color: 'gray' }}>{des}</p>
                                 }
                             </div>
                         </div>
                     </SlideDiv>
+                </div>
+            }
+        </>
+    );
+}
+
+const ChangeBackgroundBox = (props) => {
+    const [state, setState] = useMenu('Change Background', 3);
+
+    if (props.id === state.id && state.open === false) {
+        setState({ ...state, open: true });
+    }
+
+    else if (props.id !== state.id && state.open === true) {
+        setState({ ...state, open: false });
+    }
+
+    return (
+        <>
+            {
+                state.open &&
+                <div>
+                    <div className='menu-bar-name-box'><p>{state.name}</p></div>
+
+                    <SlideDiv>
+                        <BackgroundBigBox>
+                            <div className='color-box' onMouseDown={() => props.setId(3.1)}>
+                                <div className='background-list'>
+                                    {
+                                        backgroundData.map((bg, index) => (
+                                            <ColorItem key={index} background={bg.picture}></ColorItem>
+                                        ))
+                                    }
+                                </div>
+                                <div className='list-name' style={{ textAlign: 'center' }}>
+                                    <SmallDefaultText>Colors</SmallDefaultText>
+                                </div>
+                            </div>
+                        </BackgroundBigBox>
+                    </SlideDiv>
+
+                </div>
+            }
+        </>
+    );
+}
+
+const ColorPickerBox = (props) => {
+    const [state, setState] = useMenu('Colors', 3.1);
+
+    if (props.id === state.id && state.open === false) {
+        setState({ ...state, open: true });
+    }
+
+    else if (props.id !== state.id && state.open === true) {
+        setState({ ...state, open: false });
+    }
+
+    const { boardState, boardDispatch } = React.useContext(BoardContext);
+
+    function changePictureHandler(picture) {
+        if (boardState.picture !== picture) {
+            boardDispatch(changePicture(picture));
+            props.dispatch(changePicturePersonal(boardState.id, picture));
+            props.dispatch(changePictureStarred(boardState.id, picture));
+        }
+    }
+
+    return (
+        <>
+            {
+                state.open &&
+                <div>
+                    <div className='menu-bar-name-box'><p>{state.name}</p></div>
+
+                    <SlideDiv>
+                        <ColorPickerBoxBigBox>
+                            {
+                                backgroundData.map((bg, index) => (
+                                    <ColorPickerBoxItem
+                                        key={index}
+                                        background={bg.picture}
+                                        onMouseDown={() => changePictureHandler(bg.picture)}
+                                    >
+                                    </ColorPickerBoxItem>
+                                ))
+                            }
+                        </ColorPickerBoxBigBox>
+                    </SlideDiv>
+
                 </div>
             }
         </>
@@ -318,7 +419,7 @@ const MenuContent = styled.div`
         margin-left: 4px;
     }
 `;
- 
+
 const slide = keyframes`
   from {
     transform: translateX(338px);
@@ -438,5 +539,59 @@ const BackBox = styled.div`
     visibility: ${props => props.moveIn ? 'visible' : 'hidden'}; 
     transition: all 0.2s;
 `;
-   
-export default RightDrawer;
+
+const BackgroundBigBox = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 15px;
+    padding-top: 5px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    .background-list {
+        margin: 10px 0 0 12.5px; 
+        display: flex;
+        border-radius: 10px;
+        width: 135px;
+        overflow: auto;
+    }
+
+    .background-list:hover {
+        filter: brightness(90%);
+    }
+`;
+
+const ColorItem = styled.div`
+    background: ${props => props.background};
+    width: 15px;
+    height: 100px;
+`;
+
+const ColorPickerBoxBigBox = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2px;
+`;
+
+const ColorPickerBoxItem = styled.div`
+    background: ${props => props.background};
+    width: 145px;
+    height: 100px;
+    border-radius: 10px;
+
+    margin: 8px 0 0 8px; 
+
+    overflow: auto;
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(85%);
+    }
+`;
+
+const RightDrawerWithConnect = connect()(RightDrawer);
+
+export default RightDrawerWithConnect;

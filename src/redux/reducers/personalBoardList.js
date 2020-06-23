@@ -85,6 +85,18 @@ export default (state = initState, action)=> {
             }
 
             return newState3;
+         
+        case 'CHANGE_PICTURE_PERSONAL':
+            const newState4 = [...state]; 
+            const changePicIndex = state.findIndex(data => data.id === action.boardId) 
+
+            if (changePicIndex >= 0) { 
+                newState4[changePicIndex].picture = action.picture; 
+
+                /// post to backend.
+            }
+
+            return newState4;
 
         case 'OVERWRITE':
             return action.newState
