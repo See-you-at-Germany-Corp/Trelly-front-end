@@ -27,7 +27,7 @@ export const mockupData = {
             init: 'ML',
             username: 'marklatthapol',
             bio: '',
-            picture: ''
+            picture: testPic
         },
     ],
     lists: [

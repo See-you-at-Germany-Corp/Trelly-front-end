@@ -29,6 +29,35 @@ const boardReducer = (state, action) => {
             state.lists[action.index].name = action.name
             return state
         }
+
+        /*--------------------BOAT--------------------*/
+
+        case ('BOARD_RENAME'): 
+            state.name = action.name 
+            return state;
+
+        case ('MEMBER_OVERWRITE'): 
+            state.members = action.members 
+            return state;
+
+        case ('ADD_MEMBER'):
+            const newState2 = {...state};
+            newState2.members.push(action.member);
+            return newState2;
+
+        case ('REMOVE_MEMBER'):
+            const newState = {...state};
+            const rmvIndex = state.members.findIndex(member => member.id === action.id);
+
+            if (rmvIndex >= 0) {
+                newState.members.splice(rmvIndex, 1);
+            }
+
+            return newState;
+
+        case ('CHANGE_CURRENT_BOARD'):
+            return action.newState;
+
         default:
             return state
     }

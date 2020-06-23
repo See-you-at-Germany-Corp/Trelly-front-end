@@ -9,6 +9,12 @@ export const unStarBoard = (boardId) => ({
     boardId,
 })
 
+export const changeStarName = (boardId, name) => ({
+    type: 'CHANGE_STAR_NAME',
+    boardId,
+    name
+})
+
 export const overWriteStarBoard = (newState) => ({
     type: 'OVERWRITE_STAR_BOARD',
     newState,
