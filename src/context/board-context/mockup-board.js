@@ -1,6 +1,5 @@
 import testPic from '../../asset/butler.png';
 
-
 export const mockupData = {
     id: 1,
     name: 'Trelly',
