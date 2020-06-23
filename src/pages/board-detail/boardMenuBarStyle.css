@@ -22,7 +22,7 @@
 
 .board-menu-bar .board-menu-left .board-name-box > p {
     padding: 0px;
-    margin: 8px 16px 0px 12px; 
+    margin: 8px 0px 0px 12px; 
     color: white;
     font-weight: 700;
     font-size: 18px;
@@ -34,6 +34,19 @@
     display: -webkit-box;
    -webkit-line-clamp: 1; /* number of lines to show */
    -webkit-box-orient: vertical;
+}
+
+.board-menu-bar .board-menu-left .board-star {
+    visibility: visible;
+    opacity: 100;
+    padding: 0;
+    margin: 0;
+    width: 47px;
+}
+
+.board-menu-bar .board-menu-left .board-star > a {
+    padding: 0px; 
+    margin: 0px; 
 }
 
 .board-menu-bar .board-menu-left .board-star > a > i {
@@ -57,13 +70,13 @@
 
 .board-menu-bar .board-menu-left .board-avatar-box > div {
     display: flex;
-    max-width: 25px;
-    max-height: 25px;
+    max-width: 28px;
+    max-height: 28px;
     margin-left: 0px;
     margin-right: -3px;
     color: midnightblue;
     background-color: gainsboro;
-    border-color: gainsboro;
+    border-width: 0; 
     font-size: 12px;
     font-weight: 700;
 }

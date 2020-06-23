@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,32 +6,58 @@ import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
 import './boardMenuBarStyle.css';
-import { starBoard, unStarBoard } from '../../redux/actions/personalBoardList';
+import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
+import { memberOverWrite, /*changeCurrentBoard*/ } from '../../redux/actions/currentBoard.js';
+import { BoardContext } from '../../context/board-context/board-context';
 
 const BoardMenuBar = (props) => {
 
-    const boardData = props.boardData;
+    // const [isOverWrite, setIsOverWrite] = React.useState(false);
+    const [isReordered, setIsReordered] = React.useState(false);
 
-    const starredStyle = boardData.starred === true ? {
+    const starredBoardList = props.starredBoardList;
+
+    /// send api to get real board detail from backend.
+    /// overwrite data in currentBoard.
+    // if (isOverWrite === false) {
+    //     props.dispatch(changeCurrentBoard(/*data from backend.*/));
+    // }
+
+    const { boardState } = useContext(BoardContext)
+
+    const boardIndex = starredBoardList.findIndex(data => data.id === boardState.id)
+    const isStarredBoard = `${starredBoardList[boardIndex]}` !== 'undefined' && starredBoardList[boardIndex].starred_id > 0;
+
+    const starredStyle = isStarredBoard === true ? {
         opacity: '100',
         color: 'khaki'
     } : {};
 
+    /// wait to use redux.
+    let myId = 1;  /// mockup myId.
+    /// reorder members.
+    if (isReordered === false) {
+        props.dispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));
+        setIsReordered(true);
+    } 
+
     return (
-        <div className={`${boardData.name}-menu board-menu-bar`}>
+        <div className={`${boardState.name}-menu board-menu-bar`}>
 
             <div className='board-menu-left'>
                 <div className='board-name-box'>
-                    <p>{boardData.name}</p> 
+                    <p>{boardState.name}</p> 
                 </div>
 
                 <div className='board-star'>
                     <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
                         {
-                            boardData.starred === true ?
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(boardData.id))} style={starredStyle}></i>
-                                :
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(starBoard(boardData.id))}></i>
+                            isStarredBoard === true ?
+                            /// click to unstar board.
+                            <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardState.id))} style={starredStyle}></i>
+                            :
+                            /// click to star board.
+                            <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardState.id, boardState))} style={starredStyle}></i>
                         }
                     </Link>
                 </div>
@@ -46,11 +72,7 @@ const BoardMenuBar = (props) => {
 
                 <div className='board-privilege'>
                     <P_BUTTON>
-                        <i
-                            className={`fas fa-${privilegeIcon[`${boardData.privilege}`]}`}
-                            style={{ color: 'white', marginRight: '10px', fontSize: '12px' }}>
-                        </i>
-                        {boardData.privilege}
+                        Private
                     </P_BUTTON>
                 </div>
 
@@ -58,8 +80,11 @@ const BoardMenuBar = (props) => {
 
                 {/* wait to use avatar data from profile. */}
                 <AvatarGroup className='board-avatar-box' max={5}>
-                    <Avatar>WS</Avatar>
-                    <Avatar>PB</Avatar> 
+                    {
+                        boardState.members.map((member, index) => 
+                            <Avatar key={index} src={member.picture}>{member.init}</Avatar> 
+                        )
+                    }
                 </AvatarGroup>
 
                 <div className='board-invite'>
@@ -75,16 +100,14 @@ const BoardMenuBar = (props) => {
     );
 }
 
-const BoardMenuBarWithConnect = connect()(BoardMenuBar);
+const mapStateToProps = (state) => ({
+    starredBoardList: state.starredBoardList,
+    currentBoard: state.currentBoard
+})
+
+const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
 
 export default BoardMenuBarWithConnect;
-
-/* --------------- const --------------- */
-
-const privilegeIcon = {
-    Private: 'lock',
-    Public: 'globe-asia'
-}
 
 /* --------------- JSX --------------- */
 
@@ -113,3 +136,23 @@ const P_BUTTON = styled.p`
         background-color: rgba(255, 255, 255, 0.35);
     }
 `;
+
+/* --------------- function --------------- */
+
+const memberSortByInit = ( members, myId ) => {
+
+    const newMembers = [...members];
+    const myIndex = members.findIndex(member => member.id === myId);
+ 
+    const copyMyData = newMembers[myIndex];
+    /// remove my data from members array.
+    newMembers.splice(myIndex, 1);
+
+    let sortedMembers = newMembers.sort(function (a, b) {
+        /// sort lowest to highest. 
+        return a.init[0].charCodeAt() - b.init[0].charCodeAt();
+    }); 
+ 
+    /// return merge myData in first index with sorted members array.
+    return [copyMyData, ...sortedMembers]
+}

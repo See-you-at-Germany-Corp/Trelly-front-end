@@ -43,8 +43,8 @@ export default function Forgot() {
                     {
                         smallClient && <HeaderLogo />
                     }
+                    
                     <h1>Can't log in?</h1>
-
                     {
                         forgotState.sended === false ?
                             [
@@ -84,7 +84,7 @@ export default function Forgot() {
                                 </li>
                                     ᛫
                                 <li style={{ marginLeft: 7 }}>
-                                    <a style={{ fontSize: 'inherit', color: '#3a86ff' }} onClick={toggleSended}>Resend recovery link</a>
+                                    <a href='/forgot' style={{ fontSize: 'inherit', color: '#3a86ff' }} onClick={toggleSended}>Resend recovery link</a>
                                 </li>
                             </StyledList>
                     }
@@ -94,11 +94,11 @@ export default function Forgot() {
                     !forgotState.sended &&
                     <StyledList style={{ fontSize: 12 }}>
                         <li style={{ marginRight: 7 }}>
-                            <a style={{ fontSize: 'inherit', color: '#3a86ff' }}>Login help</a>
+                            <a href='/forgot' style={{ fontSize: 'inherit', color: '#3a86ff' }}>Login help</a>
                         </li>
                         ᛫
                         <li style={{ marginLeft: 7 }}>
-                            <a style={{ fontSize: 'inherit', color: '#3a86ff' }}>Contact support</a>
+                            <a href='/forgot' style={{ fontSize: 'inherit', color: '#3a86ff' }}>Contact support</a>
                         </li>
                     </StyledList>
                 }
