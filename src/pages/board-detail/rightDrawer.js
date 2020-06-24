@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { keyframes } from 'styled-components';
 
 import backgroundData from '../../components/createNewBoard/backgroundSelectData.js';
+import labelData from './labelData.js';
 
 import { BoardContext } from '../../context/board-context/board-context';
 import { changePicture } from '../../redux/actions/currentBoard.js';
@@ -37,6 +38,24 @@ const mainMenuData = [
         id: 6,
         name: 'More',
         icon: 'ellipsis-h'
+    },
+];
+
+const moreMenuData = [
+    {
+        id: 6.1,
+        name: 'Settings',
+        icon: 'cog'
+    },
+    {
+        id: 6.2,
+        name: 'Labels',
+        icon: 'tag'
+    },
+    {
+        id: 6.3,
+        name: 'Leave Board...',
+        icon: 'sign-out-alt'
     },
 ];
 
@@ -90,6 +109,8 @@ const RightDrawer = (props) => {
             <AboutBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=2 */}
             <ChangeBackgroundBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=3 */}
             <ColorPickerBox id={id} setId={(id) => idChangeHandler(id)} dispatch={props.dispatch} /> {/* id=3.1 */}
+            <MoreBox id={id} setId={(id) => idChangeHandler(id)} />
+            <LabelsBox id={id} setId={(id) => idChangeHandler(id)} />
         </DrawerBox>
     );
 }
@@ -187,6 +208,7 @@ const AboutBox = (props) => {
                                     className='avatar'
                                     src=''
                                     style={{ width: '50px', height: '50px', margin: '0 11px 0 0', fontSize: '16px' }}
+                                    title={`${founderMember.full_name} (${founderMember.username})`}
                                 >
                                     {founderMember.init}
                                 </Avatar>
@@ -302,7 +324,7 @@ const ColorPickerBox = (props) => {
 
     function changePictureHandler(picture) {
         if (boardState.picture !== picture) {
-            boardDispatch(changePicture(picture));
+            boardDispatch(changePicture(picture)); 
             props.dispatch(changePicturePersonal(boardState.id, picture));
             props.dispatch(changePictureStarred(boardState.id, picture));
         }
@@ -328,6 +350,96 @@ const ColorPickerBox = (props) => {
                                 ))
                             }
                         </ColorPickerBoxBigBox>
+                    </SlideDiv>
+
+                </div>
+            }
+        </>
+    );
+}
+
+const MoreBox = (props) => {
+    const [state, setState] = useMenu('More', 6);
+
+    if (props.id === state.id && state.open === false) {
+        setState({ ...state, open: true });
+    }
+
+    else if (props.id !== state.id && state.open === true) {
+        setState({ ...state, open: false });
+    }
+
+    return (
+        <>
+            {
+                state.open &&
+                <div>
+                    <div className='menu-bar-name-box'><p>{state.name}</p></div>
+
+                    <div className='menu-box' style={{ marginTop: '15px', borderBottom: '1px solid lightgray', paddingBottom: '15px' }}>
+                        {
+                            moreMenuData.map((menu, index) =>
+                                <MenuContent key={index} onClick={() => props.setId(menu.id)}>
+                                    <i className={`fas fa-${menu.icon} menu-icon`}></i>
+                                    <SmallDefaultText className='menu-name'>
+                                        {menu.name}
+                                    </SmallDefaultText>
+                                </MenuContent>
+                            )
+                        }
+                    </div>
+                </div>
+            }
+        </>
+    );
+}
+
+const LabelsBox = (props) => {
+    const [state, setState] = useMenu('Labels', 6.2);
+
+    if (props.id === state.id && state.open === false) {
+        setState({ ...state, open: true });
+    }
+
+    else if (props.id !== state.id && state.open === true) {
+        setState({ ...state, open: false });
+    }
+
+    const { boardState } = React.useContext(BoardContext);
+
+    const labelSorted = boardState.labels.sort(function (a, b) {
+        return a.color_id - b.color_id;
+    });
+
+    return (
+        <>
+            {
+                state.open &&
+                <div>
+                    <div className='menu-bar-name-box'><p>{state.name}</p></div>
+
+                    <SlideDiv>
+                        <LabelBigBox>
+                            <div className='label-name'>
+                                <SmallDefaultText>LABELS</SmallDefaultText>
+                            </div>
+
+                            <div className='label-lists'>
+                                {
+                                    labelSorted.map(bg => (
+                                        <div className='label-box'>
+                                            <div className='label-item' 
+                                                style={{ background: `${labelData[bg.color_id - 1].picture}` }}
+                                            >
+                                                <p><b>{bg.name}</b></p>
+                                            </div>
+                                            <i className="far fa-edit"></i>
+                                        </div>
+                                    ))
+                                } 
+                            </div>
+
+                        </LabelBigBox>
                     </SlideDiv>
 
                 </div>
@@ -589,6 +701,62 @@ const ColorPickerBoxItem = styled.div`
     &:hover {
         cursor: pointer;
         filter: brightness(85%);
+    }
+`;
+
+const LabelBigBox = styled.div` 
+    overflow: auto;
+    max-height: 85vh;
+
+    .label-name {
+        width: 100%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .label-box {
+        display: flex;
+        flex-flow: row;
+    }
+
+    .label-box > i {
+        align-self: center;
+        font-size: 12px;
+        border-radius: 3px;
+        padding: 10px 8px 10px 10px; 
+        margin-top: 2px;
+        margin-left: 5px; 
+    }
+
+    .label-box > i:hover {
+        cursor: pointer;
+        background-color: rgb(210, 210, 210); 
+    }
+
+    .label-box > i:active { 
+        background-color: rgb(190, 190, 190); 
+    }
+
+    .label-item {
+        width: 90%;
+        height: 33px;
+        border-radius: 3px;
+        margin-top: 3px;
+        transition: width 0.25s;
+    }
+
+    
+    .label-item > p { 
+        color: white;
+        margin: 4px 0 0 15px;
+        padding: 0; 
+    }
+
+    .label-item:hover {
+        cursor: pointer;
+        width: 80%;
+        filter: brightness(85%);
+        transition: width 0.15s;
     }
 `;
 

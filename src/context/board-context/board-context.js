@@ -72,12 +72,12 @@ const boardReducer = (state, action) => {
             return action.newState;
 
         case ('CHANGE_PICTURE'):
-            const newState3 = {...state};
-            newState3.picture = action.picture;
-
             /// post to backend.
-            
-            return newState3;
+
+            return {
+                ...state,
+                picture: action.picture
+            };
 
         default:
             return state

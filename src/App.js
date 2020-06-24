@@ -13,6 +13,8 @@ import Forgot from './pages/user-account/forgot'
 import CreateNewBoard from './components/createNewBoard';
 import BoardDetail from './pages/board-detail';
 
+import { BoardProvider } from './context/board-context/board-context'
+
 function App() {
   return (
     <Router>
@@ -20,18 +22,20 @@ function App() {
       <div style={{ background: 'rgb(2, 106, 167)', height: '5.5vh', width: '100%', position: 'sticky', top: '0', zIndex: '1' }}></div>
       <CreateNewBoard />
 
-      <Switch>
-        <Route path='/login/' component={Login} />
+      <BoardProvider>
+        <Switch>
+          <Route path='/login/' component={Login} />
 
-        <Route path='/signup/' component={Signup} />
+          <Route path='/signup/' component={Signup} />
 
-        <Route path='/forgot/' component={Forgot} />
+          <Route path='/forgot/' component={Forgot} />
 
-        <Route exact path='/:boardId/:boardName' component={BoardDetail} />
+          <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
-        <Route exact path='/' component={Home} />
+          <Route exact path='/' component={Home} />
 
-      </Switch>
+        </Switch>
+      </BoardProvider>
 
     </Router>
   );

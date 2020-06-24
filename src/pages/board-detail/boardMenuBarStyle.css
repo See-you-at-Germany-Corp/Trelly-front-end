@@ -58,12 +58,12 @@
     width: 47px;
 }
 
-.board-menu-bar .board-menu-left .board-star > a {
+.board-menu-bar .board-menu-left .board-star > span {
     padding: 0px; 
     margin: 0px; 
 }
 
-.board-menu-bar .board-menu-left .board-star > a > i {
+.board-menu-bar .board-menu-left .board-star > span > i {
     background-color: rgba(255, 255, 255, 0.3);
     color: white;
     border-radius: 3px;
@@ -71,7 +71,8 @@
     font-size: 12px; 
 }
 
-.board-menu-bar .board-menu-left .board-star > a > i:hover {
+.board-menu-bar .board-menu-left .board-star > span > i:hover {
+    cursor: pointer;
     background-color: rgba(255, 255, 255, 0.4); 
 }
  

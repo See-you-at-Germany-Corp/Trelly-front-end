@@ -159,7 +159,7 @@ const BoardMenuBar = (props) => {
 
     /* ------------------ drawer -------------------- */
 
-    const [drawerStat, setDrawer] = React.useState(true);
+    const [drawerStat, setDrawer] = React.useState(false);
 
     /* ------------------ working every render -------------------- */
 
@@ -210,8 +210,7 @@ const BoardMenuBar = (props) => {
                 </div>
 
                 <div className='board-star'>
-                    <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
-                        {
+                    <span title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>                        {
                             isStarredBoard === true ?
                                 /// click to unstar board.
                                 <i className='fas fa-star' onClick={() => props.dispatch(unStarBoard(boardState.id))} style={starredStyle}></i>
@@ -219,7 +218,7 @@ const BoardMenuBar = (props) => {
                                 /// click to star board.
                                 <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardState.id, boardState))} style={starredStyle}></i>
                         }
-                    </Link>
+                    </span>
                 </div>
 
                 <SepLine />

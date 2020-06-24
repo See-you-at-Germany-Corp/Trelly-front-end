@@ -29,10 +29,10 @@ export default [
     },
     {
         id: 8,
-        picture: 'gray'
+        picture: 'palevioletred'
     },
     {
         id: 9,
-        picture: 'palevioletred'
+        picture: 'gray'
     }
 ];
