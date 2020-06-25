@@ -4,42 +4,22 @@ import styled, { css } from 'styled-components';
 
 
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-// import Button from '@material-ui/core/Button';
-// import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
-// import Card from '@material-ui/core/Card';
-import { Divider, Avatar, Hidden, useIsFocusVisible } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import AppsIcon from '@material-ui/icons/Apps';
+import { Divider, Avatar } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close'; 
 import AddIcon from '@material-ui/icons/Add';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import NotificationsNoneRoundedIcon from '@material-ui/icons/NotificationsNoneRounded';
-import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
 import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/starredBoardList';
-import StarRoundedIcon from '@material-ui/icons/StarRounded';
 import { useLocation } from 'react-router-dom'
 
 
 import { createOn } from '../../redux/actions/createNewBoard';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-
-const buttonStyle = {
-    backgroundColor: "hsla(0,0%,100%,.3)",
-    color: "white",
-    border: "none",
-    padding: "4px",
-    outline: 0,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: "4px"
-}
 
 const MyButton = styled(motion.button)`
     background-color: hsla(0,0%,100%,.3);
@@ -107,18 +87,6 @@ const variants = {
     }
 }
 
-const hoverVar = {
-    hover: {
-        backgroundColor: "rgba(206, 212, 206, 0.3)",
-        transition: { duration: 0.1 },
-    },
-    exit: {
-        backgroundColor: "white",
-        transition: {
-            duration: 0.1
-        }
-    }
-}
 const Column = styled(motion.div)`
     display: flex;
     background-color:${props=>props.bg? 'white':'transparent'};
@@ -137,6 +105,7 @@ const Column = styled(motion.div)`
     // z-index:111111111;
     // position:${props=>props.position};
 `;
+
 const LinkBox = styled(motion.div)`
     background: ${props=>props.backgroundColor? props.backgroundColor : "white"};
     margin: ${props => props.margin ? props.margin : "0px"};
@@ -199,7 +168,7 @@ const Title = styled.div`
 `;
 
 const TitleCom = ({title}) => {
-    const [isOpen, setOpen] =useContext(OpenContext);
+    const [setOpen] =useContext(OpenContext);
     return (
         <Column>
             <Title>
@@ -228,14 +197,6 @@ const DropDownCard = ({ title, children}) => {
     );
 }
 
-const InsideCard = styled(Column)`
-    flex-direction: column;
-    padding: 10px;
-    &:hover {
-        background-color: rgba(206, 212, 206, 0.3);
-    }
-`;
-
 const logoVariants = {
     init1:{
         height: ["8px","14px","8px"],
@@ -263,12 +224,14 @@ const LogoStyle = styled(motion.div)`
     // background-color:${props=>props.white ? "white": "rgba(255, 255, 255, 0.5)"};
     box-shadow:0px 0px 2px 0px rgb(0, 121, 191);
 `;
+
 const LogoLetter = styled(motion.div)`
     font-family: Pacifico;
     color: rgba(255, 255, 255, 0.5);
     // font-weight: bold;
     font-size: 20px;
 `
+
 const logoHover = {
     hover:{
         // backgroundColor:"rgba(255, 255, 255, 1)"
@@ -287,6 +250,7 @@ const logoHover = {
         }
     }
 }
+
 const textHover={
     hover:{
         color:"rgba(255, 255, 255, 1)"
@@ -303,13 +267,8 @@ const LogoContainer = styled(motion.div)`
         // box-shadow:0px 0px 0px 2000px; 
         // clip-path: circle(10px);
     `;
-const LogoBut =()=>{
-    const config={
-        hover : logoHover,
-        animation: logoVariants,
-        animate: ["init1","init2"]
 
-    }
+const LogoBut =()=>{
     
     return (
         <LogoContainer
@@ -371,12 +330,10 @@ const NormalRightLogo = styled(Logodiv)`
     width: 100%;
     // margin: 2px 2px 2px 0px;
 `;
-const NormalStyle = styled(LogoStyle)`
-    background-color:white
-`
+
 const LogoOnly =({variant,size})=>{
     
-    if(variant=="transparent"){
+    if(variant==="transparent"){
         return (
             <LogoTest statc/>
         );
@@ -404,8 +361,9 @@ const Navbars = ({personalBoardList,starredBoardList,on}) => {
         let keyword = event.target.value;
         setSearch(keyword);
     }
+    // eslint-disable-next-line
     const searchItem = personalBoardList.filter((data)=>{
-        if(search == null || search == ''){
+        if(search === null || search === ''){
             return null;
         }
         else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
@@ -415,15 +373,16 @@ const Navbars = ({personalBoardList,starredBoardList,on}) => {
     })
     let location = useLocation();
     let transparent = false;
+    // eslint-disable-next-line
     let boardIndex = 0;
     for(let i = 0; i < personalBoardList.length; i++){
-        if(personalBoardList[i].href == location.pathname){
+        if(personalBoardList[i].href === location.pathname){
             boardIndex = i;
             break;
         }
     }
-    // console.log(location.pathname == '/');
-    if(location.pathname == '/'){
+    // console.log(location.pathname === '/');
+    if(location.pathname === '/'){
         transparent = false;
     }
     else{
@@ -633,6 +592,7 @@ const Info = () => {
                         children={
                             <Column >
                                 <div style={{ display: "flex", justifyContent: "flex-start" }}>
+                                    {/* eslint-disable-next-line */}
                                     <img src="https://a.trellocdn.com/prgb/dist/images/tips/info-image-03@2x.8397667fb178f90df99a.png" style={{ maxWidth: "100%" }} />
                                 </div>
                                 <div style={{ padding: '10px', textAlign: "center" }}>
@@ -675,6 +635,7 @@ const Info = () => {
 }
 
 const Creates = ({dispatch}) => {
+    // eslint-disable-next-line
     const [open,setOpen] = useContext(OpenContext);
     return (
         <DropDownCard
@@ -880,7 +841,7 @@ const SearchDropDowns = ({searchItem,personalBoardList,starredBoardList,dispatch
                 Board
                 {
                     searchItem.map((board,index)=>{
-                        let star = starredBoardList.some(sboard=>sboard.id == board.id);
+                        let star = starredBoardList.some(sboard=>sboard.id === board.id);
                         return (
                                 <BoardPreview board={board} dispatch={dispatch} index={index} open={false} star={star}/>
                         );
@@ -922,11 +883,12 @@ const Boards =({personalBoardList,starredBoardList,dispatch})=>{
         let keyword = event.target.value;
         setSearch(keyword);
     }
+    // eslint-disable-next-line
     const searchItem = personalBoardList.filter((data)=>{
-        if (search == 'is:starred'){
+        if (search === 'is:starred'){
             // return starred list
         }
-        if(search == null || search == ''){
+        if(search === null || search === ''){
             return null;
         }
         else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
@@ -946,12 +908,12 @@ const Boards =({personalBoardList,starredBoardList,dispatch})=>{
             }
             <HidableDiv open={true} initial="init" animate="open" variants={flyUpDiv} >
             {
-                searchItem.length == 0 && search.length > 0 ?
+                searchItem.length === 0 && search.length > 0 ?
                 <Column minWidth="300px">
                     Not Found
                 </Column>:
                 searchItem.map((board,index)=>{
-                    let star = starredBoardList.some(sboard=>sboard.id == board.id);
+                    let star = starredBoardList.some(sboard=>sboard.id === board.id);
                     return (
                             <BoardPreview board={board} dispatch={dispatch} index={index} open={false} star={star}/>
                     );
@@ -981,6 +943,7 @@ const HidableCon = styled.div`
     padding-left:4px;
 `;
 const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})=>{
+    // eslint-disable-next-line
     const [test,setTest] = useState(starredBoardList)
     const onDragEnd =(result)=> {
         let temp = starredBoardList;
@@ -1013,9 +976,9 @@ const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})
                             >
                             {
                                 starredBoardList.filter(board => board.id > 0 ).map((board,index)=>
-                                    <Draggable key={board.id} draggableId={String(board.id)} index={starredBoardList.findIndex(i => i.id == board.id)}>
+                                    <Draggable key={board.id} draggableId={String(board.id)} index={starredBoardList.findIndex(i => i.id === board.id)}>
                                     {(provided,snapshot)=>{
-                                        let starred = starredBoardList.some(sboard=>sboard.id == board.id);
+                                        let starred = starredBoardList.some(sboard=>sboard.id === board.id);
                                         return(
                                             <div
                                                 ref={provided.innerRef}
@@ -1049,7 +1012,7 @@ const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})
             icon:<LogoOnly />,
             child:<div style={{display:"block"}}>{
                 personalBoardList.filter(board => board.id > 0 ).map((board,index)=>{
-                    let starred = starredBoardList.some(sboard=>sboard.id == board.id);
+                    let starred = starredBoardList.some(sboard=>sboard.id === board.id);
                     return(
                         <BoardPreview board={board} dispatch={dispatch} index={index} open={open} star={starred}/>
                     );
@@ -1157,79 +1120,7 @@ const ImgPreviewHover = {
         }
     }
 }
-
-const CloseButtonHover ={
-    init:{
-        y:100
-    },
-    hover:{
-        y:0,
-        transition:{
-            type:"spring",
-            stiffness: 500,
-            damping: 30 ,
-            duration: 0.3
-        }
-    }
-}
-
-
-const StarredHover ={
-    init:{
-        y:0,
-        transition:{
-            type:"spring",
-            stiffness: 500,
-            damping: 30 ,
-            duration: 0.3
-        }
-    },
-    hover:{
-        y:0,
-        transition:{
-            type:"spring",
-            stiffness: 500,
-            damping: 30 ,
-            duration: 0.3
-        }
-    }
-}
-
-const personalToStarred = (personalBoardList) => {
-
-    let starredBoardList = personalBoardList.filter(board => board.starred === true);
-    starredBoardList.sort(function (a, b) {
-        /// sort lowest to highest.
-        return a.starred_id - b.starred_id;
-    });
-
-    return (
-        /// return starredBoardList with sort lowest to highest starred_id.
-        starredBoardList
-    );
-}
-const StarButtonHover = {
-    init:{
-        y:100,
-        transition:{
-            type:"spring",
-            stiffness: 500,
-            damping: 30 ,
-            duration: 0.3
-        }
-    },
-    hover:{
-        y:0,
-        transition:{
-            type:"spring",
-            stiffness: 500,
-            damping: 30 ,
-            duration: 0.3
-        }
-    }
-
-}
-
+    
 const FlyUpDiv = styled(motion.div)`
     // transform: translateY(calc(-40*${props=>props.index}px));
     // box-shadow: 0px 0px 8px -5px rgba(1,1,1,0.75);
@@ -1242,6 +1133,7 @@ const FlyUpDiv = styled(motion.div)`
 `;
 
 const BoardPreview =({board,star,dispatch,index,open})=>{
+    // eslint-disable-next-line
     const [openP,setOpenP] = useContext(OpenContext);
     const StarButton =({board,dispatch,star})=>{
         return (
@@ -1342,51 +1234,7 @@ const BoardPreview =({board,star,dispatch,index,open})=>{
             
             </FlyUpDiv>
     );
-}
-
-
-
-
-const Smth = () => {
-    return (
-        <DropDownCard
-            title="I here ni kue a rai wa"
-            children={
-                <div>
-                    <Linkable
-                        margin="10px 20px 0px 20px"
-                        // onClick={setOpen(false)}
-                        children={
-                            <Column padding="10px">
-                            </Column>
-                        }
-                    />
-                </div>
-            }
-        />
-    );
-}
-
-const getDropDown = (type) => {
-    switch (type) {
-        case 'create':
-            return <Create />
-        case 'info':
-            return <Info />
-        case 'noti':
-            return <Notification />
-        case 'user':
-            return <UserCard />
-        case 'smth':
-            return <Smth />
-        case 'search':
-            return <SearchDropDown />
-        case 'board':
-            return <Board />
-    }
-}
-
-
+} 
 
 const DropDownVariants = {
     open: {
@@ -1440,12 +1288,7 @@ const MyDropdown = ({margin,onChange,setOpen,board,isOpen,children,mode,isType,m
         // outside click
         setOpen({type:''});
     };
-
-    const handleChange = selectedValue => {
-        onChange(selectedValue);
-        setOpen({type:''});
-    };
-
+  
     useEffect(() => {
         if (isOpen) {
             document.addEventListener("mousedown", handleClickOutside);
@@ -1456,6 +1299,7 @@ const MyDropdown = ({margin,onChange,setOpen,board,isOpen,children,mode,isType,m
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
+        // eslint-disable-next-line
     }, [isOpen]);
     if(mode === 'search'){
         maxWidth = isOpen ? '240px' : '140px';

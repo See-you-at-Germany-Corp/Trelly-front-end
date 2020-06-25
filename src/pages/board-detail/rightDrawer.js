@@ -450,7 +450,7 @@ const LabelsBox = (props) => {
 
 const DrawerBox = styled.div`
     height: 94.5vh;
-    width: 310px;
+    width: 340px;
     /* background-color: lightpink; */
     background-color: #EFEFEF;
     visibility: ${props => props.open ? 'visible' : 'hidden'};
