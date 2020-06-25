@@ -224,3 +224,8 @@ button {
   opacity: 0;
   width: 100%;
 }
+.font-profile{
+  font-family: monospace;
+  font-size: 50px;
+  margin-bottom: 15px;
+}

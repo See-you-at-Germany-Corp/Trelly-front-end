@@ -41,7 +41,7 @@ class profile extends Component {
       initials: "",
       userName: "",
       bio: "",
-      picture:"",
+      picture: "",
       // loading: false,
       // error: {},
     };
@@ -80,9 +80,11 @@ class profile extends Component {
   handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
-    formData.append('image',image,image.name);
-    console.log("form",formData);
+    formData.append("image", image, image.name);
+    console.log("form", formData);
+    console.log(image.name);
     
+
     //this.props.uploadImage(formData);
     //send rest
   };
@@ -95,6 +97,7 @@ class profile extends Component {
     console.log("Hello props");
 
     // console.log(this.props);
+    
     console.log(this.props.UserReducer.fullName);
 
     return (
@@ -123,29 +126,29 @@ class profile extends Component {
                   </span>
                 </div>
                 <div className="inputPicture">
-                <input
-                  className="testButton"
-                  onClick={() => {
-                    console.log("555");
-                  }}
-                  type="file"
-                  id="imageInput"
-                  onChange={this.handleImageChange}
-                  hidden="hidden"
-                />
-                <Tooltip title="Edit Profile Picture" placement="bottom">
-                  <IconButton
-                    onClick={this.handleEditPicture}
-                    className="button"
-                  >
-                    <EditIcon color="primary" />
-                  </IconButton>
-                </Tooltip>
+                  <input
+                    className="testButton"
+                    onClick={() => {
+                      console.log("555");
+                    }}
+                    type="file"
+                    id="imageInput"
+                    onChange={this.handleImageChange}
+                    hidden="hidden"
+                  />
+                  <Tooltip title="Edit Profile Picture" placement="bottom">
+                    <IconButton
+                      onClick={this.handleEditPicture}
+                      className="button"
+                    >
+                      <EditIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
                 </div>
               </div>
             </div>
             <Typography variant="h3" className={classes.pageTitle}>
-              Profile
+              <p className="font-profile">Profile</p>
               <hr width="60%" />
             </Typography>
 
