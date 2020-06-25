@@ -115,8 +115,6 @@ export default function List(props) {
         // do something
     }
 
-    console.log('re-render', ListStyle);
-
     return (
         <Draggable draggableId={props.listId} index={props.index}>
             {(provided) => (
