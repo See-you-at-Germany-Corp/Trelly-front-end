@@ -114,11 +114,84 @@ export const mockupData = {
             cards: [],
         }
     ],
+    labels: [
+        {
+            id: 19,
+            name: null,
+            color_id: 1
+        },
+        {
+            id: 20,
+            name: null,
+            color_id: 2
+        },
+        {
+            id: 21,
+            name: null,
+            color_id: 3
+        },
+        {
+            id: 22,
+            name: null,
+            color_id: 4
+        },
+        {
+            id: 23,
+            name: null,
+            color_id: 5
+        },
+        {
+            id: 24,
+            name: null,
+            color_id: 6
+        },
+        {
+            id: 25,
+            name: null,
+            color_id: 7
+        },
+        {
+            id: 26,
+            name: null,
+            color_id: 8
+        },
+        {
+            id: 27,
+            name: null,
+            color_id: 9
+        }
+    ],
     activities: [
         {
-            account_id: 1,
-            action: 'create this board',
-            created: '2020-06-12T11:26:02.678534Z'
+            id: 3,
+            created: '2020-06-24T09:09:45.928781Z',
+            type: 'board',
+            test1: [
+                1,
+                'create this board'
+            ]
+        },
+        {
+            id: 4,
+            created: '2020-06-24T09:24:36.741975Z',
+            type: 'card',
+            test1: [
+                2,
+                'added ',
+                1,
+                'to To do'
+            ]
+        },
+        {
+            id: 5,
+            created: '2020-06-24T10:14:14.407537Z',
+            type: 'card',
+            test1: [
+                1,
+                'added ',
+                2,
+                'to To do'
+            ]
         }
     ]
 };

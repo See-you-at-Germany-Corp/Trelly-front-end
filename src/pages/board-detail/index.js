@@ -5,7 +5,7 @@ import './style.css';
 
 import BoardMenuBar from './boardMenuBar.js';
 import ListGroup from '../../components/list-group/index'
-import { BoardProvider, BoardContext } from '../../context/board-context/board-context'
+import { BoardContext } from '../../context/board-context/board-context'  
 // import { changeCurrentBoard } from '../../redux/actions/currentBoard';
 
 const BoardDetail = (props) => {
@@ -20,8 +20,9 @@ const BoardDetail = (props) => {
     //     boardDispatch(changeCurrentBoard({}));
     //     // eslint-disable-next-line
     // }, []);
+  
     document.body.style.backgroundColor = boardState.picture;
-
+  
     return (
         <div className='board-detail' >
             <BoardMenuBar {...props} />
@@ -30,12 +31,4 @@ const BoardDetail = (props) => {
     );
 }
 
-const BoardDetailProvider = () => { 
-    return (
-        <BoardProvider>
-            <BoardDetail />
-        </BoardProvider>
-    )
-}
-
-export default BoardDetailProvider;
+export default BoardDetail;

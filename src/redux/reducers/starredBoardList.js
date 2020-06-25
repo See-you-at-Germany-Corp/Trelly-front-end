@@ -92,6 +92,18 @@ export default (state = initState, action) => {
 
             return newState4;
 
+        case 'CHANGE_PICTURE_STARRED':
+            const newState5 = [...state];
+            const changePicIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (changePicIndex >= 0) {
+                newState5[changePicIndex].picture = action.picture;
+
+                /// post to backend.
+            }
+
+            return newState5;
+
         case 'OVERWRITE_STAR_BOARD':
             return action.newState;
 
