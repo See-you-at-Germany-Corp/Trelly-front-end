@@ -1,37 +1,4 @@
-const initState = [
-    {
-        id: 0,
-        name: '//sampleboard//',
-        picture: '#cccccc',
-        starred_id: 0
-    },
-    {
-        id: 2,
-        name: 'KMITL',
-        picture: 'dodgerblue',
-        starred_id: 1
-    },
-    {
-        id: 3,
-        name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        picture: 'palevioletred',
-        starred_id: 2
-    },
-    {
-        id: 1,
-        name: 'Trelly',
-        picture: 'indianred',
-        starred_id: 3
-    },
-    {
-        id: 4,
-        name: 'Meo Germany',
-        picture: 'forestgreen',
-        starred_id: 4
-    }
-]
-
-export default (state = initState, action) => {
+export default (state = [], action) => {
     switch (action.type) {
         case 'STAR_BOARD':
             const newState = [...state];

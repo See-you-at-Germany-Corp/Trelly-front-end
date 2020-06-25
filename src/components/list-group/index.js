@@ -81,7 +81,7 @@ const StyledListContainer = styled.div`
     display: flex;
     overflow-x: auto;
 
-    background-color: grey;
+    background-color: transparent;
 
     ::-webkit-scrollbar {
         background-color: red;
@@ -90,5 +90,5 @@ const StyledListContainer = styled.div`
 
 const BoardBody = styled.div`
     overflow-x: hidden;
-    background-color: paleturquoise;
+    // background-color: paleturquoise;
 `
