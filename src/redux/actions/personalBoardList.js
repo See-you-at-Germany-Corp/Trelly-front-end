@@ -20,7 +20,7 @@ export const changePicturePersonal = (boardId, picture) => ({
     picture,
 })
 
-export const overWrite = (newState) => ({
-    type: 'OVERWRITE',
+export const overWritePersonal = (newState) => ({
+    type: 'OVERWRITE_PERSONAL',
     newState,
 })

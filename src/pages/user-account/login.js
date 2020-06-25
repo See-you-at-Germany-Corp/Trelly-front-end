@@ -26,7 +26,7 @@ function Login(props) {
     const login = () => {
         // Login then redirect to Home
 
-        // props.dispatch({type: 'LOG_IN'})
+        props.dispatch({ type: 'LOG_IN', payload: loginState })
         // console.log(loginState.username, loginState.password);
     }
 
