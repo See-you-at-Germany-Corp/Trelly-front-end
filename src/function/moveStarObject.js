@@ -1,16 +1,18 @@
 const moveStarObject = (starredBoard, source, destination, dispatch) => { 
    
+    console.log(starredBoard);
+
     /// set source starred_id with destination starred_id.
     dispatch({
         type: 'SET_STAR_ID',
-        boardId: starredBoard[source + 1].id,
-        starId: starredBoard[destination + 1].starred_id
+        boardId: starredBoard[source].id,
+        starId: starredBoard[destination].starred_id
     });
 
     /// move left to right.
     if (source < destination) {  
         /// set starred_id of board from [source + 1] to [destination] with starred_id itself - 1.
-        for (let i = source + 2; i < destination + 2 ; i++) { 
+        for (let i = source + 1; i <= destination ; i++) { 
             dispatch({
                 type: 'SET_STAR_ID',
                 boardId: starredBoard[i].id,
@@ -22,7 +24,7 @@ const moveStarObject = (starredBoard, source, destination, dispatch) => {
     /// move right to left.
     if (source > destination) { 
         /// set starred_id of board from [destination] to [source - 1] with starred_id itself + 1.
-        for (let i = destination + 1; i < source + 1; i++) {
+        for (let i = destination; i < source; i++) {
             dispatch({
                 type: 'SET_STAR_ID',
                 boardId: starredBoard[i].id,

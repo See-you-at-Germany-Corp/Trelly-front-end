@@ -2,35 +2,8 @@
 /// set it to initial state.
  
 /// mockup initState.
-const initState = [
-    {
-        id: 0,
-        name: '//sampleboard//',
-        picture: '#cccccc'
-    },
-    {
-        id: 1,
-        name: 'Trelly',
-        picture: 'indianred'
-    },
-    {
-        id: 2,
-        name: 'KMITL',
-        picture: 'dodgerblue'
-    },
-    {
-        id: 3,
-        name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        picture: 'palevioletred'
-    },
-    {
-        id: 4,
-        name: 'Meo Germany',
-        picture: 'forestgreen'
-    }
-]
 
-export default (state = initState, action)=> {
+export default (state = [], action)=> {
     switch (action.type) {
         case 'ADD_BOARD': 
             const newState = [...state];
@@ -98,7 +71,7 @@ export default (state = initState, action)=> {
 
             return newState4;
 
-        case 'OVERWRITE':
+        case 'OVERWRITE_PERSONAL':
             return action.newState
   
         default:
