@@ -1,6 +1,5 @@
 import testPic from '../../asset/butler.png';
 
-
 export const mockupData = {
     id: 1,
     name: 'Trelly',
@@ -62,7 +61,16 @@ export const mockupData = {
                         },
                         {
                             account_id: 2
-                        }
+                        },
+                        // {
+                        //     account_id: 2
+                        // },
+                        // {
+                        //     account_id: 2
+                        // },
+                        // {
+                        //     account_id: 2
+                        // }
                     ],
                     is_description: false,
                     is_watching: true,

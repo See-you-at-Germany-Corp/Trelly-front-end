@@ -2,10 +2,12 @@
     /* background-color: orange;  */
     width: 100%; 
     display: flex;
+    flex-wrap: wrap;
     align-content: center; 
     user-select: none; 
     /* padding-bottom: 8px; */
-    padding-top: 8px;
+    padding-top: 8px; 
+    justify-content: space-between; 
 }
 
 .board-menu-bar .board-menu-left {
@@ -104,6 +106,13 @@
 .board-menu-bar .board-menu-left .board-avatar-box .avatar:active {
     filter: brightness(84%); 
 }
+
+.board-menu-bar .board-menu-right {
+    display: flex; 
+    flex-wrap: wrap;
+    margin-left: 8px;  
+    margin-right: 8px;
+} 
   
 .board-menu-bar .sep-line {
     height: 17px;

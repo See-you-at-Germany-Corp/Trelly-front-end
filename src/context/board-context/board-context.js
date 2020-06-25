@@ -41,8 +41,9 @@ const boardReducer = (state, action) => {
             return state;
 
         case ('ADD_MEMBER'):
-            state.members.push(action.member);
-            return state;
+            const newState2 = {...state};
+            newState2.members.push(action.member);
+            return newState2;
 
         case ('REMOVE_MEMBER'):
             const newState = {...state};
