@@ -52,7 +52,7 @@ const HomeMenuBar = () => {
 }
 
 const Home = ({ personalBoardList, starredBoardList, dispatch})=> {    
-  
+    document.body.style.backgroundColor = "white";
     return (  
         <div className='homepage-main-container'> 
             <HomeMenuBar />
