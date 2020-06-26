@@ -2,7 +2,9 @@ import axios from 'axios';
 import cookie from 'react-cookies'
 import { URL } from '../../api/index.js';
 
-const initState = { loggedIn: false }
+const initState = { 
+    loggedIn: `${cookie.load('authen-token')}` !== 'undefined' ? true : false
+}
 
 export default (state = initState, action) => {
     switch (action.type) {
