@@ -292,7 +292,7 @@ const ChangeBackgroundBox = (props) => {
                                 <div className='background-list'>
                                     {
                                         backgroundData.map((bg, index) => (
-                                            <ColorItem key={index} background={bg.picture}></ColorItem>
+                                            <ColorItem key={index} background={bg.color_code}></ColorItem>
                                         ))
                                     }
                                 </div>
@@ -322,11 +322,11 @@ const ColorPickerBox = (props) => {
 
     const { boardState, boardDispatch } = React.useContext(BoardContext);
 
-    function changePictureHandler(picture) {
-        if (boardState.picture !== picture) {
-            boardDispatch(changePicture(picture)); 
-            props.dispatch(changePicturePersonal(boardState.id, picture));
-            props.dispatch(changePictureStarred(boardState.id, picture));
+    function changePictureHandler(color_code) {
+        if (boardState.color_code !== color_code) {
+            boardDispatch(changePicture(color_code)); 
+            props.dispatch(changePicturePersonal(boardState.id, color_code));
+            props.dispatch(changePictureStarred(boardState.id, color_code));
         }
     }
 
@@ -343,8 +343,8 @@ const ColorPickerBox = (props) => {
                                 backgroundData.map((bg, index) => (
                                     <ColorPickerBoxItem
                                         key={index}
-                                        background={bg.picture}
-                                        onMouseDown={() => changePictureHandler(bg.picture)}
+                                        background={bg.color_code}
+                                        onMouseDown={() => changePictureHandler(bg.color_code)}
                                     >
                                     </ColorPickerBoxItem>
                                 ))

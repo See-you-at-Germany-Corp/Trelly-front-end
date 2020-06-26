@@ -6,9 +6,9 @@ export const createOff = () => ({
     type: 'OFF'
 })
 
-export const setBackground = (picture) => ({
+export const setBackground = (color_code) => ({
     type: 'SET_BACKGROUND',
-    picture
+    color_code
 }) 
  
 export const setName = (name) => ({

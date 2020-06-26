@@ -1,6 +1,6 @@
 import cookie from 'react-cookies';
 
-export const URL = 'https://warm-citadel-25178.herokuapp.com';
+export const URL = 'https://mighty-lowlands-07946.herokuapp.com';
  
 export const authenHeader = { 
     headers: { 

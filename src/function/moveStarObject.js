@@ -9,7 +9,7 @@ const moveStarObject = (starredBoard, source, destination, dispatch) => {
     bodyFormData.set('shift', destination - source);
 
     axios.post(`${URL}${starDrag(boardId)}`, bodyFormData, authenHeader)
-        .then(res => console.log(res.data)); 
+        // .then(res => console.log(res.data)); 
 
     /// set source starred_id with destination starred_id.
     dispatch({

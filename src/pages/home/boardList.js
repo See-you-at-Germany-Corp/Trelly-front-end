@@ -28,7 +28,7 @@ const SortableItem = SortableElement((props) => {
 
     return (
         <React.Fragment>
-            <BoardContainer className='board-list-item-box' style={{ background: `${board.picture === null ? '#bbbbbb' : `${board.picture}`}` }}>
+            <BoardContainer className='board-list-item-box' style={{ background: `${board.color_code === '' ? '#BBBBBB' : `${board.color_code}`}` }}>
                 <BoardSmallBox to={boardHref} className='board-list-item'>
                     <p><b>{board.name}</b></p>
                     <Link 

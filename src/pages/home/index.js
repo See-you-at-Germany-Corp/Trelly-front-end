@@ -60,6 +60,7 @@ const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
     document.body.style.backgroundColor = "white";
 
     React.useEffect(() => { 
+        console.log('get data');
         axios.get(`${URL}${getMyBoards}`, authenHeader)
             .then(res => { 
                 const boardData = res.data;
