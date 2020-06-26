@@ -34,19 +34,7 @@ export default (state = [], action) => {
             } 
 
             return newState2;
-
-        case 'SET_STAR_ID':
-            const newState3 = [...state];
-            const index = state.findIndex(data => data.id === action.boardId)
-
-            if (index >= 0) {
-                newState3[index].starred_id = action.starId;
-
-                /// post to backend.
-            }
-
-            return newState3;
-
+  
         case 'CHANGE_STAR_NAME':
             const newState4 = [...state];
             const changeIndex = state.findIndex(data => data.id === action.boardId)
@@ -71,7 +59,7 @@ export default (state = [], action) => {
 
             return newState5;
 
-        case 'OVERWRITE_STAR_BOARD':
+        case 'OVERWRITE_STAR_BOARD': 
             return action.newState;
 
         default:

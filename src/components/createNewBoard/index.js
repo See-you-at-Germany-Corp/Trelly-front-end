@@ -78,19 +78,15 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
         }
     }
 
-    React.useEffect(() => {
-        console.log('reeeeeeeeeeeeeeeeeeeeeeee');
+    React.useEffect(() => { 
         setAddRes(''); 
-    }, [addResponse]);
-
-    console.log('addResponse');
-    console.log(addResponse);
+    }, [addResponse]); 
 
     return (
         <>
             {
                 addResponse !== '' ? 
-                <Redirect to={`${addResponse.id}/${addResponse.name}`} />
+                    <Redirect to={`/${addResponse.id}/${addResponse.name}/`} />
                 :
                 <div className='create-new-board-container' ref={createNewBoardRef} style={createOnStyle}>
                     <div className='create-new-board-box' style={createOnStyle}>
