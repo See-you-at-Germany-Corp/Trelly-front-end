@@ -74,6 +74,7 @@ const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
                 dispatch(overWritePersonal(personalData));
                 dispatch(overWriteStarBoard(starData));
             })
+            .catch(res => console.log(res));
         // eslint-disable-next-line
     }, []);
     

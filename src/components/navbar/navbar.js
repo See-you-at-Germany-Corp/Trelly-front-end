@@ -168,7 +168,8 @@ const Title = styled.div`
 `;
 
 const TitleCom = ({title}) => {
-    const [setOpen] =useContext(OpenContext);
+    // eslint-disable-next-line
+    const [open, setOpen] = useContext(OpenContext);
     return (
         <Column>
             <Title>
