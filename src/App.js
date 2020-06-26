@@ -21,7 +21,7 @@ import { BoardProvider } from './context/board-context/board-context'
 function App(props) { 
   return (
     <Router>
-      
+
       <Navbar />
       <CreateNewBoard />
 

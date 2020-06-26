@@ -10,7 +10,7 @@ import './boardListStyle.css';
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
 import { createOn } from '../../redux/actions/createNewBoard';
 import { URL, authenHeader } from '../../api/index.js';
-import { starToggle, starDrag } from '../../api/board.js';
+import { starToggle } from '../../api/board.js';
 import moveStarObject from '../../function/moveStarObject';
 
 const SortableItem = SortableElement((props) => {
@@ -116,11 +116,6 @@ const BoardList = (props) => {
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
         moveStarObject(starredBoardList, oldIndex, newIndex, props.dispatch);
-        const boardId = starredBoardList[0].id;
-        var bodyFormData = new FormData();
-        bodyFormData.set('shift', newIndex - oldIndex);
-        axios.post(`${URL}${starDrag(boardId)}`, bodyFormData, authenHeader)
-            .then(res => console.log(res.data)); 
     }
 
     return (
