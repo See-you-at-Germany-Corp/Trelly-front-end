@@ -5,7 +5,7 @@
     width: 100%; 
     padding: 20px 0% 25px 0px;    
     max-width: 900px;
-    min-width: 288px;  
+    /* min-width: 90%;   */
     /* font-size: 40px; */
 }
 
@@ -22,41 +22,6 @@
 .board-list .board-name-group .board-name { 
     display: inline; 
 }
-
-/* .board-list .board-list-item-box {
-    background-color: lightpink;  
-    width: 21%;
-    display: flex;
-    flex-wrap: wrap; 
-    margin: 10px 0px 8px 18px;  
-    border-radius: 3px;
-} */
-  
-/* .board-list .board-list-item-box .board-list-item {
-    background-color: lightpink; 
-    height: 95px;  
-    width: 100%;   
-    margin: 10px 0px 8px 18px;   
-    text-decoration: none; 
-    border-radius: 3px; 
-    overflow: hidden;   
-    -webkit-user-drag: none;
-}  */
-  
-/* .board-list .board-list-item-box p { 
-    color: white;
-    background-color: antiquewhite; 
-    padding: 0;
-    margin: 5px 10px 0px 10px; 
-    word-break: break-all; 
-    min-height: 50%; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-   -webkit-line-clamp: 2; /* number of lines to show 
-   -webkit-box-orient: vertical;
-    user-select: none;
-} */
  
 .board-star {
     font-size: 15px; 

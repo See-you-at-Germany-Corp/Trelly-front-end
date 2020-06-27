@@ -1,33 +1,34 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 
 import './style.css';
 
 import BoardMenuBar from './boardMenuBar.js';
 import ListGroup from '../../components/list-group/index'
-import { BoardProvider, BoardContext } from '../../context/board-context/board-context'
+import { BoardContext } from '../../context/board-context/board-context'  
+// import { changeCurrentBoard } from '../../redux/actions/currentBoard';
 
 const BoardDetail = (props) => {
-
-    const { boardId } = useParams();
-
-    /// mockup board detail. 
-    const { boardState } = useContext(BoardContext)
-
+ 
+    /// mockup board detail.  
+    // const { boardId } = useParams();
+    const { boardState, /*boardDispatch*/ } = useContext(BoardContext)
+    // console.log(boardState)
+    // React.useEffect(() => {
+    //     /// send api to get current board data.
+    //     /// then overwrite current board data.
+    //     boardDispatch(changeCurrentBoard({}));
+    //     // eslint-disable-next-line
+    // }, []);
+  
+    document.body.style.backgroundColor = boardState.color_code;
+  
     return (
-        <div className={`${boardState.name}-board board-detail`} style={{ background: boardState.picture }}>
-            <BoardMenuBar boardId={boardId} {...props} />
+        <div className='board-detail' >
+            <BoardMenuBar {...props} />
             <ListGroup />
         </div>
     );
 }
 
-const BoardDetailProvider = () => {
-    return (
-        <BoardProvider>
-            <BoardDetail />
-        </BoardProvider>
-    )
-}
-
-export default BoardDetailProvider;
+export default BoardDetail;

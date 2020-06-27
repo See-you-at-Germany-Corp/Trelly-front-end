@@ -1,30 +1,41 @@
 import React from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import './boardListStyle.css';
 
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
-import { createOn } from '../../redux/actions/createNewBoard';  
+import { createOn } from '../../redux/actions/createNewBoard';
+import { URL, authenHeader } from '../../api/index.js';
+import { starToggle } from '../../api/board.js';
 import moveStarObject from '../../function/moveStarObject';
 
 const SortableItem = SortableElement((props) => {
-  
+
     const index = props.boardIndex;
     const board = props.board;
-    const starredStyle = props.starredStyle; 
+    const starredStyle = props.starredStyle;
     const keyId = props.keyId;
     const boardHref = props.boardHref;
     const isStarredBoard = props.isStarredBoard;
 
+    function starApi (boardId) { 
+        axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
+    }
+
     return (
         <React.Fragment>
-            <BoardContainer className='board-list-item-box' style={{ background: `${board.picture}` }}>
+            <BoardContainer className='board-list-item-box' style={{ background: `${board.color_code === '' ? '#BBBBBB' : `${board.color_code}`}` }}>
                 <BoardSmallBox to={boardHref} className='board-list-item'>
                     <p><b>{board.name}</b></p>
-                    <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
+                    <Link 
+                        to='#' 
+                        title='Click to star or unstar this board. Starred boards show up at the top of your board list.'
+                        onMouseDown={() => starApi(board.id)}
+                    >
                         {
                             isStarredBoard === true ?
                                 /// click to unstar board.
@@ -38,9 +49,9 @@ const SortableItem = SortableElement((props) => {
             </BoardContainer>
 
             {
-                props.boardListData.length - 2 === index && props.listName === 'Personal Boards' &&
+                props.boardListData.length - 1 === index && props.listName === 'Personal Boards' &&
                 <BoardContainer className='board-list-item-box' key={`${keyId}-${index}`}>
-                    <BoardSmallBox onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
+                    <BoardSmallBox to='#' onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
                         <p style={{ marginTop: '38px', color: 'slategray', marginLeft: '9px', fontSize: '14px' }}>Create new board</p>
                     </BoardSmallBox>
                 </BoardContainer>
@@ -62,8 +73,7 @@ const SortableList = SortableContainer((props) => {
             </div>
 
             {
-                props.boardListData
-                    .filter(board => board.id > 0)
+                props.boardListData 
                     .map((board, index) => {
 
                         const boardHref = `/${board.id}/${board.name}`;
@@ -77,31 +87,31 @@ const SortableList = SortableContainer((props) => {
                         } : {};
 
                         return (
-                            <SortableItem 
-                                key={`item-${index}`} 
+                            <SortableItem
+                                key={`item-${index}`}
                                 index={index}
                                 sortIndex={index}
-                                boardIndex={index}  
+                                boardIndex={index}
                                 board={board}
-                                starredStyle={starredStyle} 
+                                starredStyle={starredStyle}
                                 keyId={keyId}
                                 boardHref={boardHref}
                                 isStarredBoard={isStarredBoard}
-                                disabled={props.listName !== 'Starred Boards'} 
+                                disabled={props.listName !== 'Starred Boards'}
                                 {...props}
                             />
                         )
-                        
+
                     })
             }
 
-        </div> 
+        </div>
     );
 });
 
 const BoardList = (props) => {
 
-    const keyId = props.listName === 'Personal Boards' ? '1' : '2'; 
+    const keyId = props.listName === 'Personal Boards' ? '1' : '2';
     const starredBoardList = props.starredBoardList;
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
@@ -109,17 +119,19 @@ const BoardList = (props) => {
     }
 
     return (
-        <SortableList  
+        <SortableList
             starredBoardList={starredBoardList}
             keyId={keyId}
-            axis={'xy'}  
+            axis={'xy'}
             onSortEnd={onSortEnd}
-            helperClass={'.help'}  
+            helperClass={'.help'}
             distance={10}
-            {...props} 
+            {...props}
         />
     );
 }
+
+/* ------------------------- Styled --------------------------- */
 
 const BoardContainer = styled.div` 
     width: 21%;
@@ -160,8 +172,10 @@ const BoardSmallBox = styled(Link)`
         -webkit-user-drag: none;
     }
 
-`   
-  
+`
+
+/* ------------------------- Redux --------------------------- */
+
 const mapStateToProps = (state) => ({
     personalBoardList: state.personalBoardList,
     starredBoardList: state.starredBoardList

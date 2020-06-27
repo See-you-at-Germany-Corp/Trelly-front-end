@@ -2,39 +2,67 @@ import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Home from './pages/home'
 import Login from './pages/user-account/login'
 import Signup from './pages/user-account/signup'
 import Forgot from './pages/user-account/forgot'
+import Navbar from './components/navbar/navbar'
 
 import CreateNewBoard from './components/createNewBoard';
 import BoardDetail from './pages/board-detail';
 
-function App() {
+import { BoardProvider } from './context/board-context/board-context'
+
+function App(props) { 
   return (
     <Router>
 
-      <div style={{ background: 'rgb(2, 106, 167)', height: '5.5vh', width: '100%', position: 'sticky', top: '0', zIndex: '1' }}></div>
+      <Navbar />
       <CreateNewBoard />
 
-      <Switch>
-        <Route path='/login/' component={Login} />
+      <BoardProvider>
+        {
+          /// check loggedIn.
+          /// if true -> render user flow.
+          /// else -> render guest flow.
+          props.loggedIn ?
+          <Switch>
+            <Route path='/login/' component={Login} />
 
-        <Route path='/signup/' component={Signup} />
+            <Route path='/signup/' component={Signup} />
 
-        <Route path='/forgot/' component={Forgot} />
+            <Route path='/forgot/' component={Forgot} />
 
-        <Route exact path='/:boardId/:boardName' component={BoardDetail} />
+            <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
-        <Route exact path='/' component={Home} />
+            <Route exact path='/' component={Home} />
+          </Switch>
+          :
+          <Switch>
+              <Route exact path='/login/' component={Login} />
 
-      </Switch>
+              <Route exact path='/signup/' component={Signup} />
+
+              <Route exact path='/forgot/' component={Forgot} />
+
+              <Redirect to='/login/' />
+          </Switch>
+        }
+      </BoardProvider>
 
     </Router>
   );
 }
 
-export default App;
+const mapStateWithProps = state => ({
+  loggedIn: state.loggedIn.loggedIn
+})
+
+const AppWithConnect = connect(mapStateWithProps)(App);
+
+export default AppWithConnect;

@@ -2,35 +2,8 @@
 /// set it to initial state.
  
 /// mockup initState.
-const initState = [
-    {
-        id: 0,
-        name: '//sampleboard//',
-        picture: '#cccccc'
-    },
-    {
-        id: 1,
-        name: 'Trelly',
-        picture: 'indianred'
-    },
-    {
-        id: 2,
-        name: 'KMITL',
-        picture: 'dodgerblue'
-    },
-    {
-        id: 3,
-        name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        picture: 'palevioletred'
-    },
-    {
-        id: 4,
-        name: 'Meo Germany',
-        picture: 'forestgreen'
-    }
-]
 
-export default (state = initState, action)=> {
+export default (state = [], action)=> {
     switch (action.type) {
         case 'ADD_BOARD': 
             const newState = [...state];
@@ -85,8 +58,20 @@ export default (state = initState, action)=> {
             }
 
             return newState3;
+         
+        case 'CHANGE_PICTURE_PERSONAL':
+            const newState4 = [...state]; 
+            const changePicIndex = state.findIndex(data => data.id === action.boardId) 
 
-        case 'OVERWRITE':
+            if (changePicIndex >= 0) { 
+                newState4[changePicIndex].color_code = action.color_code; 
+
+                /// post to backend.
+            }
+
+            return newState4;
+
+        case 'OVERWRITE_PERSONAL':
             return action.newState
   
         default:
