@@ -30,29 +30,30 @@ function App(props) {
           /// check loggedIn.
           /// if true -> render user flow.
           /// else -> render guest flow.
-          props.loggedIn ?
-          <Switch>
-            <Route path='/login/' component={Login} />
+          // props.loggedIn ?
+          // <Switch>
+          //   <Route path='/login/' component={Login} />
 
-            <Route path='/signup/' component={Signup} />
+          //   <Route path='/signup/' component={Signup} />
 
-            <Route path='/forgot/' component={Forgot} />
+          //   <Route path='/forgot/' component={Forgot} />
 
-            <Route exact path='/:boardId/:boardName' component={BoardDetail} />
+          //   <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
-            <Route exact path='/' component={Home} />
-          </Switch>
-          :
-          <Switch>
-              <Route exact path='/login/' component={Login} />
+          //   <Route exact path='/' component={Home} />
+          // </Switch>
+          // :
+          // <Switch>
+          //     <Route exact path='/login/' component={Login} />
 
-              <Route exact path='/signup/' component={Signup} />
+          //     <Route exact path='/signup/' component={Signup} />
 
-              <Route exact path='/forgot/' component={Forgot} />
+          //     <Route exact path='/forgot/' component={Forgot} />
 
-              <Redirect to='/login/' />
-          </Switch>
+          //     <Redirect to='/login/' />
+          // </Switch>
         }
+        <BoardDetail/>
       </BoardProvider>
 
     </Router>
