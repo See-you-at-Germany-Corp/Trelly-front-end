@@ -117,9 +117,7 @@ const BoardMenuBar = (props) => {
         }
 
         React.useEffect(() => {
-            setNameLength(nameDiv.current.offsetWidth);
-            console.log('nameDiv.current.offsetWidth');
-            console.log(nameDiv.current.offsetWidth);
+            setNameLength(nameDiv.current.offsetWidth); 
             nameInput.current.focus();
         });
 
