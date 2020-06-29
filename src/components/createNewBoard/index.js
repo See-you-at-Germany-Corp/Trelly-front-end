@@ -9,7 +9,7 @@ import { setBackground, setName, createOff } from '../../redux/actions/createNew
 import { addBoard } from '../../redux/actions/personalBoardList';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 
-import { URL, authenHeader } from '../../api/index.js';
+import { URL, useAuthen } from '../../api/index.js';
 import { addMyBoard } from '../../api/board.js';
 
 const BackgroundSelector = ({ color_code, createBackground, dispatch }) => {
@@ -37,6 +37,7 @@ const BackgroundSelector = ({ color_code, createBackground, dispatch }) => {
 const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch }) => {
  
     const [addResponse, setAddRes] = React.useState('');
+    const authenHeader = useAuthen();
 
     const createOnStyle = {
         display: createStatus === true ? 'block' : 'none'
@@ -58,7 +59,7 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
         dispatch(addBoard(newBoard));
         dispatch(createOff());
         dispatch(setName(''));
-
+ 
         axios.post(`${URL}${addMyBoard}`, newBoard, authenHeader)
             .then(res => {
                 setTimeout(() => { 

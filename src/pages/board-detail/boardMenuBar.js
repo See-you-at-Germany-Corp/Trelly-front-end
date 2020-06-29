@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import './boardMenuBarStyle.css';
 
 import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/starredBoardList.js';
-import { URL, authenHeader } from '../../api/index.js';
+import { URL, useAuthen } from '../../api/index.js';
 import { starToggle } from '../../api/board.js';
 import { changeName } from '../../redux/actions/personalBoardList';
 import { memberOverWrite, renameBoard, removeMember, addMember } from '../../redux/actions/currentBoard.js';
@@ -37,6 +37,8 @@ const BoardMenuBar = (props) => {
         opacity: '100',
         color: 'khaki'
     } : {};
+
+    const authenHeader = useAuthen();
 
     function starApi(boardId) {
         axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)
@@ -115,9 +117,7 @@ const BoardMenuBar = (props) => {
         }
 
         React.useEffect(() => {
-            setNameLength(nameDiv.current.offsetWidth);
-            console.log('nameDiv.current.offsetWidth');
-            console.log(nameDiv.current.offsetWidth);
+            setNameLength(nameDiv.current.offsetWidth); 
             nameInput.current.focus();
         });
 
@@ -368,8 +368,8 @@ export default BoardMenuBarWithConnect;
 const inviteStyle = {
     borderRadius: '3px',
     boxShadow: '2px 4px 8px #888888',
-    height: '348px',
-    width: '280px',
+    height: '368px',
+    width: '300px',
     padding: '10px'
 }
 
