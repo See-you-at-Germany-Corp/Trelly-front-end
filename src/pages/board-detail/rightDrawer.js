@@ -438,6 +438,20 @@ const LabelsBox = (props) => {
                                     ))
                                 } 
                             </div>
+                            <div className='label-lists'>
+                                {
+                                    labelSorted.map(bg => (
+                                        <div className='label-box'>
+                                            <div className='label-item' 
+                                                style={{ background: `${labelData[bg.color_id - 1].picture}` }}
+                                            >
+                                                <p><b>{bg.name}</b></p>
+                                            </div>
+                                            <i className="far fa-edit"></i>
+                                        </div>
+                                    ))
+                                } 
+                            </div>
 
                         </LabelBigBox>
                     </SlideDiv>
@@ -707,6 +721,17 @@ const ColorPickerBoxItem = styled.div`
 const LabelBigBox = styled.div` 
     overflow: auto;
     max-height: 85vh;
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        border-radius: 10px;
+        background: rgba(9,30,66,.08);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: rgba(9,30,66,.08);
+    }
 
     .label-name {
         width: 100%;

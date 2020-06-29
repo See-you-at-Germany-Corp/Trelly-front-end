@@ -1,6 +1,7 @@
 import React from 'react'
 import defaultLabel from '../../pages/board-detail/labelData'
 import { Divider, FormControl, Select, MenuItem, InputLabel, Avatar } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 const PopoverContents = (props) => {
     const [copyListName, setCopyListName] = React.useState(props.lists[props.listOrder - 1].name)
@@ -9,12 +10,34 @@ const PopoverContents = (props) => {
         destListOrder: props.listOrder,
         destPosition: props.lists[props.listOrder - 1].cards.length + 1
     })
-
     const [cardMembers, setCardMembers] = React.useState({
         search: '',
-        members: [1]
+        members: []
+    })
+    const [label, setLabel] = React.useState({
+        search: '',
+        labels: [],
     })
 
+    const addLabelToNewCard = (e, index, id) => {
+        e.preventDefault()
+        let newLabels = label.labels
+        let newLabelIndex = label.labels.indexOf(id)
+
+        if (newLabelIndex === -1) {
+            newLabels.push(props.listLabels[index].id)
+            props.newCard.addLabel(index)
+        }
+        else {
+            newLabels = newLabels.slice(0, newLabelIndex).concat(newLabels.slice(newLabelIndex + 1))
+            props.newCard.delLabel(index)
+        }
+
+        setLabel({
+            ...label,
+            labels: newLabels
+        })
+    }
 
     switch (props.type) {
         // List Actions
@@ -42,7 +65,7 @@ const PopoverContents = (props) => {
         case 'COPY_LIST':
             return (
                 <>
-                    <div className='copy-list-name'>Name</div>
+                    <div className='content-name'>Name</div>
                     <textarea
                         value={copyListName}
                         onChange={e => setCopyListName(e.target.value)} />
@@ -89,7 +112,7 @@ const PopoverContents = (props) => {
                         value={cardMembers.search}
                         placeholder='Search Members'
                         onChange={e => setCardMembers({ ...cardMembers, search: e.target.value })} />
-                    <div className='copy-list-name'>BOARD MEMBERS</div>
+                    <div className='content-name'>BOARD MEMBERS</div>
                     {
                         props.members.filter((item) =>
                             item.full_name.toLocaleLowerCase().includes(cardMembers.search.toLocaleLowerCase()) === true
@@ -111,9 +134,37 @@ const PopoverContents = (props) => {
         case 'LABEL':
             return (
                 <>
-                    {
-                        defaultLabel.map((item) => console.log(item))
-                    }
+                    <input
+                        type='text'
+                        className='search-field'
+                        value={label.search}
+                        placeholder='Search Label'
+                        onChange={e => setLabel({ ...label, search: e.target.value })} />
+                    <div className='content-name'>LABELS</div>
+                    <div className='label-group' >
+                        {
+                            props.listLabels.map((item, i) => {
+                                return (<div className='label-wrapper' key={`label-${item.id}`}>
+                                    <div
+                                        className='hover-label'
+                                        style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                    <Link
+                                        href='#'
+                                        className='main-label'
+                                        style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }}
+                                        onClick={e => addLabelToNewCard(e, i, item.id)}>
+                                        <p>{item.name}</p>
+                                        {label.labels.indexOf(item.id) !== -1 && <div className='label-check'><i className="fas fa-check" /></div>}
+                                    </Link>
+                                    <Link
+                                        href='#'
+                                        className='edit-label'><i className="far fa-edit" />
+                                    </Link>
+                                </div>)
+                            })
+                        }
+                    </div>
+                    <button className='create-label-button'>Create New Label</button>
                 </>
             )
         case 'POSITION':
@@ -156,6 +207,7 @@ const PopoverContents = (props) => {
                     </div>
                 </>
             )
+
         default:
             return <></>
     }

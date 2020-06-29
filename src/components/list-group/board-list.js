@@ -4,6 +4,7 @@ import Card from './board-card'
 import * as ListStyle from './list-styled'
 import PopoverContents from './popover-content'
 import { Droppable, Draggable } from 'react-beautiful-dnd'
+import defaultLabel from '../../pages/board-detail/labelData'
 import { BoardContext } from '../../context/board-context/board-context'
 import { TextareaAutosize, Button, Popover, Divider, Avatar } from '@material-ui/core'
 
@@ -137,6 +138,24 @@ const List = (props) => {
         })
     }
 
+    const addLabel = index => {
+        let newLabel = newCardState.labels
+        newLabel.push(boardState.labels[index])
+        setNewCardState({
+            ...newCardState,
+            labels: newLabel
+        })
+    }
+
+    const delLabel = index => {
+        let newLabel = newCardState.labels
+        newLabel = newLabel.slice(0, index).concat(newLabel.slice(index + 1))
+        setNewCardState({
+            ...newCardState,
+            labels: newLabel
+        })
+    }
+
     /* ----------------------------- Popver function ---------------------------- */
     const closeAnchor = () => {
         setAnchorEl({
@@ -229,7 +248,11 @@ const List = (props) => {
                             <div className={`new-card-wrapper ${newCardState.editing ? '' : 'hide'}`}>
                                 <div className='text-box-wrapper'>
                                     <div className='label-wrapper'>
-
+                                        {newCardState.labels.map((item) =>
+                                            <div
+                                                className='card-label'
+                                                style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                        )}
                                     </div>
 
                                     <TextareaAutosize
@@ -323,10 +346,13 @@ const List = (props) => {
                                             newCard={{
                                                 setNewCardEdit,
                                                 setNewCardPosition,
-                                                setNewCardMembers
+                                                setNewCardMembers,
+                                                addLabel,
+                                                delLabel
                                             }}
                                             lists={boardState.lists}
-                                            members={boardState.members} />
+                                            members={boardState.members}
+                                            listLabels={boardState.labels} />
                                     </div>
                                 </ListStyle.PopOverList>
                             </Popover>

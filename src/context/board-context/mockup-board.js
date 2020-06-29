@@ -111,5 +111,72 @@ export const mockupData = {
             action: 'create this board',
             created: '2020-06-12T11:26:02.678534Z'
         }
-    ]
+    ],
+    labels: [
+        {
+            id: 19,
+            name: null,
+            color_id: 1
+        },
+        {
+            id: 20,
+            name: null,
+            color_id: 2
+        },
+        {
+            id: 21,
+            name: null,
+            color_id: 3
+        },
+        {
+            id: 22,
+            name: null,
+            color_id: 4
+        },
+        {
+            id: 23,
+            name: null,
+            color_id: 5
+        },
+        {
+            id: 24,
+            name: null,
+            color_id: 6
+        },
+        {
+            id: 25,
+            name: null,
+            color_id: 7
+        },
+        {
+            id: 26,
+            name: null,
+            color_id: 8
+        },
+        {
+            id: 27,
+            name: null,
+            color_id: 9
+        },
+        {
+            id: 28,
+            name: "see9",
+            color_id: 9
+        },
+        {
+            id: 29,
+            name: "see99",
+            color_id: 9
+        },
+        {
+            id: 30,
+            name: "see999",
+            color_id: 9
+        },
+        {
+            id: 31,
+            name: "see9999999999999999999999999999",
+            color_id: 9
+        }
+    ],
 };

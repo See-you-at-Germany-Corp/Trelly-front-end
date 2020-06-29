@@ -93,6 +93,7 @@ export const AddCard = styled.div`
         width: 100%;
 
         .text-box-wrapper{
+            width: 236px;
             border-radius: 3px;
             background-color: white; 
 
@@ -113,7 +114,22 @@ export const AddCard = styled.div`
 
             .label-wrapper {
                 width: 100%;
-                height: 20px;
+                min-height: 15px;
+
+                display: flex;
+                flex-wrap: wrap;
+
+                padding-left: 5px;
+                padding-right: 5px;
+                margin-bottom: 5px;
+                
+                .card-label {
+                    width: 65px;
+                    height: 10px;
+
+                    margin: 5px;
+                    border-radius: 2px;
+                }
             }
 
             .members-wrapper {
@@ -127,7 +143,7 @@ export const AddCard = styled.div`
                 overflow-x: auto;
                 align-items: center;
                 justify-content: flex-end;
-                
+
                 .member-avatar {
                     width: 26px;
                     height: 26px;
@@ -242,9 +258,10 @@ export const PopOverList = styled.div`
 
     .pop-over-content {
         position: relative;
+        overflow: hidden;
         padding-bottom: 10px;
 
-        .copy-list-name {
+        .content-name {
             color: #5e6c84;
             margin-top: 5px;
             margin-left: 12px;
@@ -274,13 +291,6 @@ export const PopOverList = styled.div`
             }
         }
 
-        .search-field {
-            width: 90%;
-            margin-left: 10px;
-            padding-left: 5px;
-            line-height: 30px;
-        }
-
         .select-wrapper {
             margin-top: 10px;
             position: relative;
@@ -288,6 +298,14 @@ export const PopOverList = styled.div`
 
             left: 50%;
             transform: translateX(-50%);
+        }
+
+        .search-field {
+            width: 90%;
+            margin-top: 10px;
+            margin-left: 10px;
+            padding-left: 5px;
+            line-height: 30px;
         }
 
         .member-item-wrapper {
@@ -299,17 +317,13 @@ export const PopOverList = styled.div`
             margin-left: auto;
             margin-right: auto;
             border-radius: 3px;
-            text-decoration: none;
-
-
-            /* background-color: aliceblue; */
+            text-decoration-line: none;
 
             .member-avatar {
                 width: 30px;
                 height: 30px;
                 top: 50%;
                 transform: translateY(-50%)
-                /* background-color: red; */
             }
 
             .member-name {
@@ -338,6 +352,116 @@ export const PopOverList = styled.div`
             :hover {
                 background-color: rgba(9,30,66,.08);
             }
+        }
+
+        .label-group {
+            max-height: 40vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            ::-webkit-scrollbar {
+                width: 8px;
+                border-radius: 10px;
+                background: rgba(9,30,66,.08);
+            }
+
+            ::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background: rgba(9,30,66,.08);
+            }
+        }
+
+        .label-wrapper {
+            width: 260px;
+            height: 32px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-left: 10px;
+            margin-right: 10px;
+
+            display: flex;
+            overflow: visible;
+            justify-content: flex-end;
+
+            :hover {
+                .hover-label {
+                    display: flex;
+                }
+
+                .main-label {
+                    width: 215px;
+                }
+            }
+
+            a {
+                text-decoration-line: none;
+            }
+
+            .hover-label {
+                width: 15px;
+                z-index: 1;
+                display: none;
+                flex-shrink: 0;
+                filter: brightness(80%);
+                transform: translateX(5px);
+                border-radius: 3px 0px 0px 3px;
+            }
+
+            .main-label {
+                width: 220px;
+                padding-left: 5px;
+                color: white;
+                font-weight: 600;
+                line-height: 32px;
+
+                display: flex;
+                flex-shrink: 0;
+                z-index: 2;
+                border-radius: 3px;
+
+                overflow: hidden;
+                position: relative;
+                white-space: nowrap;
+
+                .label-check {
+                    width: 24px;
+                    right: 0;
+                    position: absolute;
+                }
+
+                p {
+                    width: 190px;
+                    height: 100%;
+                    margin: 0;
+                    
+                    overflow: hidden;
+                    word-wrap: break-word; 
+                    word-break: break-all;
+                    text-overflow: ellipsis; 
+                }
+            }
+
+            .edit-label {
+                width: 30px;
+                display: flex;
+                flex-shrink: 0;
+                margin-left: 5px;
+                border-radius: 3px;
+
+                i {
+                    margin-top: auto;
+                    margin-left: auto;
+                    transform: translate(-35%,-65%);
+                }
+
+                :hover {
+                    background-color: #ebecf0;
+                }
+            }
+        }
+
+        .create-label-button {
+            
         }
 
         ul {

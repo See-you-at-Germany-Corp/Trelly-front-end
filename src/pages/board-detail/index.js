@@ -25,7 +25,7 @@ const BoardDetail = (props) => {
   
     return (
         <div className='board-detail' >
-            {/* <BoardMenuBar {...props} /> */}
+            <BoardMenuBar {...props} />
             <ListGroup />
         </div>
     );
