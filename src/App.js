@@ -12,6 +12,7 @@ import Login from './pages/user-account/login'
 import Signup from './pages/user-account/signup'
 import Forgot from './pages/user-account/forgot'
 import Navbar from './components/navbar/navbar'
+import Profile from './pages/profile/profile'
 
 import CreateNewBoard from './components/createNewBoard';
 import BoardDetail from './pages/board-detail';
@@ -37,6 +38,8 @@ function App(props) {
             <Route path='/signup/' component={Signup} />
 
             <Route path='/forgot/' component={Forgot} />
+    
+            <Route path='/profile/' component={Profile} />
 
             <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
@@ -45,9 +48,9 @@ function App(props) {
           :
           <Switch>
               <Route exact path='/login/' component={Login} />
-
-              <Route exact path='/signup/' component={Signup} />
-
+ 
+              <Route exact path='/signup/' component={Signup} />  
+    
               <Route exact path='/forgot/' component={Forgot} />
 
               <Redirect to='/login/' />
