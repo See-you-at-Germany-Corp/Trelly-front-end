@@ -41,11 +41,12 @@ class profile extends Component {
       initials: "",
       userName: "",
       bio: "",
-      picture: "",
-      // loading: false,
-      // error: {},
+      picture: ""
     };
   }
+  //Get user data
+
+  
   handleSubmit = (event) => {
     event.preventDefault();
     this.setState({
@@ -93,6 +94,7 @@ class profile extends Component {
   };
   render() {
     const { classes } = this.props;
+    const { user } = this.state;
     console.log("Hello props");
 
      console.log(this.props);
@@ -121,7 +123,7 @@ class profile extends Component {
                       lineHeight: "100px",
                     }}
                   >
-                    ML
+                    {this.state.initials}
                   </span>
                 </div>
                 <div className="inputPicture">

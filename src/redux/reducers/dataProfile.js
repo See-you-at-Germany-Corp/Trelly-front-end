@@ -1,9 +1,9 @@
 const initialState = {
-    fullName: "",
-    initials: "",
-    userName: "",
-    bio: "",
-    picture: "",
+    fullName: "TestFullName",
+    initials: "TF",
+    userName: "userTF",
+    bio: "lol",
+    picture: "s.png",
     // loading: false,
     // error: {},
   };

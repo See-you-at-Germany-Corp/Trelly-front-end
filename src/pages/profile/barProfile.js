@@ -3,6 +3,11 @@ import React from "react";
 const BarProfile = () => {
   const [
     state = {
+      fullName: "Latthapol",
+      initials: "ML",
+      userName: "ml",
+      bio: "",
+      picture: "",
       status: "",
     },
     setState,
@@ -31,13 +36,13 @@ const BarProfile = () => {
                       lineHeight: "48px",
                     }}
                   >
-                    ML
+                    {state.initials}
                   </span>
                 </div>
               </div>
               <div className="content-header">
-                <span className="content-name">Mark Latthapol</span>
-                <span className="content-nickname">@marklatthapol</span>
+                <span className="content-name">{state.fullName}</span>
+                  <span className="content-nickname">@{state.userName}</span>
               </div>
             </div>
           </div>
