@@ -1,9 +1,26 @@
+import React from 'react';
 import cookie from 'react-cookies';
+import { connect } from 'react-redux';
 
-export const URL = 'https://warm-citadel-25178.herokuapp.com';
+export const URL = 'https://mighty-lowlands-07946.herokuapp.com';
+
+export function useAuthen () {
+    const [token, setToken] = React.useState('');
+
+    React.useEffect(() => {
+        setToken({
+            headers: {
+                Authorization: `Bearer ${cookie.load('authen-token')}`
+            }
+        });
+    // eslint-disable-next-line
+    }, []);
+
+    return token;
+}
  
-export const authenHeader = { 
-    headers: { 
-        Authorization: `Bearer ${cookie.load('authen-token')}`
-    } 
-};  
+const mapStateToProps = state => ({
+    loggedIn: state.loggedIn.loggedIn
+})
+
+connect(mapStateToProps)(useAuthen);

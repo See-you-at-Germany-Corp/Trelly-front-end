@@ -9,8 +9,8 @@ import './boardListStyle.css';
 
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
 import { createOn } from '../../redux/actions/createNewBoard';
-import { URL, authenHeader } from '../../api/index.js';
-import { starToggle, starDrag } from '../../api/board.js';
+import { URL, useAuthen } from '../../api/index.js';
+import { starToggle } from '../../api/board.js';
 import moveStarObject from '../../function/moveStarObject';
 
 const SortableItem = SortableElement((props) => {
@@ -22,13 +22,15 @@ const SortableItem = SortableElement((props) => {
     const boardHref = props.boardHref;
     const isStarredBoard = props.isStarredBoard;
 
+    const authenHeader = useAuthen();
+
     function starApi (boardId) { 
         axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
     }
 
     return (
         <React.Fragment>
-            <BoardContainer className='board-list-item-box' style={{ background: `${board.picture === null ? '#bbbbbb' : `${board.picture}`}` }}>
+            <BoardContainer className='board-list-item-box' style={{ background: `${board.color_code === '' ? '#BBBBBB' : `${board.color_code}`}` }}>
                 <BoardSmallBox to={boardHref} className='board-list-item'>
                     <p><b>{board.name}</b></p>
                     <Link 
@@ -113,14 +115,10 @@ const BoardList = (props) => {
 
     const keyId = props.listName === 'Personal Boards' ? '1' : '2';
     const starredBoardList = props.starredBoardList;
+    const authenHeader = useAuthen();
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        moveStarObject(starredBoardList, oldIndex, newIndex, props.dispatch);
-        const boardId = starredBoardList[0].id;
-        var bodyFormData = new FormData();
-        bodyFormData.set('shift', newIndex - oldIndex);
-        axios.post(`${URL}${starDrag(boardId)}`, bodyFormData, authenHeader)
-            .then(res => console.log(res.data)); 
+        moveStarObject(starredBoardList, oldIndex, newIndex, props.dispatch, authenHeader);
     }
 
     return (

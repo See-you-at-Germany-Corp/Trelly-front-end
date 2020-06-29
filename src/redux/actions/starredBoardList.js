@@ -15,10 +15,10 @@ export const changeStarName = (boardId, name) => ({
     name
 })
 
-export const changePictureStarred = (boardId, picture) => ({
+export const changePictureStarred = (boardId, color_code) => ({
     type: 'CHANGE_PICTURE_STARRED',
     boardId,
-    picture,
+    color_code,
 })
 
 export const overWriteStarBoard = (newState) => ({

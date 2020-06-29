@@ -64,7 +64,7 @@ export default (state = [], action)=> {
             const changePicIndex = state.findIndex(data => data.id === action.boardId) 
 
             if (changePicIndex >= 0) { 
-                newState4[changePicIndex].picture = action.picture; 
+                newState4[changePicIndex].color_code = action.color_code; 
 
                 /// post to backend.
             }

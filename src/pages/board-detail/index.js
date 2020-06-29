@@ -21,7 +21,7 @@ const BoardDetail = (props) => {
     //     // eslint-disable-next-line
     // }, []);
   
-    document.body.style.backgroundColor = boardState.picture;
+    document.body.style.backgroundColor = boardState.color_code;
   
     return (
         <div className='board-detail' >
