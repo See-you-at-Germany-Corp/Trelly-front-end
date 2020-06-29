@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { URL, authenHeader } from '../api/index.js';
+import { URL } from '../api/index.js';
 import { starDrag } from '../api/board.js';
 
-const moveStarObject = (starredBoard, source, destination, dispatch) => { 
+const moveStarObject = (starredBoard, source, destination, dispatch, authenHeader) => { 
     
     const boardId = starredBoard[source].id;
     let bodyFormData = new FormData();
     bodyFormData.set('shift', destination - source);
-
+ 
     axios.post(`${URL}${starDrag(boardId)}`, bodyFormData, authenHeader)
         // .then(res => console.log(res.data)); 
 

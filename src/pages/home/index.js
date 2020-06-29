@@ -10,7 +10,7 @@ import BoardList from './boardList.js';
 import { addBoard, delBoard, changeName, overWritePersonal } from '../../redux/actions/personalBoardList.js';
 import { starBoard, unStarBoard, overWriteStarBoard } from '../../redux/actions/starredBoardList.js'; 
 
-import { URL, authenHeader } from '../../api/index.js';
+import { URL, useAuthen } from '../../api/index.js';
 import { getMyBoards } from '../../api/board.js';
 
 import homeMenuBarData from './homeMenuBarData.js';
@@ -58,6 +58,7 @@ const HomeMenuBar = () => {
 const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
 
     document.body.style.backgroundColor = "white";
+    const authenHeader = useAuthen(); 
 
     React.useEffect(() => {  
         axios.get(`${URL}${getMyBoards}`, authenHeader)
@@ -76,7 +77,7 @@ const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
             })
             .catch(res => console.log(res));
         // eslint-disable-next-line
-    }, []);
+    }, [authenHeader]);
     
     return (  
         <div className='homepage-main-container'> 

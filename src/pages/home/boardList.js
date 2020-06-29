@@ -9,7 +9,7 @@ import './boardListStyle.css';
 
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
 import { createOn } from '../../redux/actions/createNewBoard';
-import { URL, authenHeader } from '../../api/index.js';
+import { URL, useAuthen } from '../../api/index.js';
 import { starToggle } from '../../api/board.js';
 import moveStarObject from '../../function/moveStarObject';
 
@@ -21,6 +21,8 @@ const SortableItem = SortableElement((props) => {
     const keyId = props.keyId;
     const boardHref = props.boardHref;
     const isStarredBoard = props.isStarredBoard;
+
+    const authenHeader = useAuthen();
 
     function starApi (boardId) { 
         axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
@@ -113,9 +115,10 @@ const BoardList = (props) => {
 
     const keyId = props.listName === 'Personal Boards' ? '1' : '2';
     const starredBoardList = props.starredBoardList;
+    const authenHeader = useAuthen();
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        moveStarObject(starredBoardList, oldIndex, newIndex, props.dispatch);
+        moveStarObject(starredBoardList, oldIndex, newIndex, props.dispatch, authenHeader);
     }
 
     return (
