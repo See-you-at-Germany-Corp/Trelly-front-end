@@ -3,7 +3,7 @@ import testPic from '../../asset/butler.png';
 export const mockupData = {
     id: 1,
     name: 'Trelly',
-    color_code: 'indianred',
+    picture: 'indianred',
     members: [
         {
             id: 1,
@@ -27,13 +27,13 @@ export const mockupData = {
             init: 'ML',
             username: 'marklatthapol',
             bio: '',
-            picture: testPic
+            picture: ''
         },
     ],
     lists: [
         {
             id: 1,
-            name: "To do",
+            name: "To do 1",
             order_number: 1,
             cards: [
                 {
@@ -100,9 +100,16 @@ export const mockupData = {
             ],
         }, {
             id: 2,
-            name: "To do",
-            order_number: 1,
+            name: "To do 2",
+            order_number: 2,
             cards: [],
+        }
+    ],
+    activities: [
+        {
+            account_id: 1,
+            action: 'create this board',
+            created: '2020-06-12T11:26:02.678534Z'
         }
     ],
     labels: [
@@ -150,39 +157,26 @@ export const mockupData = {
             id: 27,
             name: null,
             color_id: 9
+        },
+        {
+            id: 28,
+            name: "see9",
+            color_id: 9
+        },
+        {
+            id: 29,
+            name: "see99",
+            color_id: 9
+        },
+        {
+            id: 30,
+            name: "see999",
+            color_id: 9
+        },
+        {
+            id: 31,
+            name: "see9999999999999999999999999999",
+            color_id: 9
         }
     ],
-    activities: [
-        {
-            id: 3,
-            created: '2020-06-24T09:09:45.928781Z',
-            type: 'board',
-            test1: [
-                1,
-                'create this board'
-            ]
-        },
-        {
-            id: 4,
-            created: '2020-06-24T09:24:36.741975Z',
-            type: 'card',
-            test1: [
-                2,
-                'added ',
-                1,
-                'to To do'
-            ]
-        },
-        {
-            id: 5,
-            created: '2020-06-24T10:14:14.407537Z',
-            type: 'card',
-            test1: [
-                1,
-                'added ',
-                2,
-                'to To do'
-            ]
-        }
-    ]
 };

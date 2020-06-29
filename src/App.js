@@ -31,17 +31,17 @@ function App(props) {
           /// check loggedIn.
           /// if true -> render user flow.
           /// else -> render guest flow.
-          props.loggedIn ?
+          // props.loggedIn ?
           <Switch>
-            <Route path='/login/' component={Login} />
+             <Route path='/login/' component={Login} />
 
-            <Route path='/signup/' component={Signup} />
+             <Route path='/signup/' component={Signup} />
 
             <Route path='/forgot/' component={Forgot} />
     
             <Route path='/profile/' component={Profile} />
 
-            <Route exact path='/:boardId/:boardName' component={BoardDetail} />
+             <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
             <Route exact path='/' component={Home} />
           </Switch>
@@ -53,9 +53,10 @@ function App(props) {
     
               <Route exact path='/forgot/' component={Forgot} />
 
-              <Redirect to='/login/' />
-          </Switch>
+               <Redirect to='/login/' />
+           </Switch>
         }
+        <BoardDetail/>
       </BoardProvider>
 
     </Router>
