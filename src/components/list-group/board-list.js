@@ -95,7 +95,6 @@ export default function List(props) {
         }
     }
 
-<<<<<<< HEAD
     const setAnchor = (e, type) => {
         setAnchorEl({
             listOpen: type === 'LIST',
@@ -115,13 +114,6 @@ export default function List(props) {
     const createNewCard = () => {
         // do something
     }
-
-    console.log('re-render', ListStyle);
-=======
-    const createNewCard = () => {
-
-    }
->>>>>>> origin/hin/draggable-list
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>

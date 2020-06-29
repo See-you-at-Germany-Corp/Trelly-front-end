@@ -22,3 +22,8 @@ export const changeCurrentBoard = (newState) => ({
     type: 'CHANGE_CURRENT_BOARD',
     newState
 })
+
+export const changePicture = (picture) => ({
+    type: 'CHANGE_PICTURE',
+    picture
+})

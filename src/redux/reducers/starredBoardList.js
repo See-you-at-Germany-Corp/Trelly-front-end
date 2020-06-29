@@ -1,37 +1,4 @@
-const initState = [
-    {
-        id: 0,
-        name: '//sampleboard//',
-        picture: '#cccccc',
-        starred_id: 0
-    },
-    {
-        id: 2,
-        name: 'KMITL',
-        picture: 'dodgerblue',
-        starred_id: 1
-    },
-    {
-        id: 3,
-        name: 'ICUTMYHAIRBECAUSEYOUDONTCAREMYHEART',
-        picture: 'palevioletred',
-        starred_id: 2
-    },
-    {
-        id: 1,
-        name: 'Trelly',
-        picture: 'indianred',
-        starred_id: 3
-    },
-    {
-        id: 4,
-        name: 'Meo Germany',
-        picture: 'forestgreen',
-        starred_id: 4
-    }
-]
-
-export default (state = initState, action) => {
+export default (state = [], action) => {
     switch (action.type) {
         case 'STAR_BOARD':
             const newState = [...state];
@@ -91,6 +58,18 @@ export default (state = initState, action) => {
             }
 
             return newState4;
+
+        case 'CHANGE_PICTURE_STARRED':
+            const newState5 = [...state];
+            const changePicIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (changePicIndex >= 0) {
+                newState5[changePicIndex].picture = action.picture;
+
+                /// post to backend.
+            }
+
+            return newState5;
 
         case 'OVERWRITE_STAR_BOARD':
             return action.newState;

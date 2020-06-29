@@ -9,29 +9,36 @@ import Home from './pages/home'
 import Login from './pages/user-account/login'
 import Signup from './pages/user-account/signup'
 import Forgot from './pages/user-account/forgot'
+import Navbar from './components/navbar/navbar'
+import Profile from './pages/profile/profile'
 
 import CreateNewBoard from './components/createNewBoard';
 import BoardDetail from './pages/board-detail';
 
+import { BoardProvider } from './context/board-context/board-context'
+
 function App() {
   return (
     <Router>
-
-      <div style={{ background: 'rgb(2, 106, 167)', height: '5.5vh', width: '100%', position: 'sticky', top: '0', zIndex: '1' }}></div>
+      <Navbar />
       <CreateNewBoard />
 
-      <Switch>
-        <Route path='/login/' component={Login} />
+      <BoardProvider>
+        <Switch>
+          <Route path='/login/' component={Login} />
 
-        <Route path='/signup/' component={Signup} />
+          <Route path='/signup/' component={Signup} />
 
-        <Route path='/forgot/' component={Forgot} />
+          <Route path='/forgot/' component={Forgot} />
 
-        <Route exact path='/:boardId/:boardName' component={BoardDetail} />
+          <Route path='/profile' component={Profile} />
 
-        <Route exact path='/' component={Home} />
+          <Route exact path='/:boardId/:boardName' component={BoardDetail} />
 
-      </Switch>
+          <Route exact path='/' component={Home} />
+
+        </Switch>
+      </BoardProvider>
 
     </Router>
   );

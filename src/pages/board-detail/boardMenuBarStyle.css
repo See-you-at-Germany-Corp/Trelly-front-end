@@ -19,13 +19,15 @@
 
 .board-menu-bar .board-menu-left .board-name-box {
     /* background-color: wheat;  */
+    max-width: 100%;
+    /* min-width: 20px; */
     align-self: center 
 }
 
 .board-menu-bar .board-menu-left .board-name-box > p {
     min-width: 9px;
-    max-width: 97%;
-    padding: 4px 12px 4px 12px; 
+    /* max-width: 97%; */
+    padding: 2px 10px 2px 10px; 
     margin: 0px 0px 8px 0px; 
     border-radius: 3px;
     color: white;
@@ -58,12 +60,12 @@
     width: 47px;
 }
 
-.board-menu-bar .board-menu-left .board-star > a {
+.board-menu-bar .board-menu-left .board-star > span {
     padding: 0px; 
     margin: 0px; 
 }
 
-.board-menu-bar .board-menu-left .board-star > a > i {
+.board-menu-bar .board-menu-left .board-star > span > i {
     background-color: rgba(255, 255, 255, 0.3);
     color: white;
     border-radius: 3px;
@@ -71,7 +73,8 @@
     font-size: 12px; 
 }
 
-.board-menu-bar .board-menu-left .board-star > a > i:hover {
+.board-menu-bar .board-menu-left .board-star > span > i:hover {
+    cursor: pointer;
     background-color: rgba(255, 255, 255, 0.4); 
 }
  

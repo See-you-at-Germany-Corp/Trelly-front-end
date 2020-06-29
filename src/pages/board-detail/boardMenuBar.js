@@ -1,13 +1,17 @@
 import React, { useContext } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Popup from "reactjs-popup";
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './boardMenuBarStyle.css';
+
 import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/starredBoardList.js';
+import { URL, authenHeader } from '../../api/index.js';
+import { starToggle } from '../../api/board.js';
 import { changeName } from '../../redux/actions/personalBoardList';
 import { memberOverWrite, renameBoard, removeMember, addMember } from '../../redux/actions/currentBoard.js';
 import { BoardContext } from '../../context/board-context/board-context';
@@ -33,6 +37,10 @@ const BoardMenuBar = (props) => {
         opacity: '100',
         color: 'khaki'
     } : {};
+
+    function starApi(boardId) {
+        axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)
+    }
 
     /* ------------------ avatar -------------------- */
 
@@ -108,6 +116,8 @@ const BoardMenuBar = (props) => {
 
         React.useEffect(() => {
             setNameLength(nameDiv.current.offsetWidth);
+            console.log('nameDiv.current.offsetWidth');
+            console.log(nameDiv.current.offsetWidth);
             nameInput.current.focus();
         });
 
@@ -159,7 +169,7 @@ const BoardMenuBar = (props) => {
 
     /* ------------------ drawer -------------------- */
 
-    const [drawerStat, setDrawer] = React.useState(true);
+    const [drawerStat, setDrawer] = React.useState(false);
 
     /* ------------------ working every render -------------------- */
 
@@ -210,7 +220,10 @@ const BoardMenuBar = (props) => {
                 </div>
 
                 <div className='board-star'>
-                    <Link to='#' title='Click to star or unstar this board. Starred boards show up at the top of your board list.'>
+                    <span 
+                        title='Click to star or unstar this board. Starred boards show up at the top of your board list.'
+                        onMouseDown={() => starApi(boardState.id)}
+                    >                        
                         {
                             isStarredBoard === true ?
                                 /// click to unstar board.
@@ -219,7 +232,7 @@ const BoardMenuBar = (props) => {
                                 /// click to star board.
                                 <i className='fas fa-star' onClick={() => props.dispatch(starBoard(boardState.id, boardState))} style={starredStyle}></i>
                         }
-                    </Link>
+                    </span>
                 </div>
 
                 <SepLine />
@@ -328,16 +341,16 @@ const BoardMenuBar = (props) => {
 
                 </div>
 
-            </div>
+                <div className='board-show-menu' style={{ marginLeft: '8px' }}>
+                    <P_BUTTON onClick={() => setDrawer(!drawerStat)} style={{ display: `${drawerStat ? 'none' : 'block'}` }}>
+                        <i className="fas fa-ellipsis-h" style={{ alignSelf: 'center', margin: '4px 10px 0 0' }}></i>
+                        Show Menu
+                    </P_BUTTON>
+                    <RightDrawer open={drawerStat} setDrawer={() => setDrawer(false)} />
+                </div>
 
-            <div className='board-menu-right'>
-                <P_BUTTON onClick={() => setDrawer(!drawerStat)} style={{ display: `${drawerStat ? 'none' : 'block'}` }}>
-                    <i className="fas fa-ellipsis-h" style={{ alignSelf: 'center', margin: '4px 10px 0 0' }}></i>
-                    Show Menu
-                </P_BUTTON>
-                <RightDrawer open={drawerStat} setDrawer={() => setDrawer(false)} />
             </div>
-
+  
         </div>
     );
 }
@@ -397,15 +410,15 @@ const NameEditInput = styled.input.attrs(props => ({
     value: props.value
 }))`
     display: ${props => props.focus === false ? 'none' : 'block'};;
-    margin-top: ${props => props.length !== 33 ? '-38.5px' : '-26px'};
-    margin-left: 0px; 
-    padding: 4.5px 10px 2px 10px;  
+    margin-top: ${props => props.length !== 20 ? '-41.5px' : '-28px'};
+    margin-left: 0px;
+    padding: 4.5px 10px 0px 10px;  
 
     position: absolute; 
     z-index: 2;
 
     max-width: 97%; 
-    width: ${props => props.length !== 33 ? `${props.length - 24}px` : '10px'}; 
+    width: ${props => props.length !== 20 ? `${props.length}px` : '10px'}; 
 
     font-size: 18px; 
     font-weight: 700;  
@@ -506,7 +519,7 @@ const AvatarDetailBox = styled.div`
 
     .menu > p {
         margin: 0px 0px 0px 0px;
-        width: 270px;
+        width: 290px;
         padding: 8px 14px 8px 10px;  
 
         font-size: 14px;

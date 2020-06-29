@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios'; 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';  
 
@@ -6,8 +7,11 @@ import './style.css';
 
 import BoardList from './boardList.js'; 
 
-import { addBoard, delBoard, changeName } from '../../redux/actions/personalBoardList.js';
-import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js'; 
+import { addBoard, delBoard, changeName, overWritePersonal } from '../../redux/actions/personalBoardList.js';
+import { starBoard, unStarBoard, overWriteStarBoard } from '../../redux/actions/starredBoardList.js'; 
+
+import { URL, authenHeader } from '../../api/index.js';
+import { getMyBoards } from '../../api/board.js';
 
 import homeMenuBarData from './homeMenuBarData.js';
 
@@ -51,8 +55,28 @@ const HomeMenuBar = () => {
     );
 }
 
-const Home = ({ personalBoardList, starredBoardList, dispatch})=> {    
-  
+const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
+
+    document.body.style.backgroundColor = "white";
+
+    React.useEffect(() => { 
+        axios.get(`${URL}${getMyBoards}`, authenHeader)
+            .then(res => { 
+                const boardData = res.data;
+                const personalData = `${boardData.personal}` !== 'undefined' ? boardData.personal.sort(function (a, b) {
+                    return a.id - b.id;
+                }) : [];
+
+                const starData = `${boardData.star}` !== 'undefined' ? boardData.star.sort(function (a, b) {
+                    return a.starred_id - b.starred_id;
+                }) : [];
+
+                dispatch(overWritePersonal(personalData));
+                dispatch(overWriteStarBoard(starData));
+            })
+        // eslint-disable-next-line
+    }, []);
+    
     return (  
         <div className='homepage-main-container'> 
             <HomeMenuBar />
