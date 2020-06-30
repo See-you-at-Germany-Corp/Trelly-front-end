@@ -36,7 +36,8 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
     };
     
     const onInputChange = (e) => {
-        dispatch(setName(e.target.value));
+        // dispatch(setName(e.target.value));
+        setText(e.target.value);
     }  
     
     const dataForCreating = { ...sampleBoardData };
@@ -49,6 +50,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
         dispatch(addBoard(dataForCreating));
         dispatch(createOff());
         dispatch(setName(''));
+        setText('');
         
         /// redirect to new board.
         /// wait for pull data from backend.
@@ -60,12 +62,13 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
         
     /// create ref of createNewBoard parent.
     const createNewBoardRef = React.useRef();
- 
+    const [text,setText] = React.useState('');
     /// if click out of createNewBoard area -> close createNewBoard popup, reset name.
     window.onmousedown = function (event) {
         if (event.target === createNewBoardRef.current && createStatus === true) {
             dispatch(createOff());
             dispatch(setName(''));
+            setText('');
         }
     } 
 
@@ -76,7 +79,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
                 {/* background preview & detail input */}
                 <div className='new-board-detail-box' style={{ background: createBackground}}>
                     <i className="fas fa-times" onClick={() => dispatch(createOff())}></i>
-                    <input value={currentName} onChange={(e) => onInputChange(e)} placeholder='Add board title' ></input>
+                    <input defaultValue="" value={text} onChange={(e) => onInputChange(e)} onBlur={(e)=>dispatch(setName(e.target.value))} placeholder='Add board title'></input>
                 </div>
 
                 <div className='new-board-bg-list'>
@@ -103,7 +106,7 @@ const CreateNewBoard = ({createStatus, createBackground, sampleBoardData, curren
                 {
                     /// check name's length in newCreateBoard name input.
                     /// if 0 -> disabled.
-                    currentName.length === 0 ?
+                    text.length === 0 ?
                     <button className='create-button' disabled>
                         <p>Create Board</p>
                     </button>

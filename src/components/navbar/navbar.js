@@ -395,14 +395,58 @@ const LogoOnly =({variant,size})=>{
     );
 }
 
+const SearchInputs =({isOpen,personalBoardList,setOpen})=> {
+    const [search,setSearch] = useState('');
+    const OnChange =(event)=>{
+        let keyword = event.target.value;
+        setSearch(keyword);
+    }
+    const searchItem = personalBoardList.filter((data)=>{
+        if(search == null || search == ''){
+            return null;
+        }
+        else if(data.name.toLowerCase().includes(search.toLowerCase()) && data.id > 0){
+            // console.log(data);
+            return data;
+        }
+    })
+    return (
+        <motion.input
+            animate={isOpen ? "open" : "closed"}
+            variants={variants}
+            onFocus={() => setOpen({type:'search'})}
+            // ref={inputRef}
+            style={{
+                backgroundColor: "transparent",
+                border: "none",
+                alignSelf: "flex-start",
+                // height:"100%",
+                padding: "0px",
+                width: "130px"
+                // height:"32px"
+            }}
+            onChange={(event)=>OnChange(event)}
+        >
+        </motion.input>
+    );
+}
+
 const Navbars = ({personalBoardList,starredBoardList,on}) => {
     const [isType, setType] = useState(false);
     const [search,setSearch] = useState('');
     const inputRef = useRef();
+    let timeOut = 0;
     const [isOpen, setOpen] = useReducer(reducers,initState);
     const OnChange =(event)=>{
         let keyword = event.target.value;
-        setSearch(keyword);
+        if(timeOut){
+            clearTimeout(timeOut);
+        }
+         timeOut = setTimeout(()=>{
+            setSearch(keyword);
+        }, 300);
+        
+        
     }
     const searchItem = personalBoardList.filter((data)=>{
         if(search == null || search == ''){
@@ -481,7 +525,8 @@ const Navbars = ({personalBoardList,starredBoardList,on}) => {
                             maxHeight="32px"
                             animate={isOpen.search ? { backgroundColor: "rgba(255, 255, 255, 1)"} : { backgroundColor: "rgba(255, 255, 255, 0.3)"}}
                         >
-                            <div onClick={() => { setOpen({type:'search'}); inputRef.current.focus(); setType('search'); }} style={{ height: "32px", padding: "8px", boxSizing: "border-box", display: "flex", justifyContent: "center" }} >
+                            <div onClick={() => { setOpen({type:'search'});  setType('search'); }} style={{ height: "32px", padding: "8px", boxSizing: "border-box", display: "flex", justifyContent: "center" }} >
+                                {/* <SearchInput isOpen={isOpen.search} setOpen={setOpen}/> */}
                                 <motion.input
                                     animate={isOpen.search ? "open" : "closed"}
                                     variants={variants}
@@ -1558,4 +1603,5 @@ const Create = connect(mapStateToProps)(Creates);
 const Board = connect(mapStateToProps)(Boards);
 const SearchDropDown = connect(mapStateToProps)(SearchDropDowns);
 const Navbar = connect(mapStateToProps)(Navbars);
+const SearchInput = connect(mapStateToProps)(SearchInputs);
 export default Navbar;
