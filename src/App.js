@@ -31,7 +31,7 @@ function App(props) {
           /// check loggedIn.
           /// if true -> render user flow.
           /// else -> render guest flow.
-          // props.loggedIn ?
+          props.loggedIn ?
           <Switch>
              <Route path='/login/' component={Login} />
 
