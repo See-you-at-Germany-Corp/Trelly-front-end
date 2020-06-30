@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 export const URL = 'https://mighty-lowlands-07946.herokuapp.com';
 
 export function useAuthen () {
-    const [token, setToken] = React.useState('');
+    const [token, setToken] = React.useState(null);
 
     React.useEffect(() => {
         setToken({

@@ -41,23 +41,25 @@ const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
 
     document.body.style.backgroundColor = "white";
     const authenHeader = useAuthen(); 
-
+    
     React.useEffect(() => {  
-        axios.get(`${URL}${getMyBoards}`, authenHeader)
-            .then(res => { 
-                const boardData = res.data;
-                const personalData = `${boardData.personal}` !== 'undefined' ? boardData.personal.sort(function (a, b) {
-                    return a.id - b.id;
-                }) : [];
+        if (authenHeader) {
+            axios.get(`${URL}${getMyBoards}`, authenHeader)
+                .then(res => {
+                    const boardData = res.data;
+                    const personalData = `${boardData.personal}` !== 'undefined' ? boardData.personal.sort(function (a, b) {
+                        return a.id - b.id;
+                    }) : [];
 
-                const starData = `${boardData.star}` !== 'undefined' ? boardData.star.sort(function (a, b) {
-                    return a.starred_id - b.starred_id;
-                }) : [];
+                    const starData = `${boardData.star}` !== 'undefined' ? boardData.star.sort(function (a, b) {
+                        return a.starred_id - b.starred_id;
+                    }) : [];
 
-                dispatch(overWritePersonal(personalData));
-                dispatch(overWriteStarBoard(starData));
-            })
-            .catch(res => console.log(res));
+                    dispatch(overWritePersonal(personalData));
+                    dispatch(overWriteStarBoard(starData));
+                })
+                .catch(res => console.log(res));
+        }
         // eslint-disable-next-line
     }, [authenHeader]);
     

@@ -74,9 +74,7 @@ const boardReducer = (state, action) => {
                 color_code: action.color_code
             };
 
-        case ('CHANGE_CURRENT_BOARD'):
-            /// post to backend.
-
+        case ('CHANGE_CURRENT_BOARD'): 
             return action.newState;
  
         default:
