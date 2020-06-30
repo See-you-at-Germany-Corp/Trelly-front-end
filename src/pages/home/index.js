@@ -15,24 +15,6 @@ import { getMyBoards } from '../../api/board.js';
 
 import homeMenuBarData from './homeMenuBarData.js';
 
-// eslint-disable-next-line
-const ReducersBoardListTest =({ sample, dispatch })=> {
-    const test = {...sample};
- 
-    test.name = 'test';
-    test.background = '#ffe66d'; 
-
-    return (
-        <>
-            <button onClick={() => dispatch(addBoard(test))}>Add Board</button>
-            <button onClick={() => dispatch(delBoard(1))}>Del Board</button>
-            <button onClick={() => dispatch(changeName(1, 'LOVING U TOO MUCH SO MUCH!'))}>Change name</button>
-            <button onClick={() => dispatch(starBoard(4))}>Star Board</button>
-            <button onClick={() => dispatch(unStarBoard(4))}>Unstar Board</button>
-        </>
-    );
-}
-  
 const HomeMenuBar = () => {
     const navLinkActiveStyle = {
         color: 'rgb(2, 106, 167)',
@@ -110,8 +92,6 @@ const Home = ({ personalBoardList, starredBoardList, dispatch})=> {
                         dispatch={dispatch} 
                     />
             }
-
-            {/* {<ReducersBoardListTest dispatch={dispatch} sample={personalBoardList[0]} />} */}
 
             </div> 
         </div> 
