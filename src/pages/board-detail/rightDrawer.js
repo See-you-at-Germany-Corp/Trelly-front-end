@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
+import Popover from '@material-ui/core/Popover';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { keyframes } from 'styled-components';
@@ -12,6 +13,8 @@ import { BoardContext } from '../../context/board-context/board-context';
 import { changePicture } from '../../redux/actions/currentBoard.js';
 import { changePicturePersonal } from '../../redux/actions/personalBoardList.js';
 import { changePictureStarred } from '../../redux/actions/starredBoardList.js';
+
+import CreateLabel from './createLabel.js';
 
 const mainMenuData = [
     {
@@ -105,12 +108,14 @@ const RightDrawer = (props) => {
                     <i className="fas fa-chevron-left" onMouseDown={() => backHandler()}></i>
                 </BackBox>
             }
+
             <MainBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=1 */}
             <AboutBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=2 */}
             <ChangeBackgroundBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=3 */}
             <ColorPickerBox id={id} setId={(id) => idChangeHandler(id)} dispatch={props.dispatch} /> {/* id=3.1 */}
             <MoreBox id={id} setId={(id) => idChangeHandler(id)} />
             <LabelsBox id={id} setId={(id) => idChangeHandler(id)} />
+
         </DrawerBox>
     );
 }
@@ -324,7 +329,7 @@ const ColorPickerBox = (props) => {
 
     function changePictureHandler(color_code) {
         if (boardState.color_code !== color_code) {
-            boardDispatch(changePicture(color_code)); 
+            boardDispatch(changePicture(color_code));
             props.dispatch(changePicturePersonal(boardState.id, color_code));
             props.dispatch(changePictureStarred(boardState.id, color_code));
         }
@@ -413,9 +418,35 @@ const LabelsBox = (props) => {
 
     const [searchText, setSeacrh] = React.useState('');
 
-    function searchOnChange (e) {
+    function searchOnChange(e) {
         setSeacrh(e.target.value);
     }
+
+    const usePopover = () => {
+        const [anchorEl, setAnchorEl] = React.useState(null);
+
+        const handleClick = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+
+        const open = Boolean(anchorEl);
+        const id = open ? 'simple-popover' : undefined;
+
+        return [anchorEl, setAnchorEl, handleClick, handleClose, open, id];
+    }
+
+    const [anchorEl, setAnchorEl, handleClick, handleClose, open, id] = usePopover();
+    const [anchorE2, setAnchorE2, handleClick2, handleClose2, open2, id2] = usePopover(); 
+
+    const [currentLabelData, setCurrent] = React.useState({
+        color_id: null,
+        name: null,
+        label_id: null
+    });
 
     return (
         <>
@@ -425,9 +456,8 @@ const LabelsBox = (props) => {
                     <div className='menu-bar-name-box'><p>{state.name}</p></div>
 
                     <SlideDiv>
-                        <input className='search-label' type='search' placeholder='Search labels...' onChange={(e) => searchOnChange(e)}></input>
-
                         <LabelBigBox>
+                        <input className='search-label' type='search' placeholder='Search labels...' onChange={(e) => searchOnChange(e)}></input>
                             <div className='label-name'>
                                 <SmallDefaultText>LABELS</SmallDefaultText>
                             </div>
@@ -435,40 +465,81 @@ const LabelsBox = (props) => {
                             <div className='label-lists'>
                                 {
                                     labelSorted
-                                        .filter(bg => 
-                                            searchText !== '' ? 
-                                            bg.name !== null && bg.name.toLowerCase().includes(searchText.toLowerCase()) : true
+                                        .filter(bg =>
+                                            searchText !== '' ?
+                                                bg.name !== null && bg.name.toLowerCase().includes(searchText.toLowerCase()) : true
                                         )
-                                        .map(bg => (
-                                            <div className='label-box'>
-                                                <div className='label-item' 
+                                        .map((bg, index) => (
+                                            <div key={index} className='label-box'>
+                                                <div 
+                                                    className='label-item'
                                                     style={{ background: `${labelData[bg.color_id - 1].picture}` }}
+                                                    onClick={(e) => {
+                                                        handleClick2(e);
+                                                        setCurrent({
+                                                            color_id: bg.color_id,
+                                                            name: bg.name,
+                                                            label_id: bg.id
+                                                        });
+                                                    }}
                                                 >
                                                     <p><b>{bg.name}</b></p>
                                                 </div>
                                                 <i className="far fa-edit"></i>
                                             </div>
                                         ))
-                                } 
-                            </div>
-                            <div className='label-lists'>
-                                {
-                                    labelSorted.map(bg => (
-                                        <div className='label-box'>
-                                            <div className='label-item' 
-                                                style={{ background: `${labelData[bg.color_id - 1].picture}` }}
-                                            >
-                                                <p><b>{bg.name}</b></p>
-                                            </div>
-                                            <i className="far fa-edit"></i>
-                                        </div>
-                                    ))
-                                } 
-                            </div>
+                                }
+                            </div> 
 
                             <div className='create-box'>
-                                <button>Create a new label</button>
+                                <button onClick={handleClick}>Create a new label</button>
                             </div>
+
+                            {/* click create label */}
+                            <CreateLabelPop
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <div className='create-label-box'>
+                                    <div className='create-name'>
+                                        <SmallDefaultText>Create Label</SmallDefaultText>
+                                    </div>
+                                    <CreateLabel mode={1} currentLabelData={null} handleClose={() => handleClose()} />
+                                </div>
+                            </CreateLabelPop>
+
+                            {/* click at label */}
+                            <CreateLabelPop
+                                id={id2}
+                                open={open2}
+                                anchorEl={anchorE2}
+                                onClose={handleClose2}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <div className='create-label-box'>
+                                    <div className='create-name'>
+                                        <SmallDefaultText>Change Label</SmallDefaultText>
+                                    </div>
+                                    <CreateLabel mode={2} currentLabelData={currentLabelData} handleClose={() => handleClose2()} />
+                                </div>
+                            </CreateLabelPop>
 
                         </LabelBigBox>
                     </SlideDiv>
@@ -495,10 +566,9 @@ const DrawerBox = styled.div`
     transition: all 0.25s ease; 
 
     position: absolute;
-    padding: 14px;
-    margin-top: 5.5vh;
+    padding: 14px; 
     right: 0;
-    top: 0;
+    top: 5.5vh;
     justify-self: flex-end;
 
     .fa-times {
@@ -577,10 +647,10 @@ const SlideDiv = styled.div`
     animation: ${slide} 0.15s linear;
 
     .search-label {
-        margin-top: 15px;
-        margin-bottom: 8px;
+        margin-top: 15px; 
         padding: 4px;
-        width: 100%;
+        width: 97%;
+        height: 40px;
         border-radius: 3px;
         border: 2px lightgray solid;
         outline: none;
@@ -800,8 +870,7 @@ const LabelBigBox = styled.div`
         margin-top: 3px;
         transition: width 0.25s;
     }
-
-    
+ 
     .label-item > p { 
         color: white;
         margin: 4px 0 0 15px;
@@ -819,7 +888,7 @@ const LabelBigBox = styled.div`
         margin-top: 10px;
 
         button { 
-            width: 100%;
+            width: 97%;
             padding: 6px;
             background-color: rgb(230, 230, 230);
             border: none;
@@ -836,6 +905,21 @@ const LabelBigBox = styled.div`
                 color: deepskyblue;
             }
         } 
+    } 
+`;
+
+const CreateLabelPop = styled(Popover)` 
+    .create-label-box { 
+        padding: 10px;
+        width: 280px;
+        height: 250px;  
+
+        .create-name {
+            text-align: center;
+            margin-top: 2px;
+            padding-bottom: 11px;
+            border-bottom: 0.5px solid lightgray;
+        }
     }
 `;
 

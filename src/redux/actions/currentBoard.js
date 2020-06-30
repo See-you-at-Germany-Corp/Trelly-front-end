@@ -27,3 +27,20 @@ export const changePicture = (color_code) => ({
     type: 'CHANGE_PICTURE',
     color_code
 })
+
+export const addLabelToBoard = (labelData) => ({
+    type: 'ADD_LABEL_TO_BOARD',
+    labelData
+}) 
+
+export const updateLabelInBoard = (labelId, newName, newColor_id) => ({
+    type: 'UPDATE_LABEL_IN_BOARD',
+    labelId,
+    newName,
+    newColor_id
+}) 
+
+export const delLabelInBoard = (labelId) => ({
+    type: 'DEL_LABEL_IN_BOARD',
+    labelId
+}) 
