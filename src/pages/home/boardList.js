@@ -8,6 +8,7 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import './boardListStyle.css';
 
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
+import { delRecentlyBoard, addRecentlyBoard } from '../../redux/actions/recentlyBoard.js';
 import { createOn } from '../../redux/actions/createNewBoard';
 import { URL, useAuthen } from '../../api/index.js';
 import { starToggle } from '../../api/board.js';
@@ -28,6 +29,16 @@ const SortableItem = SortableElement((props) => {
         axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
     }
 
+    function starHandler () { 
+        props.dispatch(starBoard(board.id, board))
+        props.dispatch(delRecentlyBoard(board.id));
+    }
+
+    function unStarHandler () { 
+        props.dispatch(unStarBoard(board.id, board))
+        props.dispatch(addRecentlyBoard(board));
+    }
+
     return (
         <React.Fragment>
             <BoardContainer className='board-list-item-box' style={{ background: `${board.color_code === '' ? '#BBBBBB' : `${board.color_code}`}` }}>
@@ -41,10 +52,10 @@ const SortableItem = SortableElement((props) => {
                         {
                             isStarredBoard === true ?
                                 /// click to unstar board.
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(board.id))} style={starredStyle}></i>
+                                <i className='board-star fas fa-star' onClick={() => unStarHandler()} style={starredStyle}></i>
                                 :
                                 /// click to star board.
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(starBoard(board.id, board))} style={starredStyle}></i>
+                                <i className='board-star fas fa-star' onClick={() => starHandler()} style={starredStyle}></i>
                         }
                     </Link>
                 </BoardSmallBox>
@@ -146,8 +157,7 @@ const BoardContainer = styled.div`
     &:hover {
         filter: brightness(95%); 
         cursor: pointer;
-    }
-
+    } 
 `
 
 const BoardSmallBox = styled(Link)` 
@@ -173,8 +183,7 @@ const BoardSmallBox = styled(Link)`
 
     & > a {
         -webkit-user-drag: none;
-    }
-
+    } 
 `
 
 /* ------------------------- Redux --------------------------- */

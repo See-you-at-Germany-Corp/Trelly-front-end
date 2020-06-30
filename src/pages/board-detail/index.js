@@ -17,20 +17,16 @@ const BoardDetail = (props) => {
     /// mockup board detail.  
     const { boardId } = useParams();
     const { boardState, boardDispatch } = useContext(BoardContext)
+     
     const authenHeader = useAuthen();
-    const [isLoading, setLoading] = React.useState(true);
 
-    // console.log('authenHeader')
-    // console.log(authenHeader)
-
-    React.useEffect(() => {
+    React.useMemo(() => {
         /// send api to get current board data.
         /// then overwrite current board data.
         if (authenHeader) {
             axios.get(`${URL}${getMyBoardDetail(boardId)}`, authenHeader)
                 .then(res => {
-                    boardDispatch(changeCurrentBoard(res.data));
-                    setLoading(false);
+                    boardDispatch(changeCurrentBoard(res.data)); 
                 })
         }
         // eslint-disable-next-line
@@ -39,15 +35,10 @@ const BoardDetail = (props) => {
     document.body.style.backgroundColor = boardState.color_code;
 
     return (
-        <>
-            {
-                !isLoading &&
-                    <div className='board-detail' style={{ background: `${boardState.color_code}` }}>
-                        <BoardMenuBar {...props} />
-                        <ListGroup />
-                    </div>
-            }
-        </>
+        <div className='board-detail' style={{ background: `${boardState.color_code}` }}>
+            <BoardMenuBar {...props} />
+            <ListGroup />
+        </div>
     );
 }
 
