@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import './style.css';
@@ -11,6 +12,7 @@ import { changeCurrentBoard } from '../../redux/actions/currentBoard';
 
 import { URL, useAuthen } from '../../api/index.js';
 import { getMyBoardDetail } from '../../api/board.js';
+import { addRecentlyBoard } from '../../redux/actions/recentlyBoard';
 
 const BoardDetail = (props) => {
 
@@ -27,6 +29,10 @@ const BoardDetail = (props) => {
             axios.get(`${URL}${getMyBoardDetail(boardId)}`, authenHeader)
                 .then(res => {
                     boardDispatch(changeCurrentBoard(res.data)); 
+                    props.dispatch(addRecentlyBoard({
+                        name: res.data.name,
+                        color_code: res.data.color_code
+                    }));
                 })
         }
         // eslint-disable-next-line
@@ -42,4 +48,10 @@ const BoardDetail = (props) => {
     );
 }
 
-export default BoardDetail;
+const mapStateToProps = state => ({
+    recentlyBoardList: state.recentlyBoardList
+})
+
+const BoardDetailWithConnect = connect(mapStateToProps)(BoardDetail);
+
+export default BoardDetailWithConnect;

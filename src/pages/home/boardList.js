@@ -31,12 +31,16 @@ const SortableItem = SortableElement((props) => {
 
     function starHandler () { 
         props.dispatch(starBoard(board.id, board))
-        props.dispatch(delRecentlyBoard(board.id));
+        if (board.recently_id > 0) {
+            props.dispatch(delRecentlyBoard(board.id));
+        } 
     }
 
     function unStarHandler () { 
         props.dispatch(unStarBoard(board.id, board))
-        props.dispatch(addRecentlyBoard(board));
+        if (board.recently_id > 0) {
+            props.dispatch(addRecentlyBoard(board));
+        }
     }
 
     return (
