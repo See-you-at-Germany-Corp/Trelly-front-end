@@ -292,7 +292,7 @@ const ChangeBackgroundBox = (props) => {
                                 <div className='background-list'>
                                     {
                                         backgroundData.map((bg, index) => (
-                                            <ColorItem key={index} background={bg.picture}></ColorItem>
+                                            <ColorItem key={index} background={bg.color_code}></ColorItem>
                                         ))
                                     }
                                 </div>
@@ -322,11 +322,11 @@ const ColorPickerBox = (props) => {
 
     const { boardState, boardDispatch } = React.useContext(BoardContext);
 
-    function changePictureHandler(picture) {
-        if (boardState.picture !== picture) {
-            boardDispatch(changePicture(picture)); 
-            props.dispatch(changePicturePersonal(boardState.id, picture));
-            props.dispatch(changePictureStarred(boardState.id, picture));
+    function changePictureHandler(color_code) {
+        if (boardState.color_code !== color_code) {
+            boardDispatch(changePicture(color_code)); 
+            props.dispatch(changePicturePersonal(boardState.id, color_code));
+            props.dispatch(changePictureStarred(boardState.id, color_code));
         }
     }
 
@@ -343,8 +343,8 @@ const ColorPickerBox = (props) => {
                                 backgroundData.map((bg, index) => (
                                     <ColorPickerBoxItem
                                         key={index}
-                                        background={bg.picture}
-                                        onMouseDown={() => changePictureHandler(bg.picture)}
+                                        background={bg.color_code}
+                                        onMouseDown={() => changePictureHandler(bg.color_code)}
                                     >
                                     </ColorPickerBoxItem>
                                 ))
@@ -411,6 +411,12 @@ const LabelsBox = (props) => {
         return a.color_id - b.color_id;
     });
 
+    const [searchText, setSeacrh] = React.useState('');
+
+    function searchOnChange (e) {
+        setSeacrh(e.target.value);
+    }
+
     return (
         <>
             {
@@ -419,11 +425,32 @@ const LabelsBox = (props) => {
                     <div className='menu-bar-name-box'><p>{state.name}</p></div>
 
                     <SlideDiv>
+                        <input className='search-label' type='search' placeholder='Search labels...' onChange={(e) => searchOnChange(e)}></input>
+
                         <LabelBigBox>
                             <div className='label-name'>
                                 <SmallDefaultText>LABELS</SmallDefaultText>
                             </div>
 
+                            <div className='label-lists'>
+                                {
+                                    labelSorted
+                                        .filter(bg => 
+                                            searchText !== '' ? 
+                                            bg.name !== null && bg.name.toLowerCase().includes(searchText.toLowerCase()) : true
+                                        )
+                                        .map(bg => (
+                                            <div className='label-box'>
+                                                <div className='label-item' 
+                                                    style={{ background: `${labelData[bg.color_id - 1].picture}` }}
+                                                >
+                                                    <p><b>{bg.name}</b></p>
+                                                </div>
+                                                <i className="far fa-edit"></i>
+                                            </div>
+                                        ))
+                                } 
+                            </div>
                             <div className='label-lists'>
                                 {
                                     labelSorted.map(bg => (
@@ -437,6 +464,10 @@ const LabelsBox = (props) => {
                                         </div>
                                     ))
                                 } 
+                            </div>
+
+                            <div className='create-box'>
+                                <button>Create a new label</button>
                             </div>
 
                         </LabelBigBox>
@@ -544,6 +575,20 @@ const slide = keyframes`
 
 const SlideDiv = styled.div`  
     animation: ${slide} 0.15s linear;
+
+    .search-label {
+        margin-top: 15px;
+        margin-bottom: 8px;
+        padding: 4px;
+        width: 100%;
+        border-radius: 3px;
+        border: 2px lightgray solid;
+        outline: none;
+
+        :focus { 
+            border: 2px deepskyblue solid; 
+        }
+    }
 `;
 
 const DefaultText = styled.p`
@@ -708,6 +753,17 @@ const LabelBigBox = styled.div`
     overflow: auto;
     max-height: 85vh;
 
+    ::-webkit-scrollbar {
+        width: 10px;
+        border-radius: 10px;
+        background: rgba(9,30,66,.08);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: rgba(9,30,66,.08);
+    }
+
     .label-name {
         width: 100%;
         margin-top: 5px;
@@ -757,6 +813,29 @@ const LabelBigBox = styled.div`
         width: 80%;
         filter: brightness(85%);
         transition: width 0.15s;
+    }
+
+    .create-box {
+        margin-top: 10px;
+
+        button { 
+            width: 100%;
+            padding: 6px;
+            background-color: rgb(230, 230, 230);
+            border: none;
+            border-radius: 3px;
+            outline: none;
+
+            :hover {  
+                cursor: pointer;
+                background-color: rgb(220, 220, 220); 
+            } 
+
+            :active {
+                background-color: rgba(100, 220, 220, 0.2); 
+                color: deepskyblue;
+            }
+        } 
     }
 `;
 

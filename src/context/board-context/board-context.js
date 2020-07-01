@@ -32,22 +32,22 @@ const boardReducer = (state, action) => {
 
         /*--------------------BOAT--------------------*/
 
-        case ('BOARD_RENAME'): 
-            state.name = action.name 
+        case ('BOARD_RENAME'):
+            state.name = action.name
 
             /// post to backend.
 
             return state;
 
-        case ('MEMBER_OVERWRITE'): 
-            state.members = action.members 
+        case ('MEMBER_OVERWRITE'):
+            state.members = action.members
 
             /// post to backend.
 
             return state;
 
         case ('ADD_MEMBER'):
-            const newState2 = {...state};
+            const newState2 = { ...state };
             newState2.members.push(action.member);
 
             /// post to backend.
@@ -55,7 +55,7 @@ const boardReducer = (state, action) => {
             return newState2;
 
         case ('REMOVE_MEMBER'):
-            const newState = {...state};
+            const newState = { ...state };
             const rmvIndex = state.members.findIndex(member => member.id === action.id);
 
             if (rmvIndex >= 0) {
@@ -66,19 +66,17 @@ const boardReducer = (state, action) => {
 
             return newState;
 
-        case ('CHANGE_CURRENT_BOARD'):
-            /// post to backend.
-
-            return action.newState;
-
         case ('CHANGE_PICTURE'):
-            /// post to backend.
+            /// post to backend. 
 
             return {
                 ...state,
-                picture: action.picture
+                color_code: action.color_code
             };
 
+        case ('CHANGE_CURRENT_BOARD'): 
+            return action.newState;
+ 
         default:
             return state
     }

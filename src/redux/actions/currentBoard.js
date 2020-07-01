@@ -23,7 +23,7 @@ export const changeCurrentBoard = (newState) => ({
     newState
 })
 
-export const changePicture = (picture) => ({
+export const changePicture = (color_code) => ({
     type: 'CHANGE_PICTURE',
-    picture
+    color_code
 })

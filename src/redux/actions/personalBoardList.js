@@ -14,10 +14,10 @@ export const changeName = (boardId, name) => ({
     name
 })
 
-export const changePicturePersonal = (boardId, picture) => ({
+export const changePicturePersonal = (boardId, color_code) => ({
     type: 'CHANGE_PICTURE_PERSONAL',
     boardId,
-    picture,
+    color_code,
 })
 
 export const overWritePersonal = (newState) => ({

@@ -15,7 +15,9 @@ import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/starredBoardList';
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
+import { URL, useAuthen } from '../../api/index.js';
+import moveStarObject from '../../function/moveStarObject';
 
 
 import { createOn } from '../../redux/actions/createNewBoard';
@@ -168,7 +170,8 @@ const Title = styled.div`
 `;
 
 const TitleCom = ({title}) => {
-    const [setOpen] =useContext(OpenContext);
+    // eslint-disable-next-line
+    const [open, setOpen] = useContext(OpenContext);
     return (
         <Column>
             <Title>
@@ -356,10 +359,16 @@ const Navbars = ({personalBoardList,starredBoardList,on}) => {
     const [isType, setType] = useState(false);
     const [search,setSearch] = useState('');
     const inputRef = useRef();
+    let timeOut = 0;
     const [isOpen, setOpen] = useReducer(reducers,initState);
     const OnChange =(event)=>{
         let keyword = event.target.value;
-        setSearch(keyword);
+        if(timeOut){
+            clearTimeout(timeOut);
+        }
+         timeOut = setTimeout(()=>{
+            setSearch(keyword);
+        }, 300);
     }
     // eslint-disable-next-line
     const searchItem = personalBoardList.filter((data)=>{
@@ -945,21 +954,20 @@ const HidableCon = styled.div`
 const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})=>{
     // eslint-disable-next-line
     const [test,setTest] = useState(starredBoardList)
+    const authenHeader = useAuthen();
     const onDragEnd =(result)=> {
         let temp = starredBoardList;
         // dropped outside the list
         if (!result.destination) {
           return;
         }
-    
-        const items = reorder(
-          temp,
-          result.source.index,
-          result.destination.index
-        );
-        // setTest(items)
-        dispatch(overWriteStarBoard(items));
-        // console.log(starredBoardList);
+        moveStarObject(starredBoardList, result.source.index, result.destination.index, dispatch, authenHeader);
+        // const items = reorder(
+        //   temp,
+        //   result.source.index,
+        //   result.destination.index
+        // );
+        // dispatch(overWriteStarBoard(items));
         
       }
     const item = {
