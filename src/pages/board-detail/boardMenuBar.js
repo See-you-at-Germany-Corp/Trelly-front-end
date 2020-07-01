@@ -11,7 +11,7 @@ import './boardMenuBarStyle.css';
 
 import { starBoard, unStarBoard, changeStarName } from '../../redux/actions/starredBoardList.js';
 import { URL, useAuthen } from '../../api/index.js';
-import { starToggle } from '../../api/board.js';
+import { updateMyBoard, starToggle, memberToggle } from '../../api/board.js';
 import { changeName } from '../../redux/actions/personalBoardList';
 import { memberOverWrite, renameBoard, removeMember, addMember } from '../../redux/actions/currentBoard.js';
 import { BoardContext } from '../../context/board-context/board-context';
@@ -85,6 +85,11 @@ const BoardMenuBar = (props) => {
                 props.dispatch(changeName(boardState.id, name));
                 /// set starred board name.
                 props.dispatch(changeStarName(boardState.id, name));
+                /// post to back-end.
+                axios.patch(`${URL}${updateMyBoard(boardState.id)}`, {
+                    name,
+                    color_code: boardState.color_code
+                }, authenHeader);
             }
             else {
                 setNameDisp(boardState.name);
@@ -140,31 +145,31 @@ const BoardMenuBar = (props) => {
         setInviteValue(e.target.value);
     }
 
-    const onSubmitInvite = () => {
-        const name = inviteValue;
+    const onSubmitInvite = () => { 
+        var formData = new FormData();
+        formData.append('email', inviteValue);
+   
+        /// post 'email' to backend.
+        /// wait member data from backend.
+        /// get response and member data.
+        axios.post(`${URL}${memberToggle(boardState.id)}`, formData, authenHeader)
+            .then(res => { 
+                setInviteValue(''); 
+                switch (res.status) {
+                    case 200:
+                        /// add member to board.
+                        boardDispatch(addMember(res.data));
+                        break;
 
-        /// can find name in this board.
-        if (boardState.members.findIndex(member => member.full_name === name || member.username === name) > -1) {
-            alert('เป็นสมาชิกอยู่แล้ว !');
-        }
-
-        /// can't find name in this board.
-        else {
-            /// post 'name' to backend.
-            /// wait member data from backend.
-            /// get response and member data.
-            boardDispatch(addMember({
-                id: 4,
-                full_name: 'Wittawin',
-                init: 'WM',
-                username: 'wittawin',
-                bio: 'taete',
-                picture: ''
-            }));
-
-            /// can't get response and member data.
-            alert('ไม่พบข้อมูล !');
-        }
+                    default: 
+                        /// remove member in board.
+                        boardDispatch(removeMember(res.data.id));
+                        break;
+                }  
+            })
+            .catch(res => {
+                alert('ไม่พบข้อมูล !');
+            })  
     }
 
     /* ------------------ drawer -------------------- */
@@ -176,7 +181,6 @@ const BoardMenuBar = (props) => {
     // eslint-disable-next-line
     React.useEffect(() => {
         setNameLength(nameDiv.current.offsetWidth);
-        console.log('nameDiv.current.offsetWidth', nameDiv.current.offsetWidth);
         nameInput.current.focus();
         
         window.onmousedown = function (e) {
@@ -370,8 +374,8 @@ export default BoardMenuBarWithConnect;
 const inviteStyle = {
     borderRadius: '3px',
     boxShadow: '2px 4px 8px #888888',
-    height: '368px',
-    width: '300px',
+    height: '338px',
+    width: '275px',
     padding: '10px'
 }
 
@@ -562,7 +566,7 @@ const InviteDes = styled.div`
     }
 
     .split-line {
-        width: 280px;
+        width: 275px;
         height: 1px;
         background-color: rgb(222, 222, 222);
         margin-bottom: 12px;
@@ -578,7 +582,7 @@ const InviteDes = styled.div`
         box-sizing: border-box;
         border: 1px solid lightgray;
         border-radius: 3px;
-        width: 280px; 
+        width: 275px; 
         padding: 10px 7px 10px 7px;
         margin-bottom: 10px; 
         /* margin-left: 5px; */

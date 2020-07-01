@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
 import Popover from '@material-ui/core/Popover';
@@ -14,7 +15,10 @@ import { changePicture } from '../../redux/actions/currentBoard.js';
 import { changePicturePersonal } from '../../redux/actions/personalBoardList.js';
 import { changePictureStarred } from '../../redux/actions/starredBoardList.js';
 
-import CreateLabel from './createLabel.js';
+import CreateLabel from './createLabel.js'; 
+
+import { URL, useAuthen } from '../../api';
+import { updateMyBoard } from '../../api/board.js';
 
 const mainMenuData = [
     {
@@ -166,15 +170,12 @@ const AboutBox = (props) => {
     else if (props.id !== state.id && state.open === true) {
         setState({ ...state, open: false });
     }
+ 
+    const { boardState } = React.useContext(BoardContext);
 
-    const mockupFounder = {
-        id: 2,
-        full_name: 'PANSA BOONTHAVEEKHUNSAWATD',
-        init: 'PB',
-        username: 'pansaboonthaveekhunsawatd',
-        bio: '',
-        picture: ''
-    }
+    const mockupFounder = boardState.members[
+        boardState.members.findIndex(member => member.id === boardState.admin)
+    ];
 
     const mockupDes = 'Trelly copy from Trello.';
 
@@ -326,12 +327,21 @@ const ColorPickerBox = (props) => {
     }
 
     const { boardState, boardDispatch } = React.useContext(BoardContext);
+    const authenHeader = useAuthen();
 
     function changePictureHandler(color_code) {
         if (boardState.color_code !== color_code) {
+            /// set current board color_code. 
             boardDispatch(changePicture(color_code));
+            /// set personal board color_code.
             props.dispatch(changePicturePersonal(boardState.id, color_code));
+            /// set starred board color_code.
             props.dispatch(changePictureStarred(boardState.id, color_code));
+            /// post to back-end.
+            axios.patch(`${URL}${updateMyBoard(boardState.id)}`, {
+                name: boardState.name,
+                color_code
+            }, authenHeader);
         }
     }
 
