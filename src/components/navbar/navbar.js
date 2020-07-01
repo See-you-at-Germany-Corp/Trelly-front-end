@@ -1092,17 +1092,19 @@ const BoardPreviewTitle = styled(motion.div)`
 const BoardPreviewBg = styled(motion.div)`
     top:0px;
     position:absolute;
-    background-image: url(${require('./test.jpg')});
+    // background-image: url(${require('./test.jpg')});
     background-position: center top;
     filter: blur(4px) opacity(50%);
     // -webkit-filter: blur(4px) greyscale(100%);
     background-size: cover;
+    background-color: ${props=>props.backgroundColor};
     height:100%;
     width:80%;
 `;
 const Imgpreview = styled(motion.img)`
     width:20%;
     filter: opacity(90%);
+    background-color:${props=>props.backgroundColor};
 `;
 
 const BoardPreviewBgHover = {
@@ -1110,7 +1112,7 @@ const BoardPreviewBgHover = {
         filter: "blur(4px) opacity(30%)"
     },
     hover:{
-        filter: "blur(1px) opacity(35%)",
+        filter: "blur(1px) opacity(50%)",
         transition:{
             duration: 0.3
         }
@@ -1209,20 +1211,22 @@ const BoardPreview =({board,star,dispatch,index,open})=>{
                 <motion.div 
                     whileHover="hover"
                     initial="init" 
-                    style={{position:"relative",overflow:"hidden",border:"1px solid rgba(0, 0, 0, 0.1)",borderRadius:"5px" }}
+                    style={{position:"relative",overflow:"hidden",border:"1px solid rgba(0, 0, 0, 0.7)",borderRadius:"5px" }}
                     whileTap={{boxShadow:"0px 0px 20px -10px"}}
                     >   
                     <Linkable
                         padding="0px"
                         onClick={()=>setOpenP({type:''})}
-                        link={board.href}
+                        // const boardHref = `/${board.id}/${board.name}`;
+                        link={`/${board.id}/${board.name}`}
                         children={
                             <Row maxHeight="40px" minHeight="40px" overflow="hidden" >
                                 
-                                <Imgpreview src={require("./test.jpg")} variants={ImgPreviewHover}/>
+                                <Imgpreview backgroundColor={board.color_code} variants={ImgPreviewHover}/>
+                                {/* {console.log(board)} */}
                                 {/* <img src={require("./test.jpg")}/> */}
                                 <div style={{display:"block" ,width:"80%",alignSelf:"center"}}>
-                                <BoardPreviewBg variants={BoardPreviewBgHover}></BoardPreviewBg>
+                                <BoardPreviewBg backgroundColor={board.color_code} variants={BoardPreviewBgHover}></BoardPreviewBg>
                                 <BoardPreviewTitle>
                                     <Column minWidth="60%" maxWidth="60%">
                                         {board.name}
