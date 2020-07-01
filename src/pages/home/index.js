@@ -110,6 +110,7 @@ const BoardLists = (props) => {
                 <BoardList
                     listName='Starred Boards'
                     icon='star'
+                    disabledLink={false}
                     boardListData={starredBoardList}
                     dispatch={dispatch}
                 />
@@ -121,6 +122,7 @@ const BoardLists = (props) => {
                 <BoardList
                     listName='Recently Boards'
                     icon='clock'
+                    disabledLink={false}
                     boardListData={recentlyBoardList}
                     dispatch={dispatch}
                 />
@@ -132,6 +134,7 @@ const BoardLists = (props) => {
                 <BoardList
                     listName='Personal Boards'
                     icon='user'
+                    disabledLink={false}
                     boardListData={personalBoardList}
                     dispatch={dispatch}
                 />
@@ -163,16 +166,19 @@ const BoardListSkel = () => {
             <BoardList
                 listName='Starred Boards'
                 icon='star'
+                disabledLink={true}
                 boardListData={createMockupData(1)}
             />
             <BoardList
                 listName='Recently Boards'
                 icon='clock'
+                disabledLink={true}
                 boardListData={createMockupData(1)}
             />
             <BoardList
                 listName='Personal Boards'
                 icon='user'
+                disabledLink={true}
                 boardListData={createMockupData(1)}
             />
         </>

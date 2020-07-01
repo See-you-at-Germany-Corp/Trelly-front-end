@@ -19,8 +19,8 @@ const SortableItem = SortableElement((props) => {
     const index = props.boardIndex;
     const board = props.board;
     const starredStyle = props.starredStyle;
-    const keyId = props.keyId;
-    const boardHref = props.boardHref;
+    const keyId = props.keyId; 
+    const boardHref = props.disabledLink ? '#' : props.boardHref;
     const isStarredBoard = props.isStarredBoard;
 
     const authenHeader = useAuthen();
