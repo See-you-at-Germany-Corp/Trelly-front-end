@@ -19,6 +19,7 @@ import CreateLabel from './createLabel.js';
 
 import { URL, useAuthen } from '../../api';
 import { updateMyBoard } from '../../api/board.js';
+import { changePicturRecently } from '../../redux/actions/recentlyBoard.js';
 
 const mainMenuData = [
     {
@@ -337,6 +338,8 @@ const ColorPickerBox = (props) => {
             props.dispatch(changePicturePersonal(boardState.id, color_code));
             /// set starred board color_code.
             props.dispatch(changePictureStarred(boardState.id, color_code));
+            /// set recently board color_code.
+            props.dispatch(changePicturRecently(boardState.id, color_code));
             /// post to back-end.
             axios.patch(`${URL}${updateMyBoard(boardState.id)}`, {
                 name: boardState.name,

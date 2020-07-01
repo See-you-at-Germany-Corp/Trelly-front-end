@@ -128,7 +128,7 @@ const BoardLists = (props) => {
 
             {
                 /// personal board lists.
-                personalBoardList.length > 0 &&
+                personalBoardList.length >= 0 &&
                 <BoardList
                     listName='Personal Boards'
                     icon='user'

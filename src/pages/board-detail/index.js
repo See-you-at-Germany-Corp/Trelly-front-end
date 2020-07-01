@@ -29,10 +29,13 @@ const BoardDetail = (props) => {
             axios.get(`${URL}${getMyBoardDetail(boardId)}`, authenHeader)
                 .then(res => {
                     boardDispatch(changeCurrentBoard(res.data)); 
-                    props.dispatch(addRecentlyBoard({
-                        name: res.data.name,
-                        color_code: res.data.color_code
-                    }));
+                    /// if can't find in recently board data -> add to recently board.
+                    if (props.recentlyBoardList.findIndex(recent => recent.id === res.data.id) === -1) {
+                        props.dispatch(addRecentlyBoard({
+                            name: res.data.name,
+                            color_code: res.data.color_code
+                        }));
+                    }
                 })
         }
         // eslint-disable-next-line

@@ -17,6 +17,7 @@ import { memberOverWrite, renameBoard, removeMember, addMember } from '../../red
 import { BoardContext } from '../../context/board-context/board-context';
 
 import RightDrawer from './rightDrawer.js';
+import { changeRecentlyName } from '../../redux/actions/recentlyBoard';
 
 const BoardMenuBar = (props) => {
 
@@ -85,6 +86,8 @@ const BoardMenuBar = (props) => {
                 props.dispatch(changeName(boardState.id, name));
                 /// set starred board name.
                 props.dispatch(changeStarName(boardState.id, name));
+                /// set recently board name.
+                props.dispatch(changeRecentlyName(boardState.id, name));
                 /// post to back-end.
                 axios.patch(`${URL}${updateMyBoard(boardState.id)}`, {
                     name,
@@ -163,7 +166,8 @@ const BoardMenuBar = (props) => {
 
                     default: 
                         /// remove member in board.
-                        boardDispatch(removeMember(res.data.id));
+                        /// can't remove cause can't get any res from back end.
+                        // boardDispatch(removeMember(res.data.id));
                         break;
                 }  
             })

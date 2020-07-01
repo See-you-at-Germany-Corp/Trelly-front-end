@@ -16,6 +16,26 @@ export default (state = [], action) => {
 
             return newState;
 
+        case 'CHANGE_RECENTLY_NAME':
+            const newState3 = [...state];
+            const changeIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (changeIndex >= 0) {
+                newState3[changeIndex].name = action.name; 
+            }
+
+            return newState3;
+
+        case 'CHANGE_PICTURE_RECENTLY':
+            const newState4 = [...state];
+            const changePicIndex = state.findIndex(data => data.id === action.boardId)
+
+            if (changePicIndex >= 0) {
+                newState4[changePicIndex].color_code = action.color_code; 
+            }
+
+            return newState4;
+
         case ('OVERWRITE_RECENTLY'):
             return action.newState;
 

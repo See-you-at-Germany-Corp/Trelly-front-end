@@ -122,6 +122,15 @@ const SortableList = SortableContainer((props) => {
                     })
             }
 
+            {
+                props.boardListData.length === 0 && props.listName === 'Personal Boards' &&
+                <BoardContainer className='board-list-item-box' key='create'>
+                    <BoardSmallBox to='#' onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
+                        <p style={{ marginTop: '38px', color: 'slategray', marginLeft: '9px', fontSize: '14px' }}>Create new board</p>
+                    </BoardSmallBox>
+                </BoardContainer>
+            }
+
         </div>
     );
 });
