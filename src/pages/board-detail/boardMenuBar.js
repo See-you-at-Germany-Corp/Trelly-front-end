@@ -175,9 +175,6 @@ const BoardMenuBar = (props) => {
 
     // eslint-disable-next-line
     React.useEffect(() => {
-        // setNameLength(nameDiv.current.offsetWidth);
-        // nameInput.current.focus();
-
         window.onmousedown = function (e) {
             if (avatarState.focus === true) {
                 if (e.target !== avatarRef.current && avatarBoxRef.current.contains(e.target) === false) {
@@ -191,9 +188,10 @@ const BoardMenuBar = (props) => {
 
     React.useEffect(() => {
         /// reorder members. 
-        boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));
+        boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId))); 
+        setNameDisp(boardState.name); 
         // eslint-disable-next-line
-    }, []);
+    }, [boardState.name]);
 
     return (
         <div className='board-menu-bar'>
