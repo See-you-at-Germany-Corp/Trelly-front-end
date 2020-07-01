@@ -17,11 +17,11 @@ const CreateLabel = ({ mode, currentLabelData, handleClose }) => {
         color_id: 0,
         name: '',
         label_id: 0
-    } : { 
-        color_id: currentLabelData.color_id,
-        name: currentLabelData.name,
-        label_id: currentLabelData.label_id
-    });
+    } : {
+            color_id: currentLabelData.color_id,
+            name: currentLabelData.name,
+            label_id: currentLabelData.label_id
+        });
 
     function onInputChange(e) {
         setLabel({
@@ -42,13 +42,13 @@ const CreateLabel = ({ mode, currentLabelData, handleClose }) => {
     const { boardState, boardDispatch } = React.useContext(BoardContext);
     const authenHeader = useAuthen();
 
-    function onSubmit() {  
+    function onSubmit() {
         let labelForm = new FormData();
         labelForm.append('color_code', newLabelData.color_id);
         labelForm.append('name', newLabelData.name);
 
         axios.post(`${URL}${addLabel(boardState.id)}`, labelForm, authenHeader)
-            .then(res => { 
+            .then(res => {
                 if (res.status === 201) {
                     boardDispatch(addLabelToBoard(res.data));
                 }
@@ -59,25 +59,25 @@ const CreateLabel = ({ mode, currentLabelData, handleClose }) => {
 
     /* -------- mode 2 --------- */
 
-    function onSave () {
+    function onSave() {
         let labelForm = new FormData();
         labelForm.append('label', newLabelData.label_id);
         labelForm.append('name', newLabelData.name);
 
         axios.patch(`${URL}${updateLabel(boardState.id)}`, labelForm, authenHeader)
-            .then(res => { 
-                boardDispatch(updateLabelInBoard(newLabelData.label_id, newLabelData.name, newLabelData.color_id));  
+            .then(res => {
+                boardDispatch(updateLabelInBoard(newLabelData.label_id, newLabelData.name, newLabelData.color_id));
                 handleClose();
             })
     }
 
-    function onDel () {
+    function onDel() {
         let labelForm = new FormData();
-        labelForm.append('label', newLabelData.label_id); 
+        labelForm.append('label', newLabelData.label_id);
 
         var myHeaders = new Headers();
         myHeaders.append('Authorization', authenHeader.headers.Authorization);
-  
+
         var requestOptions = {
             method: 'DELETE',
             headers: myHeaders,
@@ -90,68 +90,44 @@ const CreateLabel = ({ mode, currentLabelData, handleClose }) => {
             .then(result => {
                 boardDispatch(delLabelInBoard(newLabelData.label_id));
                 handleClose();
-            }) 
+            })
     }
- 
+
     return (
         <CreateLabelBox>
-            {
-                mode === 1 ? 
-                    /// create mode
-                    <div className='name-box'>
-                        <SmallDefaultText>Name</SmallDefaultText>
-                        <input onChange={e => onInputChange(e)}></input>
+            <div className='name-box'>
+                <SmallDefaultText>Name</SmallDefaultText>
+                <input onChange={e => onInputChange(e)} value={newLabelData.name}></input>
 
-                        <div className='color-box'>
-                            <SmallDefaultText>Select a color</SmallDefaultText>
-                            {
-                                labelData.map((label, index) => (
-                                    <Link
-                                        key={index}
-                                        to='#'
-                                        className='color-item' style={{ background: `${label.picture}` }}
-                                        onClick={() => setColorCode(label.color_id)}
-                                    >
-                                        {
-                                            newLabelData.color_id === label.color_id &&
-                                            <i className="fas fa-check"></i>
-                                        }
-                                    </Link>
-                                ))
-                            }
-                        </div>
+                <div className='color-box'>
+                    <SmallDefaultText>Select a color</SmallDefaultText>
+                    {
+                        labelData.map((label, index) => (
+                            <Link
+                                key={index}
+                                to='#'
+                                className='color-item' style={{ background: `${label.picture}` }}
+                                onClick={() => setColorCode(label.color_id)}
+                            >
+                                {
+                                    newLabelData.color_id === label.color_id &&
+                                    <i className="fas fa-check"></i>
+                                }
+                            </Link>
+                        ))
+                    }
+                </div>
 
+                {
+                    mode === 1 ?
                         <EditButton onClick={() => onSubmit()}>Create</EditButton>
-                    </div>
-                    : 
-                    /// change mode
-                    <div className='name-box'>
-                        <SmallDefaultText>Name</SmallDefaultText>
-                        <input onChange={e => onInputChange(e)} value={newLabelData.name}></input>
-
-                        <div className='color-box'>
-                            <SmallDefaultText>Select a color</SmallDefaultText>
-                            {
-                                labelData.map((label, index) => (
-                                    <Link
-                                        key={index}
-                                        to='#'
-                                        className='color-item' style={{ background: `${label.picture}` }}
-                                        onClick={() => setColorCode(label.color_id)}
-                                    >
-                                        {
-                                            newLabelData.color_id === label.color_id &&
-                                            <i className="fas fa-check"></i>
-                                        }
-                                    </Link>
-                                ))
-                            }
-                        </div>
-
-                        <EditButton onClick={() => onSave()}>Save</EditButton>
-                        <DelButton onClick={() => onDel()}>Delete</DelButton>
-                    </div>
-            }
+                        :
+                        <>
+                            <EditButton onClick={() => onSave()}>Save</EditButton>
+                            <DelButton onClick={() => onDel()}>Delete</DelButton>
+                        </>
+                }
+            </div>
         </CreateLabelBox>
     );
 }

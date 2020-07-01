@@ -175,6 +175,10 @@ const BoardMenuBar = (props) => {
 
     // eslint-disable-next-line
     React.useEffect(() => {
+        setNameLength(nameDiv.current.offsetWidth);
+        console.log('nameDiv.current.offsetWidth', nameDiv.current.offsetWidth);
+        nameInput.current.focus();
+        
         window.onmousedown = function (e) {
             if (avatarState.focus === true) {
                 if (e.target !== avatarRef.current && avatarBoxRef.current.contains(e.target) === false) {
@@ -408,7 +412,7 @@ const NameEditInput = styled.input.attrs(props => ({
     value: props.value
 }))`
     display: ${props => props.focus === false ? 'none' : 'block'};;
-    margin-top: ${props => props.length !== 20 ? '-41.5px' : '-28px'};
+    top: 48px;
     margin-left: 0px;
     padding: 4.5px 10px 0px 10px;  
 
@@ -416,7 +420,8 @@ const NameEditInput = styled.input.attrs(props => ({
     z-index: 2;
 
     max-width: 97%; 
-    width: ${props => props.length !== 20 ? `${props.length}px` : '10px'}; 
+    width: ${props => `${props.length - 25}px`}; 
+    min-width: 8px;
 
     font-size: 18px; 
     font-weight: 700;  

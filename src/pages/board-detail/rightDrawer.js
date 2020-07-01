@@ -439,9 +439,9 @@ const LabelsBox = (props) => {
         return [anchorEl, setAnchorEl, handleClick, handleClose, open, id];
     }
 
-    const [anchorEl, setAnchorEl, handleClick, handleClose, open, id] = usePopover();
-    const [anchorE2, setAnchorE2, handleClick2, handleClose2, open2, id2] = usePopover(); 
+    const [anchorEl, setAnchorEl, handleClick, handleClose, open, id] = usePopover(); 
 
+    const [mode, setMode] = React.useState(1);
     const [currentLabelData, setCurrent] = React.useState({
         color_id: null,
         name: null,
@@ -475,12 +475,13 @@ const LabelsBox = (props) => {
                                                     className='label-item'
                                                     style={{ background: `${labelData[bg.color_id - 1].picture}` }}
                                                     onClick={(e) => {
-                                                        handleClick2(e);
+                                                        handleClick(e);
                                                         setCurrent({
                                                             color_id: bg.color_id,
                                                             name: bg.name,
                                                             label_id: bg.id
                                                         });
+                                                        setMode(2);
                                                     }}
                                                 >
                                                     <p><b>{bg.name}</b></p>
@@ -492,7 +493,15 @@ const LabelsBox = (props) => {
                             </div> 
 
                             <div className='create-box'>
-                                <button onClick={handleClick}>Create a new label</button>
+                                <button 
+                                    onClick={(e) => {
+                                        handleClick(e);
+                                        setCurrent(null);
+                                        setMode(1);
+                                    }}
+                                >
+                                    Create a new label
+                                </button>
                             </div>
 
                             {/* click create label */}
@@ -512,32 +521,13 @@ const LabelsBox = (props) => {
                             >
                                 <div className='create-label-box'>
                                     <div className='create-name'>
-                                        <SmallDefaultText>Create Label</SmallDefaultText>
+                                        <SmallDefaultText>{mode === 1 ? 'Create Label' : 'Change Label'}</SmallDefaultText>
                                     </div>
-                                    <CreateLabel mode={1} currentLabelData={null} handleClose={() => handleClose()} />
-                                </div>
-                            </CreateLabelPop>
-
-                            {/* click at label */}
-                            <CreateLabelPop
-                                id={id2}
-                                open={open2}
-                                anchorEl={anchorE2}
-                                onClose={handleClose2}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <div className='create-label-box'>
-                                    <div className='create-name'>
-                                        <SmallDefaultText>Change Label</SmallDefaultText>
-                                    </div>
-                                    <CreateLabel mode={2} currentLabelData={currentLabelData} handleClose={() => handleClose2()} />
+                                    <CreateLabel 
+                                        mode={mode} 
+                                        currentLabelData={currentLabelData} 
+                                        handleClose={() => handleClose()} 
+                                    />
                                 </div>
                             </CreateLabelPop>
 
@@ -568,7 +558,7 @@ const DrawerBox = styled.div`
     position: absolute;
     padding: 14px; 
     right: 0;
-    top: 5.5vh;
+    top: calc(100vh - (100vh - 40px));
     justify-self: flex-end;
 
     .fa-times {
@@ -835,7 +825,7 @@ const LabelBigBox = styled.div`
     }
 
     .label-name {
-        width: 100%;
+        width: 100%; 
         margin-top: 5px;
         margin-bottom: 5px;
     }
@@ -873,7 +863,8 @@ const LabelBigBox = styled.div`
  
     .label-item > p { 
         color: white;
-        margin: 4px 0 0 15px;
+        line-height: 0px;
+        margin-left: 15px;
         padding: 0; 
     }
 
