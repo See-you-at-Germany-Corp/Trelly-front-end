@@ -141,6 +141,7 @@ const List = (props) => {
     const addLabel = index => {
         let newLabel = newCardState.labels
         newLabel.push(boardState.labels[index])
+        
         setNewCardState({
             ...newCardState,
             labels: newLabel
@@ -248,10 +249,14 @@ const List = (props) => {
                             <div className={`new-card-wrapper ${newCardState.editing ? '' : 'hide'}`}>
                                 <div className='text-box-wrapper'>
                                     <div className='label-wrapper'>
-                                        {newCardState.labels.map((item) =>
-                                            <div
-                                                className='card-label'
-                                                style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                        {newCardState.labels.map((item) => {
+                                            return (
+                                                <div
+                                                    className='card-label'
+                                                    key={`label${item.id}`}
+                                                    style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                            )
+                                        }
                                         )}
                                     </div>
 
@@ -365,3 +370,4 @@ const List = (props) => {
 }
 
 export default List
+

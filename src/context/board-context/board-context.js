@@ -29,6 +29,11 @@ const boardReducer = (state, action) => {
             state.lists[action.index].name = action.name
             return state
         }
+        case 'ADD_LIST': {
+            console.log(state);
+            // 
+            // state.lists
+        }
 
         /*--------------------BOAT--------------------*/
 
@@ -76,7 +81,7 @@ const boardReducer = (state, action) => {
 
         case ('CHANGE_CURRENT_BOARD'): 
             return action.newState;
- 
+
         default:
             return state
     }

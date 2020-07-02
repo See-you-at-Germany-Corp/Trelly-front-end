@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components';
 
 import List from './board-list'
+import CreateList from './create-list'
 import { BoardContext } from '../../context/board-context/board-context'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
@@ -47,23 +48,26 @@ export default function ListGroup(props) {
                     type="list"
                 >
                     {provided => (
-                        <StyledListContainer
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                        >
-                            {
-                                boardState.lists.map((list, index) => {
-                                    return (
-                                        <List
-                                            index={index}
-                                            key={`list-${list.id}`}
-                                            listId={`list-${list.id}`}
-                                        />
-                                    )
-                                })
-                            }
-                            {provided.placeholder}
-                        </StyledListContainer>
+                        <>
+                            <StyledListContainer
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                {
+                                    boardState.lists.map((list, index) => {
+                                        return (
+                                            <List
+                                                index={index}
+                                                key={`list-${list.id}`}
+                                                listId={`list-${list.id}`}
+                                            />
+                                        )
+                                    })
+                                }
+                                <CreateList />
+                                {provided.placeholder}
+                            </StyledListContainer>
+                        </>
                     )}
                 </Droppable>
             </DragDropContext>
@@ -90,5 +94,7 @@ const StyledListContainer = styled.div`
 
 const BoardBody = styled.div`
     overflow-x: hidden;
-    background-color: paleturquoise;
+    background-color: transparent;
 `
+
+

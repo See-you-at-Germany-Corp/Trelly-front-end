@@ -30,8 +30,11 @@ const PopoverContents = (props) => {
         }
         else {
             newLabels = newLabels.slice(0, newLabelIndex).concat(newLabels.slice(newLabelIndex + 1))
-            props.newCard.delLabel(index)
+            props.newCard.delLabel(newLabelIndex)
         }
+        
+        console.log('DEL');
+        console.log(newLabelIndex);
 
         setLabel({
             ...label,
@@ -144,23 +147,24 @@ const PopoverContents = (props) => {
                     <div className='label-group' >
                         {
                             props.listLabels.map((item, i) => {
-                                return (<div className='label-wrapper' key={`label-${item.id}`}>
-                                    <div
-                                        className='hover-label'
-                                        style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
-                                    <Link
-                                        href='#'
-                                        className='main-label'
-                                        style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }}
-                                        onClick={e => addLabelToNewCard(e, i, item.id)}>
-                                        <p>{item.name}</p>
-                                        {label.labels.indexOf(item.id) !== -1 && <div className='label-check'><i className="fas fa-check" /></div>}
-                                    </Link>
-                                    <Link
-                                        href='#'
-                                        className='edit-label'><i className="far fa-edit" />
-                                    </Link>
-                                </div>)
+                                return (
+                                    <div className='label-wrapper' key={`label-${item.id}`}>
+                                        <div
+                                            className='hover-label'
+                                            style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                        <Link
+                                            href='#'
+                                            className='main-label'
+                                            style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }}
+                                            onClick={e => addLabelToNewCard(e, i, item.id)}>
+                                            <p>{item.name}</p>
+                                            {label.labels.indexOf(item.id) !== -1 && <div className='label-check'><i className="fas fa-check" /></div>}
+                                        </Link>
+                                        <Link
+                                            href='#'
+                                            className='edit-label'><i className="far fa-edit" />
+                                        </Link>
+                                    </div>)
                             })
                         }
                     </div>
