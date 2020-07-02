@@ -2,7 +2,7 @@ import React from 'react';
 import cookie from 'react-cookies';
 import { connect } from 'react-redux';
 
-export const URL = 'https://mighty-lowlands-07946.herokuapp.com';
+export const URL = 'https://boxing-donair-89223.herokuapp.com';
 
 export function useAuthen () {
     const [token, setToken] = React.useState('');

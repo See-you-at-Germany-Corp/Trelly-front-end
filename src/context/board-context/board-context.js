@@ -29,6 +29,11 @@ const boardReducer = (state, action) => {
             state.lists[action.index].name = action.name
             return state
         }
+        case 'ADD_LIST': {
+            console.log(state);
+            // 
+            // state.lists
+        }
         default:
             return state
     }

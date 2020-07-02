@@ -16,7 +16,7 @@ export const ListContent = styled.div`
     position: relative;
     border-radius: 5px;
     flex-direction: column;
-    background-color: #ebecf0
+    background-color: #ebecf0;
 `
 
 export const HeaderField = styled.div`
@@ -164,7 +164,7 @@ export const AddCard = styled.div`
 
     .add-button {
         min-width: 60px;
-        min-height: 40px;
+        min-height: 32px;
         overflow: hidden;
         display: inline-block;
 
@@ -178,7 +178,7 @@ export const AddCard = styled.div`
     
     .x-button {
         min-width: 40px;
-        min-height: 40px;
+        min-height: 32px;
 
         color: #5e6c84;
         font-size: 15px;
@@ -458,10 +458,6 @@ export const PopOverList = styled.div`
                     background-color: #ebecf0;
                 }
             }
-        }
-
-        .create-label-button {
-            
         }
 
         ul {
