@@ -695,10 +695,10 @@ const Notification = () => {
     );
 }
 
-const UserCard = () => {
-    const UserMenuLink =({children})=>{
+const UserCards = ({dispatch}) => {
+    const UserMenuLink =({children,onClick})=>{
         return (
-            <Linkable margin="0px" padding="10px 10px 10px 20px" children={children} />
+            <Linkable margin="0px" onClick={onClick} padding="10px 10px 10px 20px" children={children} />
         );
     }
     return (
@@ -752,6 +752,7 @@ const UserCard = () => {
                         />
                         <Divider variant="middle" light />
                         <UserMenuLink 
+                            onClick={()=>dispatch({type:"LOG_OUT"})}
                             children={
                                 <div>
                                     Log out
@@ -1415,6 +1416,7 @@ const mapStateToProps =(state)=> ({
     createCurrent: state.createNewBoard.ref,
     starredBoardList: state.starredBoardList,
     on:state.createNewBoard,
+    loggedIn:state.loggedIn
 })
 
 const ConnectedHidable = connect(mapStateToProps)(Hidable);
@@ -1422,4 +1424,5 @@ const Create = connect(mapStateToProps)(Creates);
 const Board = connect(mapStateToProps)(Boards);
 const SearchDropDown = connect(mapStateToProps)(SearchDropDowns);
 const Navbar = connect(mapStateToProps)(Navbars);
+const UserCard = connect(mapStateToProps)(UserCards);
 export default Navbar;

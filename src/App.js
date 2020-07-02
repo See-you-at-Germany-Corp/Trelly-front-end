@@ -22,8 +22,9 @@ import { BoardProvider } from './context/board-context/board-context'
 function App(props) {
   return (
     <Router>
-
-      <Navbar />
+      {props.loggedIn ?
+      <Navbar />:null
+      }
       <CreateNewBoard />
 
       <BoardProvider>
