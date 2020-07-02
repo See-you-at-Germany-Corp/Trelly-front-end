@@ -7,7 +7,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd'
 import defaultLabel from '../../pages/board-detail/labelData'
 import { BoardContext } from '../../context/board-context/board-context'
 import { TextareaAutosize, Button, Popover, Divider, Avatar } from '@material-ui/core'
-
+import CardDetail from '../../components/cardDetail';
 
 const List = (props) => {
     const { boardState, boardDispatch } = React.useContext(BoardContext)
@@ -174,6 +174,20 @@ const List = (props) => {
         })
     }
 
+    /* ------------------------ Boat Card Detail ----------------------- */
+
+    /// mockup card data.
+    const [cardData, setCardData] = React.useState();
+    const [cardOpen, setCardOpen] = React.useState(false);
+
+    function cardClickHandler (card, listName) { 
+        setCardData({
+            ...card,
+            listName
+        });
+        setCardOpen(true);
+    }
+
     return (
         <Draggable draggableId={props.listId} index={props.index}>
             {(provided) => (
@@ -227,11 +241,19 @@ const List = (props) => {
                                                     key={`card-${card.id}`}
                                                     cardId={`card-${card.id}`}
                                                     listIndex={props.index}
+                                                    cardClickHandler={() => cardClickHandler(card, list.name)}
                                                 />
                                             )
                                         })
                                     }
                                     {provided.placeholder}
+
+                                    <CardDetail 
+                                        open={cardOpen} 
+                                        onClose={() => setCardOpen(false)}
+                                        cardData={cardData} 
+                                    />
+
                                 </ListStyle.CardList>
                             )}
                         </Droppable>
