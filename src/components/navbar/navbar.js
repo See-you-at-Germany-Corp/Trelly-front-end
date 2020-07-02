@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, createContext, useReducer, useConte
 import {motion } from "framer-motion";
 import styled, { css } from 'styled-components';
 
-
+import axios from 'axios';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import { Divider, Avatar } from '@material-ui/core';
@@ -18,6 +18,9 @@ import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/st
 import { useLocation } from 'react-router-dom';
 import { URL, useAuthen } from '../../api/index.js';
 import moveStarObject from '../../function/moveStarObject';
+import { starToggle } from '../../api/board.js';
+// import { URL, useAuthen } from '../../api/index.js';
+
 
 
 import { createOn } from '../../redux/actions/createNewBoard';
@@ -1145,7 +1148,11 @@ const FlyUpDiv = styled(motion.div)`
 const BoardPreview =({board,star,dispatch,index,open})=>{
     // eslint-disable-next-line
     const [openP,setOpenP] = useContext(OpenContext);
+    const authenHeader = useAuthen();
     const StarButton =({board,dispatch,star})=>{
+    function starApi (boardId) { 
+        axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
+    }
         return (
             <motion.div 
             variants={
@@ -1172,6 +1179,7 @@ const BoardPreview =({board,star,dispatch,index,open})=>{
             }
             style={{position:"absolute",left:"250px",marginTop:"-33px" }}>
             <motion.div whileHover={{scale:1.3}} whileTap={{scale:0.8}} onClick={()=>{
+                    starApi(board.id)
                         if(!star){
                             dispatch(starBoard(board.id,board))
                         }
