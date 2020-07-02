@@ -16,6 +16,8 @@ import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/starredBoardList';
 import { useLocation } from 'react-router-dom'
+import { URL, useAuthen } from '../../api/index.js';
+import moveStarObject from '../../function/moveStarObject';
 
 
 import { createOn } from '../../redux/actions/createNewBoard';
@@ -945,22 +947,21 @@ const HidableCon = styled.div`
 `;
 const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})=>{
     // eslint-disable-next-line
-    const [test,setTest] = useState(starredBoardList)
+    // const [test,setTest] = useState(starredBoardList)
+    const authenHeader = useAuthen();
     const onDragEnd =(result)=> {
         let temp = starredBoardList;
         // dropped outside the list
         if (!result.destination) {
           return;
         }
-    
-        const items = reorder(
-          temp,
-          result.source.index,
-          result.destination.index
-        );
-        // setTest(items)
-        dispatch(overWriteStarBoard(items));
-        // console.log(starredBoardList);
+        moveStarObject(starredBoardList, result.source.index, result.destination.index, dispatch, authenHeader);
+        // const items = reorder(
+        //   temp,
+        //   result.source.index,
+        //   result.destination.index
+        // );
+        // dispatch(overWriteStarBoard(items));
         
       }
     const item = {
