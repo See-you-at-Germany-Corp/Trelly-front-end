@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 export const URL = 'https://boxing-donair-89223.herokuapp.com';
 
 export function useAuthen () {
-    const [token, setToken] = React.useState('');
+    const [token, setToken] = React.useState(null);
 
     React.useEffect(() => {
         setToken({

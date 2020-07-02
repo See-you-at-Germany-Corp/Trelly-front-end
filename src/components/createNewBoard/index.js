@@ -44,8 +44,9 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
     };
 
     const onInputChange = (e) => {
-        dispatch(setName(e.target.value));
-    }
+        // dispatch(setName(e.target.value));
+        setText(e.target.value);
+    }  
 
     const setNewDataAndAddBoard = () => {
         const newBoard = {
@@ -59,6 +60,7 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
         dispatch(addBoard(newBoard));
         dispatch(createOff());
         dispatch(setName(''));
+        setText('');
  
         axios.post(`${URL}${addMyBoard}`, newBoard, authenHeader)
             .then(res => {
@@ -67,6 +69,7 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
                 }, 1000);
             }); 
     }
+    const [text,setText] = React.useState('');
 
     /// create ref of createNewBoard parent.
     const createNewBoardRef = React.useRef();
@@ -76,6 +79,7 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
         if (event.target === createNewBoardRef.current && createStatus === true) {
             dispatch(createOff());
             dispatch(setName(''));
+            setText('');
         }
     }
 
@@ -95,7 +99,7 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
                         {/* background preview & detail input */}
                         <div className='new-board-detail-box' style={{ background: createBackground }}>
                             <i className="fas fa-times" onClick={() => dispatch(createOff())}></i>
-                            <input value={currentName} onChange={(e) => onInputChange(e)} placeholder='Add board title' ></input>
+                            <input defaultValue="" value={text} onChange={(e) => onInputChange(e)} onBlur={(e)=>dispatch(setName(e.target.value))} placeholder='Add board title'></input>
                         </div>
 
                         <div className='new-board-bg-list'>
@@ -122,7 +126,7 @@ const CreateNewBoard = ({ createStatus, createBackground, currentName, dispatch 
                         {
                             /// check name's length in newCreateBoard name input.
                             /// if 0 -> disabled.
-                            currentName.length === 0 ?
+                            text.length === 0 ?
                                 <button className='create-button' disabled>
                                     <p>Create Board</p>
                                 </button>

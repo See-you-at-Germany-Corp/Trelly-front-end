@@ -55,8 +55,6 @@ function App(props) {
 
               <Redirect to='/login/' />
             </Switch>
-        }
-        {/* <BoardDetail /> */}
       </BoardProvider>
 
     </Router>
