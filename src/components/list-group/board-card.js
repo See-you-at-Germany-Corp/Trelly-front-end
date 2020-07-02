@@ -64,7 +64,7 @@ export default function Card(props) {
                                 
                             </div>
                             <div style={{display:"flex",placeContent:"flex-end",marginLeft:"auto"}}>
-                            {card.members.map(item=>{
+                            {card.members.filter((mb)=>boardState.members.some(mem=>mem.id == mb.account_id)).map(item=>{
                                 let index = boardState.members.findIndex(board => board.id == item.account_id);
                                 let name = boardState.members[index].full_name;
                                 let member = boardState.members[index];
