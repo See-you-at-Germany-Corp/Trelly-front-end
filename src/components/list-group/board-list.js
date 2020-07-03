@@ -177,7 +177,7 @@ const List = (props) => {
     /* ------------------------ Boat Card Detail ----------------------- */
 
     /// mockup card data.
-    const [cardData, setCardData] = React.useState();
+    const [cardData, setCardData] = React.useState(null);
     const [cardOpen, setCardOpen] = React.useState(false);
 
     function cardClickHandler (card, listName) { 
