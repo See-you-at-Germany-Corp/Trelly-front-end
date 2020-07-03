@@ -58,14 +58,14 @@ const CardBody = props => {
         if (cardDetail !== null) {
             setDesStat({
                 ...desStat,
-                value: cardDetail.description
+                value: `${cardDetail.description === null ? '' : cardDetail.description}`
             });
         }
         // eslint-disable-next-line
     }, [cardDetail]);
        
     return (
-        <CardBodyDiv>
+        <CardBodyDiv desLen={desStat.value.length}>
             <div className='des-big-box'>
                 <div className='des-name-box'>
                     <i className="fas fa-align-left"></i>

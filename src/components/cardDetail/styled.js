@@ -100,7 +100,7 @@ export const CardHeaderDiv = styled.div`
 `;
 
 export const CardBodyDiv = styled.div`
-    background: lightgreen;
+    /* background: lightgreen; */
     width: calc(75% - 25px);
     min-height: 300px;
 
@@ -126,25 +126,27 @@ export const CardBodyDiv = styled.div`
         }
 
         textarea {
-            background: rgb(220, 220, 220);
-            border: none;
+            background: ${props => props.desLen > 0 ? '#EFEFEF' : 'rgb(220, 220, 220)'};
+            border: 2px solid #EFEFEF;
             border-radius: 3px;
             width: calc(100% - 20px);
-            min-height: 35px; 
+            min-height: ${props => props.desLen > 0 ? `${props.desLen / 3}px` : '35px'}; 
+            overflow: auto;
 
-            margin-top: 20px;
+            margin-top: 18px;
+            margin-left: -4px;
             padding: 10px;
 
             resize: none;
 
             :hover {
                 cursor: pointer;
-                filter: brightness(95%);
+                filter: ${props => props.desLen > 0 ? 'brightness(100%)' : 'brightness(95%)'};
             }
 
             :focus {
                 background: white;
-                min-height: 70px; 
+                min-height: ${props => props.desLen > 250 ? `${props.desLen / 3}px` : '70px'}; 
 
                 cursor: auto;
  
