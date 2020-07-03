@@ -2,10 +2,18 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { BoardContext } from '../../context/board-context/board-context'
 
+import Axios from 'axios'
+import cookie from 'react-cookies'
+import { URL } from '../../api/index'
+
+const headers = {
+    headers: {
+        Authorization: `Bearer ${cookie.load('authen-token')}`
+    }
+}
 
 const CreateList = (props) => {
-    const { boardDispatch } = useContext(BoardContext)
-
+    const { boardState, boardDispatch } = useContext(BoardContext)
     const [state, setState] = React.useState({
         name: '',
         editting: false,
@@ -27,10 +35,21 @@ const CreateList = (props) => {
 
     const addList = () => {
         if (state.name) {
-            boardDispatch({
-                type: 'ADD_LIST',
-                listName: state.name,
-            })
+            Axios.post(
+                `${URL}/board/my_list/`,
+                {
+                    board: boardState.id,
+                    name: state.name
+                },
+                headers
+            )
+                .then((response) => {
+                    boardDispatch({
+                        type: 'ADD_LIST',
+                        newList: response.data,
+                    })
+                    edit()
+                })
         }
     }
 
@@ -60,7 +79,7 @@ const CreateList = (props) => {
                     <div
                         onClick={edit}
                         className='text-show'>
-                        <i class="fas fa-plus" /> Add another list
+                        <i className="fas fa-plus" /> Add another list
                     </div>
             }
         </CreateNewList>
@@ -70,7 +89,7 @@ const CreateList = (props) => {
 export default CreateList
 
 const CreateNewList = styled.div`
-    width: 250px;
+    min-width: 250px;
     height: ${props => props.editting ? 95 : 40}px;
     
     display: flex;

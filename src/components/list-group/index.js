@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components';
 
 import List from './board-list'
@@ -6,10 +6,22 @@ import CreateList from './create-list'
 import { BoardContext } from '../../context/board-context/board-context'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import Axios from 'axios'
+import { URL } from '../../api/index'
+import cookie from 'react-cookies'
+
+const headers = {
+    headers: {
+        Authorization: `Bearer ${cookie.load('authen-token')}`
+    }
+}
+
 export default function ListGroup(props) {
     const { boardState, boardDispatch } = useContext(BoardContext)
 
     const onDragEnd = result => {
+        const form = new FormData()
+
         if (!result.destination) return
 
         if (result.type === 'card') {
@@ -31,13 +43,29 @@ export default function ListGroup(props) {
             })
         }
         else {
-            boardDispatch({
-                type: 'MOVE_LIST',
-                sourceIndex: result.source.index,
-                destIndex: result.destination.index,
-            })
+            form.append('shift', result.destination.index - result.source.index)
+
+            Axios.post(
+                `${URL}/board/my_list/${result.draggableId.match(RegExp(/\d+/))[0]}/drag_list/`,
+                form,
+                headers
+            )
+                .then((res) => {
+                    boardDispatch({
+                        type: 'MOVE_LIST',
+                        sourceIndex: result.source.index,
+                        destIndex: result.destination.index,
+                    })
+                })
+                .catch((err) => {
+                })
         }
     }
+
+    boardDispatch({
+        type: 'OVERRIDE_LISTS',
+        newLists: boardState.lists.sort(function (a, b) { return a.order_number - b.order_number })
+    })
 
     return (
         <BoardBody>
@@ -54,7 +82,8 @@ export default function ListGroup(props) {
                                 {...provided.droppableProps}
                             >
                                 {
-                                    boardState.lists.map((list, index) => {
+                                    boardState.lists && boardState.lists.map((list, index) => {
+                                        console.log(list);
                                         return (
                                             <List
                                                 index={index}
@@ -65,6 +94,7 @@ export default function ListGroup(props) {
                                     })
                                 }
                                 <CreateList />
+                                <div style={{ minWidth: 10, height: 10 }}></div>
                                 {provided.placeholder}
                             </StyledListContainer>
                         </>
@@ -80,6 +110,7 @@ const StyledListContainer = styled.div`
     max-width: calc(100vw - 10px);
 
     padding-left: 10px;
+    padding-right: 20px;
     margin: 10px 0px 10px 10px;
     
     display: flex;

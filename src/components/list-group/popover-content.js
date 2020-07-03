@@ -32,10 +32,6 @@ const PopoverContents = (props) => {
             newLabels = newLabels.slice(0, newLabelIndex).concat(newLabels.slice(newLabelIndex + 1))
             props.newCard.delLabel(newLabelIndex)
         }
-        
-        console.log('DEL');
-        console.log(newLabelIndex);
-
         setLabel({
             ...label,
             labels: newLabels

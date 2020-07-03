@@ -7,7 +7,7 @@ export const URL = 'https://boxing-donair-89223.herokuapp.com';
 export function useAuthen () {
     const [token, setToken] = React.useState(null);
 
-    React.useEffect(() => {
+    React.useMemo(() => {
         setToken({
             headers: {
                 Authorization: `Bearer ${cookie.load('authen-token')}`

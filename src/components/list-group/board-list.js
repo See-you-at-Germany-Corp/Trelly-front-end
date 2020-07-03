@@ -8,6 +8,15 @@ import defaultLabel from '../../pages/board-detail/labelData'
 import { BoardContext } from '../../context/board-context/board-context'
 import { TextareaAutosize, Button, Popover, Divider, Avatar } from '@material-ui/core'
 
+import Axios from 'axios'
+import { URL } from '../../api/index'
+import cookie from 'react-cookies'
+
+const headers = {
+    headers: {
+        Authorization: `Bearer ${cookie.load('authen-token')}`
+    }
+}
 
 const List = (props) => {
     const { boardState, boardDispatch } = React.useContext(BoardContext)
@@ -26,7 +35,7 @@ const List = (props) => {
         name: '',
         labels: [],
         members: [],
-        editing: true,
+        editing: false,
         position: null,
         listOrder: null,
     })
@@ -64,7 +73,7 @@ const List = (props) => {
     const listNameBlur = e => {
         setSelectFocus('')
 
-        if (!listName.newListName.length) {
+        if (!listName.newListName.length || listName.oldListName === listName.newListName) {
             renameList({
                 oldListName: listName.oldListName,
                 newListName: listName.oldListName,
@@ -79,13 +88,18 @@ const List = (props) => {
             editing: !listName.editing
         })
 
-        boardDispatch({
-            type: 'CHANGE_LIST_NAME',
-            index: props.index,
-            name: e.target.value,
-        })
-
-        // send new name to server
+        Axios.patch(
+            `${URL}/board/my_list/${list.id}/`,
+            { name: e.target.value },
+            headers
+        )
+            .then((res) => {
+                boardDispatch({
+                    type: 'LIST_RENAME',
+                    index: props.index,
+                    name: res.data.name,
+                })
+            })
     }
 
     /* ---------------------------- New Card function --------------------------- */
@@ -141,7 +155,7 @@ const List = (props) => {
     const addLabel = index => {
         let newLabel = newCardState.labels
         newLabel.push(boardState.labels[index])
-        
+
         setNewCardState({
             ...newCardState,
             labels: newLabel
@@ -174,6 +188,7 @@ const List = (props) => {
             content: content,
         })
     }
+
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>
@@ -221,7 +236,9 @@ const List = (props) => {
                                     isDraggingOver={snapshot.isDraggingOver}
                                 >
                                     {
-                                        list.cards.map((card, index) => {
+                                        list.cards && list.cards.map((card, index) => {
+                                            // console.log(card);
+                                            
                                             return (
                                                 <Card
                                                     index={index}
@@ -370,4 +387,3 @@ const List = (props) => {
 }
 
 export default List
-
