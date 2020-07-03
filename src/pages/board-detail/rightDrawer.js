@@ -174,14 +174,12 @@ const AboutBox = (props) => {
  
     const { boardState } = React.useContext(BoardContext);
 
-    const mockupFounder = boardState.members[
+    const founderMember = boardState.members[
         boardState.members.findIndex(member => member.id === boardState.admin)
     ];
 
     const mockupDes = 'Trelly copy from Trello.';
-
-    const founderMember = mockupFounder;
-
+  
     const [isEdit, setEdit] = React.useState(false);
     const [des, setDes] = React.useState(mockupDes);
     const [cpyDes, setCpy] = React.useState(mockupDes);

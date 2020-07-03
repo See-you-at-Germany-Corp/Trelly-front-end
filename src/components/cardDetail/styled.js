@@ -126,18 +126,19 @@ export const CardBodyDiv = styled.div`
         }
 
         textarea {
-            background: ${props => props.desLen > 0 ? '#EFEFEF' : 'rgb(220, 220, 220)'};
+            background: ${props => props.desLen > 0 ? '#EFEFEF' : 'rgb(230, 230, 230)'};
+            width: calc(100% - 20px);
+            min-height: ${props => props.desLen > 0 ? `${props.desLen / 3.5}px` : '35px'}; 
             border: 2px solid #EFEFEF;
             border-radius: 3px;
-            width: calc(100% - 20px);
-            min-height: ${props => props.desLen > 0 ? `${props.desLen / 3}px` : '35px'}; 
-            overflow: auto;
 
-            margin-top: 18px;
-            margin-left: -4px;
+            margin: 18px 0px 8px -4px; 
             padding: 10px;
 
+            overflow: auto;
             resize: none;
+
+            color: #172b4d;
 
             :hover {
                 cursor: pointer;
@@ -146,11 +147,11 @@ export const CardBodyDiv = styled.div`
 
             :focus {
                 background: white;
-                min-height: ${props => props.desLen > 250 ? `${props.desLen / 3}px` : '70px'}; 
+                border: 2px solid deepskyblue;
+                min-height: ${props => props.desLen > 250 ? `${props.desLen / 3.5}px` : '70px'}; 
 
                 cursor: auto;
  
-                border: 2px solid deepskyblue;
                 outline: none;
             } 
 
@@ -163,10 +164,77 @@ export const CardBodyDiv = styled.div`
             }
         }
     }
+
+    .act-big-box { 
+        margin-top: 5px;
+
+        i {
+            position: absolute;
+            margin-top: 3px;
+            margin-left: -25px;
+
+            color: #172b4d;
+        } 
+
+        .act-name-box, .act-detail-box {
+            margin-left: 40px;
+        }
+
+        .act-detail-box {
+            /* background: lightpink; */
+            width: 100%;
+            min-height: 50px;
+
+            display: flex;
+            flex-flow: column;
+            flex-wrap: wrap;
+
+            margin-top: 15px;
+            margin-left: 0px;
+
+            .act-detail-item {
+                /* background: lightyellow; */
+
+                display: flex;
+                flex-wrap: wrap;
+
+                margin-left: 10px;
+                margin-bottom: 15px;
+
+                .act-avatar-box {
+                    margin-right: 8px;
+
+                    div {
+                        background: lightgray;
+                        width: 32px;
+                        height: 32px;
+
+                        color: #172b4d;
+                        font-size: 16px;
+                        font-weight: 550;
+
+                        :hover {
+                            cursor: pointer;
+                            filter: brightness(95%);
+                        }
+
+                        :active {
+                            filter: brightness(90%);
+                        }
+                    }
+                }
+
+                .act-des-box {
+                    display: flex;
+                    flex-flow: column wrap;
+                }
+            }
+        }
+    }
 `;
 
 export const CardMenuDiv = styled.div`
-    background: lightblue;
+    /* background: lightblue; */
     width: 25%;
     min-height: 90vh;
 
@@ -182,10 +250,10 @@ export const DefaultText = styled.p`
     align-self: center;
     
     text-align: center;
-    font-weight: 500;
+    font-weight: ${props => `${props.fontWeight}` !== `undefined` ? `${props.fontWeight}` : '500'};
     font-size: ${props => `${props.fontSize}` !== `undefined` ? `${props.fontSize}px` : '14px'};
 `;
-
+ 
 export const SaveButton = styled.button`
     color: white;
     font-size: 13px;
@@ -208,5 +276,25 @@ export const SaveButton = styled.button`
 
     &:focus {
         outline: none;
+    }
+`;
+
+export const ShowButton = styled(SaveButton)`
+    background: rgb(230, 230, 230);
+    color: #172b4d;
+    filter: brightness(100%);
+
+    position: absolute;
+    margin-top: -5px;
+    right: calc(25% + 25px);
+
+    :hover { 
+        filter: brightness(95%);
+    }
+
+    :active { 
+        background-color: rgba(100, 220, 220, 0.2); 
+        color: deepskyblue;
+        filter: brightness(100%);
     }
 `;
