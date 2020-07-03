@@ -34,7 +34,7 @@ const BoardDetail = (props) => {
                 })
         }
         // eslint-disable-next-line
-    }, [authenHeader]);
+    }, [authenHeader,boardId]);
 
     document.body.style.backgroundColor = boardState.color_code;
 

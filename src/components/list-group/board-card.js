@@ -15,13 +15,17 @@ import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import {usePalette} from 'react-palette';
+import { URL, useAuthen } from '../../api/index.js';
+import axios from 'axios'; 
+import { getMyBoards } from '../../api/board.js';
+
 
 import "antd/dist/antd.css";
 
 
 
 export default function Card(props) {
-    const { boardState } = useContext(BoardContext)
+    const { boardState,boardDispatch } = useContext(BoardContext)
     
     const card = boardState.lists[props.listIndex].cards[props.index]
     let myId = 1;  /// mockup myId
@@ -91,7 +95,10 @@ export default function Card(props) {
                                                         </Link>
                                                     }
                                                 </div>
-                                                <div className='menu' onClick={()=>{boardDispatch({type:'REMOVE_CARD_MEMBER',cardId:props.index,index:props.listIndex,id:card.members.findIndex(mb=>mb.account_id==member.id)}) }}>
+                                                <div className='menu' onClick={()=>{
+                                                    boardDispatch({type:'REMOVE_CARD_MEMBER',cardId:props.index,index:props.listIndex,id:card.members.findIndex(mb=>mb.account_id==member.id)}) 
+                                                    // axios.patch(`${URL}${getMyBoards}/${boardState.id}`,boardState.lists)
+                                                    }}>
                                                     <p>Remove from Card</p>
                                                 </div>
                                             </div>

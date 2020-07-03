@@ -65,7 +65,7 @@ export const HeaderField = styled.div`
 export const CardList = styled.div`
     padding: 10px;
     overflow-y: auto;
-    background-color: ${props => props.isDraggingOver ? 'green' : 'transparent'}
+    // background-color: ${props => props.isDraggingOver ? 'green' : 'transparent'}
 `
 
 export const AddCard = styled.div`
