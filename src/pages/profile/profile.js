@@ -51,7 +51,6 @@ class profile extends Component {
   //Get user data
   componentDidMount() {
     const authenHeader = this.props.authenHeader;
-    console.log(this.props);
 
     if (authenHeader !== null) {
       axios
@@ -94,7 +93,6 @@ class profile extends Component {
     formData.append("bio", this.state.bio);
     formData.append("picture", this.state.picture);
     this.props.SUBMIT(userData);
-    console.log("userData", userData);
 
     //Rest post
     if (authenHeader !== null) {
@@ -105,7 +103,6 @@ class profile extends Component {
           authenHeader
         )
         .then((res) => {
-          console.log("patch", userData);
           console.log(res);
         });
     }
@@ -123,7 +120,6 @@ class profile extends Component {
       picture: image,
       pictureName: image.name,
     });
-    //console.log("img2", image.name);
   };
   handleEditPicture = (event) => {
     const fileInput = document.getElementById("imageInput");
@@ -162,9 +158,6 @@ class profile extends Component {
   };
   render() {
     const { classes } = this.props;
-    const { user } = this.state;
-    console.log("user", this.state);
-
     return (
       <div>
         <BarProfile data={this.state} />
