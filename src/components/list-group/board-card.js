@@ -91,7 +91,7 @@ export default function Card(props) {
                                                         </Link>
                                                     }
                                                 </div>
-                                                <div className='menu'>
+                                                <div className='menu' onClick={()=>{boardDispatch({type:'REMOVE_CARD_MEMBER',cardId:props.index,index:props.listIndex,id:card.members.findIndex(mb=>mb.account_id==member.id)}) }}>
                                                     <p>Remove from Card</p>
                                                 </div>
                                             </div>

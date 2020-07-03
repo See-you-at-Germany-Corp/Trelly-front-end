@@ -77,6 +77,11 @@ const boardReducer = (state, action) => {
         case ('CHANGE_CURRENT_BOARD'): 
             return action.newState;
  
+        case 'REMOVE_CARD_MEMBER':{
+            const newState = {...state};
+            newState.lists[action.index].cards[action.cardId].members.splice(action.id,1);
+            return newState
+        }
         default:
             return state
     }
