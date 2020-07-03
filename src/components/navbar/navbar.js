@@ -358,7 +358,7 @@ const LogoOnly =({variant,size})=>{
     );
 }
 
-const Navbars = ({personalBoardList,starredBoardList,on}) => {
+const Navbars = ({personalBoardList,starredBoardList,on,profile}) => {
     const [isType, setType] = useState(false);
     const [search,setSearch] = useState('');
     const inputRef = useRef();
@@ -550,11 +550,11 @@ const Navbars = ({personalBoardList,starredBoardList,on}) => {
                             <motion.button style={{ outline: "none", border: "none", backgroundColor: "transparent", margin: "auto", padding: "0px" }}
                                 onClick={() => { setOpen({type:'user'}); setType('user') }}
                             >
-                                <Avatar style={{ width: "32px", height: "32px", margin: "auto" }} />
+                                <Avatar src={profile.picture} style={{ width: "32px", height: "32px", margin: "auto",fontSize:"16px" }}>{profile.initials}</Avatar>
                             </motion.button>
                         </Row>
                     }
-                    board={<UserCard />}
+                    board={<UserCard name={profile.fullName}/>}
                 />
             </div>
             <div style={{maxWidth:"100px",top:"0",margin:"0px",position:"absolute",left:"50%",transform:"translateX(-50%)",alignItems:"center"}}>
@@ -695,7 +695,7 @@ const Notification = () => {
     );
 }
 
-const UserCards = ({dispatch}) => {
+const UserCards = ({dispatch,name}) => {
     const UserMenuLink =({children,onClick})=>{
         return (
             <Linkable margin="0px" onClick={onClick} padding="10px 10px 10px 20px" children={children} />
@@ -703,7 +703,7 @@ const UserCards = ({dispatch}) => {
     }
     return (
         <DropDownCard
-            title="Gintoki Sakata"
+            title={name}
             children={
                 <div>
                     <Column padding="0px">
@@ -1416,7 +1416,8 @@ const mapStateToProps =(state)=> ({
     createCurrent: state.createNewBoard.ref,
     starredBoardList: state.starredBoardList,
     on:state.createNewBoard,
-    loggedIn:state.loggedIn
+    loggedIn:state.loggedIn,
+    profile:state.dataProfile
 })
 
 const ConnectedHidable = connect(mapStateToProps)(Hidable);

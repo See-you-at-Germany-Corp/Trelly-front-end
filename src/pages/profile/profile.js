@@ -14,6 +14,8 @@ import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
+import axios from "axios";
+
 const styles = {
   form: {
     textAlign: "center",
@@ -41,52 +43,81 @@ class profile extends Component {
       initials: "",
       userName: "",
       bio: "",
-      picture: ""
+      picture: "",
+      pictureName: "",
     };
   }
-  //Get user data
 
-  
+  //Get user data
+  componentDidMount() {
+    const authenHeader = this.props.authenHeader;
+    console.log(this.props);
+
+    if (authenHeader !== null) {
+      axios
+        .get(
+          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
+          authenHeader
+        )
+        .then((res) => {
+          const member = res.data;
+          this.setState({
+            id: member.id,
+            fullName: member.fullname,
+            initials: member.init,
+            userName: member.username,
+            bio: member.bio,
+            picture: member.picture,
+          });
+        });
+    }
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      fullName: this.state.fullName,
-      initials: this.state.initials,
-      userName: this.state.userName,
-      bio: this.state.bio,
-      picture: this.state.picture,
-    });
+    const authenHeader = this.props.authenHeader;
+
     const userData = {
-      fullName: this.state.fullName,
-      initials: this.state.initials,
-      userName: this.state.userName,
+      new_fullname: this.state.fullName,
+      init: this.state.initials,
       bio: this.state.bio,
       picture: this.state.picture,
     };
-    this.props.SUBMIT(
-      userData
-      // loading: false,
-      // error: {},
-    );
-    console.log(userData);
+    const formData = new FormData();
+    formData.append("new_fullname", this.state.fullName);
+    formData.append("init", this.state.initials);
+    formData.append("bio", this.state.bio);
+    formData.append("picture", this.state.picture);
+    this.props.SUBMIT(userData);
+    console.log("userData", userData);
 
-    //Rest
+    //Rest post
+    if (authenHeader !== null) {
+      axios
+        .patch(
+          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
+          formData,
+          authenHeader
+        )
+        .then((res) => {
+          console.log("patch", userData);
+          console.log(res);
+        });
+    }
   };
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-    //console.log(this.setState);
   };
   handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
     formData.append("image", image, image.name);
-    console.log("form", formData);
-    console.log(image.name);
-
-    //this.props.uploadImage(formData);
-    //send rest
+    this.setState({
+      picture: image,
+      pictureName: image.name,
+    });
   };
   handleEditPicture = (event) => {
     const fileInput = document.getElementById("imageInput");
@@ -94,12 +125,7 @@ class profile extends Component {
   };
   render() {
     const { classes } = this.props;
-    const { user } = this.state;
-    console.log("Hello props");
-
-     console.log(this.props);
-
-    //console.log(this.props.DataProfile.fullName);
+    //const { user } = this.state;
 
     return (
       <div>
@@ -218,9 +244,13 @@ profile.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
+const PictureOrInit = (props) => {
+  
+}
+
 const mapStateToProps = (state) => {
   return {
-    DataProfile: state.DataProfile,
+    DataProfile: state.dataProfile,
   };
 };
 const mapDispatchToProps = (dispatch) => {

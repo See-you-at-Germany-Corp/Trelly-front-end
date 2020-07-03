@@ -51,7 +51,7 @@ export default function Card(props) {
                         <StyledCard >
                         <div style={{display:"flex"}}>
                             {card.labels.map((item)=>(
-                                <ColorBar color={item.color_code} />
+                                <ColorBar color={item.color_code}>{item.name}</ColorBar>
                             ))}
                         </div>
                         
@@ -249,10 +249,14 @@ const AvatarDetailBox = styled.div`
 
 `;
 
+
 const ColorBar = styled(motion.div)`
     width: 40px;
-    height: 8px;
+    min-height: 8px;
     border-radius: 3px;
     margin-right: 4px;
     background-color: ${props=>props.color};
+    text-align:center;
+    color:white;
+    font-size: 12px;
 `;
