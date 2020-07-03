@@ -61,6 +61,11 @@ class profile extends Component {
         )
         .then((res) => {
           const member = res.data;
+          for (var x in member) {
+            if (member[x] === "null") {
+              member[x] = "";
+            }
+          }
           this.setState({
             id: member.id,
             fullName: member.fullname,
@@ -118,46 +123,63 @@ class profile extends Component {
       picture: image,
       pictureName: image.name,
     });
+    //console.log("img2", image.name);
   };
   handleEditPicture = (event) => {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   };
+  PictureOrInit = (state) => {
+    return this.state.picture ? (
+      <div className="">
+        <img
+          className="namePicture"
+          src={"https://boxing-donair-89223.herokuapp.com" + this.state.picture}
+          alt=""
+          style={{
+            width: "100%",
+            maxWidth: "100px",
+            maxHeight: "100px",
+            height: "fit-content",
+          }}
+        />
+      </div>
+    ) : (
+      <div>
+        <span
+          className="namePicture"
+          style={{
+            fontSize: "48px",
+            height: "100px",
+            width: "100px",
+            lineHeight: "100px",
+          }}
+        >
+          {this.state.initials}
+        </span>
+      </div>
+    );
+  };
   render() {
     const { classes } = this.props;
-    //const { user } = this.state;
+    const { user } = this.state;
+    console.log("user", this.state);
 
     return (
       <div>
-        <BarProfile />
+        <BarProfile data={this.state} />
         <ProfileContainer container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
             <div className="contain-avatar" data-test-id="profile-avatar">
               <h3 className="text-avatar">Avatar</h3>
               <div className="contain-picture-avatar">
-                <div
-                  className="MrFeHFqEkuBP9W name-picture"
-                  title="Mark Latthapol (marklatthapol)"
-                >
-                  <span
-                    className="namePicture"
-                    style={{
-                      fontSize: "48px",
-                      height: "100px",
-                      width: "100px",
-                      lineHeight: "100px",
-                    }}
-                  >
-                    {this.state.initials}
-                  </span>
+                <div className="" title={this.state.pictureName}>
+                  {this.PictureOrInit()}
                 </div>
                 <div className="inputPicture">
                   <input
                     className="testButton"
-                    onClick={() => {
-                      console.log("555");
-                    }}
                     type="file"
                     id="imageInput"
                     onChange={this.handleImageChange}
@@ -243,10 +265,6 @@ class profile extends Component {
 profile.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-const PictureOrInit = (props) => {
-  
-}
 
 const mapStateToProps = (state) => {
   return {
