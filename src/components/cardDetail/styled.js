@@ -61,6 +61,30 @@ export const CardHeaderDiv = styled.div`
     .card-name {
         margin-top: 8px;
 
+        textarea {
+            background: #EFEFEF;
+            color: #172b4d;
+            width: 95%;
+            height: 35px;
+            border: 2px solid #EFEFEF;
+            border-radius: 3px;
+            box-sizing: border-box;
+            overflow: hidden;
+
+            margin-left: -4px;
+            margin-top: -2px;
+
+            font-size: 20px;
+
+            resize: none;
+
+            :focus {
+                background: white;
+                border: 2px solid deepskyblue;
+                outline: none;
+            }
+        }
+
         i {
             position: absolute;
             margin-top: 8px;

@@ -44,3 +44,10 @@ export const delLabelInBoard = (labelId) => ({
     type: 'DEL_LABEL_IN_BOARD',
     labelId
 }) 
+
+export const changeCardName = (listId, cardId, newName) => ({
+    type: 'CHANGE_CARD_NAME',
+    listId,
+    cardId,
+    newName
+}) 

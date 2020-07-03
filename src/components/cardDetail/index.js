@@ -13,7 +13,7 @@ import { getCardDetail } from '../../api/card.js';
 const CardDetail = props => {
 
     const cardData = props.cardData;
-    const [cardDetail, setCardDetail] = React.useState(null);
+    const [cardDetail, setCardDetail] = React.useState(null); 
     const authenHeader = useAuthen();
  
     /// get card detail from backend.

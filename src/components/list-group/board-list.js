@@ -180,10 +180,11 @@ const List = (props) => {
     const [cardData, setCardData] = React.useState(null);
     const [cardOpen, setCardOpen] = React.useState(false);
 
-    function cardClickHandler (card, listName) { 
+    function cardClickHandler (card, listName, listId) { 
         setCardData({
             ...card,
-            listName
+            listName,
+            listId
         });
         setCardOpen(true);
     }
@@ -241,7 +242,7 @@ const List = (props) => {
                                                     key={`card-${card.id}`}
                                                     cardId={`card-${card.id}`}
                                                     listIndex={props.index}
-                                                    cardClickHandler={() => cardClickHandler(card, list.name)}
+                                                    cardClickHandler={() => cardClickHandler(card, list.name, list.id)}
                                                 />
                                             )
                                         })
@@ -251,7 +252,7 @@ const List = (props) => {
                                     <CardDetail 
                                         open={cardOpen} 
                                         onClose={() => setCardOpen(false)}
-                                        cardData={cardData} 
+                                        cardData={cardData}  
                                     />
 
                                 </ListStyle.CardList>

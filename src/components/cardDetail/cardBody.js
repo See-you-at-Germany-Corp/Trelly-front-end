@@ -25,7 +25,7 @@ const CardBody = props => {
         });
     }
 
-    function onDesClose() {
+    function onDesClose() { 
         setDesStat({
             ...desStat,
             open: false
@@ -41,11 +41,10 @@ const CardBody = props => {
 
     function onDesSave() {
         const description = desStat.value;
-        const name = cardDetail.name;
    
         onDesClose();
 
-        axios.patch(`${URL}${updateCard(cardData.id)}`, { name, description }, authenHeader)
+        axios.patch(`${URL}${updateCard(cardData.id)}`, { description }, authenHeader)
             .then(res => {
                 setDesStat({
                     open: false,
@@ -79,7 +78,10 @@ const CardBody = props => {
                         value={desStat.value}
                         onClick={() => onDesClick()} 
                         onChange={onDesChange} 
-                        onBlur={onDesClose}
+                        onBlur={() => {
+                            onDesClose()
+                            onDesSave()
+                        }}
                     />
                     {
                         desStat.open &&
