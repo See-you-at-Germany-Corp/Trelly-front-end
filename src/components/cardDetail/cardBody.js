@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar'; 
+
+import AddMemberPopup from './addMemberPopup.js';
 
 import { CardBodyDiv } from './styled.js';
 import { DefaultText, SaveButton, ShowButton } from './styled.js';
@@ -8,7 +10,7 @@ import { DefaultText, SaveButton, ShowButton } from './styled.js';
 import { BoardContext } from '../../context/board-context/board-context.js';
 
 import { URL, useAuthen } from '../../api';
-import { updateCard } from '../../api/card.js'; 
+import { updateCard } from '../../api/card.js';  
 
 const CardBody = props => {
 
@@ -73,7 +75,7 @@ const CardBody = props => {
         })
     }
 
-    function getMemberData (memberId) {
+    function getMemberData(memberId) { 
         return boardState.members[
             boardState.members.findIndex(member => member.id === memberId)
         ];
@@ -96,6 +98,16 @@ const CardBody = props => {
     
     return (
         <CardBodyDiv desLen={desStat.value.length}>
+            {
+                (cardDetail !== null && cardDetail.members.length > 0) &&
+                <MemberBox
+                    cardDetail={cardDetail} 
+                    getMemberData={(memberId) => getMemberData(memberId)}
+                    addMember={(account_id) => props.addMember(account_id)}
+                    removeMember={(account_id) => props.removeMember(account_id)}
+                />
+            }
+
             <div className='des-big-box'>
                 <div className='des-name-box'>
                     <i className="fas fa-align-left"></i>
@@ -119,7 +131,7 @@ const CardBody = props => {
                     }
                 </div>
             </div>
-
+ 
             <div className='act-big-box'>
                 <div className='act-name-box'>
                     <i className="fas fa-chart-line"></i>
@@ -136,8 +148,8 @@ const CardBody = props => {
                     <div className='act-detail-box'>
                         {
                             actStat.activities !== [] &&
-                            actStat.activities.map(act => (
-                                <div className='act-detail-item'>
+                            actStat.activities.map((act, index) => (
+                                <div key={index} className='act-detail-item'>
                                     <div className='act-avatar-box'>
                                         <Avatar src={getMemberData(act.test1[0]).picture}>
                                             { getMemberData(act.test1[0]).init}
@@ -150,11 +162,26 @@ const CardBody = props => {
                                                 {`${getMemberData(act.test1[0]).full_name}`}
                                             </DefaultText>
                                             <DefaultText fontSize={14} fontWeight={400}>
-                                                {` 
-                                                    ${act.test1[1]}
-                                                    ${act.test1[2] === cardData.id ? 'this card ' : `${cardDetail.name} `}
-                                                    ${act.test1[3]}
-                                                `}
+                                                {
+                                                    act.type === 'card' ?
+                                                        `
+                                                            ${act.test1[1]}
+                                                            ${act.test1[2] === cardData.id ? 'this card ' : `${cardDetail.name} `}
+                                                            ${act.test1[3]}
+                                                        `
+                                                        : act.type === 'member' ?
+                                                            `
+                                                                ${act.test1[1]} 
+                                                                ${getMemberData(act.test1[2]).full_name}
+
+                                                            ` 
+                                                            :
+                                                            `
+                                                                comment 
+                                                                ${act.test1[1]} 
+                                                                ${act.test1[2]}
+                                                            `
+                                                }
                                             </DefaultText>
                                         </div>
 
@@ -175,6 +202,68 @@ const CardBody = props => {
                 }
             </div>
         </CardBodyDiv>
+    );
+}
+
+const MemberBox = props => {
+
+    const cardDetail = props.cardDetail;
+    const { boardState } = React.useContext(BoardContext);
+
+    const [memberPopup, setMemberPopup] = React.useState({
+        open: false,
+        anchor: null
+    });
+
+    function onMemberClick(e) { 
+        setMemberPopup({
+            ...memberPopup,
+            open: true, 
+            anchor: e.currentTarget
+        });
+    }
+
+    function onMemberClose() {
+        setMemberPopup({
+            ...memberPopup,
+            open: false,
+            anchor: null
+        });
+    }
+ 
+    return (
+        <div className='member-big-box'>
+            <div className='member-name-box'>
+                <DefaultText fontSize={13}>MEMBERS</DefaultText>
+            </div>
+
+            <div className='member-avatar-list'>
+                {
+                    cardDetail.members.map((member, index) => (
+                        <Avatar key={index} src={props.getMemberData(member.account_id).picture}>
+                            {props.getMemberData(member.account_id).init}
+                        </Avatar>
+                    ))
+                } 
+                <div 
+                    className='member-add-box'
+                    onClick={onMemberClick}
+                > 
+                    <i className="fas fa-plus"></i>
+                </div>
+            </div>
+
+            <AddMemberPopup 
+                isOpen={memberPopup.open}
+                anchor={memberPopup.anchor}
+                onClose={() => onMemberClose()}
+                memberData={boardState.members}
+                cardDetail={cardDetail} 
+                addMember={(account_id) => props.addMember(account_id)}
+                removeMember={(account_id) => props.removeMember(account_id)}
+            >
+            </AddMemberPopup>
+        </div>
     );
 }
 

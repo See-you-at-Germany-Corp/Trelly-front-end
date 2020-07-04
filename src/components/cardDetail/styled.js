@@ -2,12 +2,17 @@ import styled from 'styled-components';
 import Popup from 'reactjs-popup';
 
 export const CardPopUp = styled(Popup)`
+    &-overlay {
+        overflow: auto !important; 
+    }
+
     &-content {
         top: calc(100vh - (100vh - 45px)) !important;
         min-height: 95vh !important;
         width: 760px !important;
         background: #EFEFEF !important;
         border-radius: 3px;
+        margin-bottom: calc(100vh - (100vh - 45px)) !important; 
     }
 `;
 
@@ -20,6 +25,8 @@ export const CardBigBox = styled.div`
     .card-body-menu-box {
         display: flex;
         flex-wrap: wrap;
+
+        overflow: auto;
     }
 `;
 
@@ -111,6 +118,54 @@ export const CardBodyDiv = styled.div`
     margin-right: 15px;
     padding: 5px;
 
+    .member-big-box {
+        display: flex;
+        flex-flow: column wrap;
+
+        margin-bottom: 20px;
+
+        .member-name-box, .member-avatar-list {
+            margin-left: 40px;
+        }
+
+        .member-avatar-list {
+            display: flex;
+            flex-flow: row wrap;
+
+            padding-top: 5px; 
+
+            div {
+                background: lightgray;
+                width: 32px;
+                height: 32px;
+
+                color: #172b4d;
+                font-size: 16px;
+                font-weight: 550;
+
+                margin-right: 4px;
+
+                :hover {
+                    cursor: pointer;
+                    filter: brightness(95%);
+                }
+
+                :active {
+                    filter: brightness(90%);
+                }
+            }
+
+            .member-add-box { 
+                border-radius: 50%;
+
+                i {
+                    margin-top: 25%;
+                    margin-left: 9px;
+                }
+            }
+        }
+    }
+
     .des-big-box {
         .fa-align-left {
             position: absolute;
@@ -185,8 +240,7 @@ export const CardBodyDiv = styled.div`
             min-height: 50px;
 
             display: flex;
-            flex-flow: column;
-            flex-wrap: wrap;
+            flex-flow: column-reverse wrap; 
 
             margin-top: 15px;
             margin-left: 0px;
@@ -195,7 +249,7 @@ export const CardBodyDiv = styled.div`
                 /* background: lightyellow; */
 
                 display: flex;
-                flex-wrap: wrap;
+                flex-flow: row wrap; 
 
                 margin-left: 10px;
                 margin-bottom: 15px;
@@ -227,7 +281,7 @@ export const CardBodyDiv = styled.div`
 
                 .act-des-box {
                     display: flex;
-                    flex-flow: column wrap;
+                    flex-flow: column wrap; 
                 }
             }
         }
