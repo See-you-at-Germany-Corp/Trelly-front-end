@@ -15,8 +15,7 @@ export const CardBigBox = styled.div`
     background: #EFEFEF;
     
     display: flex;
-    flex-flow: column;
-    flex-wrap: wrap;
+    flex-flow: column wrap; 
 
     .card-body-menu-box {
         display: flex;
@@ -213,6 +212,8 @@ export const CardBodyDiv = styled.div`
                         font-size: 16px;
                         font-weight: 550;
 
+                        margin-top: 5px;
+
                         :hover {
                             cursor: pointer;
                             filter: brightness(95%);
@@ -235,10 +236,37 @@ export const CardBodyDiv = styled.div`
 
 export const CardMenuDiv = styled.div`
     /* background: lightblue; */
-    width: 25%;
+    width: 23%;
     min-height: 90vh;
 
     display: flex;
+    flex-flow: column wrap;
+
+    .add-to-card-box {  
+        .add-to-card-item-box {
+            margin-top: 8px;
+
+            .add-to-card-item{
+                i { 
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+
+    .actions-box {  
+        margin-top: 20px;
+
+        .actions-item-box {
+            margin-top: 8px;
+
+            .actions-item{
+                i { 
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
 `;
 
 export const DefaultText = styled.p`
@@ -297,4 +325,15 @@ export const ShowButton = styled(SaveButton)`
         color: deepskyblue;
         filter: brightness(100%);
     }
+`;
+
+export const MenuButton = styled(ShowButton)`
+    width: 100%;
+    
+    text-align: left;
+
+    position: static; 
+    margin-top: 0; 
+
+    transition: background 0.2s, color 0.2s;
 `;
