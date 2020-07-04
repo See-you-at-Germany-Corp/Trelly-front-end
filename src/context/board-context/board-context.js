@@ -8,43 +8,57 @@ const BoardContext = createContext({})
 const boardReducer = (state, action) => {
 
     switch (action.type) {
-        case 'MOVE_CARDS_IN_LIST':
+        case 'MOVE_CARDS_IN_LIST': {
             const listIndex = findItem(state.lists, action.listId, 'list-')
             const newCardIds = moveItem(state.lists[listIndex].cards, action.sourceIndex, action.destIndex)
             state.lists[listIndex].cards = newCardIds
-            return state
 
-        case 'MOVE_CARDS_OVER_LIST':
+            return state
+        }
+
+        case 'MOVE_CARDS_OVER_LIST': {
             const destIndex = findItem(state.lists, action.dest.droppableId, 'list-')
             const sourceIndex = findItem(state.lists, action.source.droppableId, 'list-')
             const cardIndex = findItem(state.lists[sourceIndex].cards, action.item, 'card-')
             insertItem(state.lists[destIndex].cards, action.dest.index, state.lists[sourceIndex].cards[cardIndex])
             deleteItem(state.lists[sourceIndex].cards, action.source.index)
-            return state
 
-        case 'OVERRIDE_LISTS':
-            state.lists = action.newLists
-            console.log('SORT', state.lists);
-            
             return state
-            
-        case 'MOVE_LIST':
-            const newListOrder = moveItem(state.lists, action.sourceIndex, action.destIndex)
+        }
+
+        case 'OVERRIDE_LISTS': {
+            let newState = { ...state }
+            newState.lists = action.newLists
+            return newState
+        }
+
+        case 'MOVE_LIST': {
+            let newState = {...state}
+            let newListOrder = moveItem(state.lists, action.sourceIndex, action.destIndex)
             let temp = newListOrder[action.sourceIndex].order_number
             newListOrder[action.sourceIndex].order_number = newListOrder[action.destIndex].order_number
             newListOrder[action.destIndex].order_number = temp
-            state.lists = newListOrder
+            newState.lists = newListOrder
 
-            return state
+            return newState
+        }
 
-        case 'LIST_RENAME': 
+        case 'LIST_RENAME': {
             state.lists[action.index].name = action.name
             return state
-        
+        }
+
         case 'ADD_LIST': {
             let newState = { ...state }
             delete action.newList.board
             newState.lists.push({ ...action.newList, cards: [] })
+            return newState
+        }
+
+        case 'DEL_LIST': {
+            let newState = { ...state }
+            let newLists = state.lists.slice(0, action.index).concat(state.lists.slice(action.index + 1))
+            newState.lists = newLists
             return newState
         }
 

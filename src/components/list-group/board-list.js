@@ -81,13 +81,11 @@ const List = (props) => {
             })
             return
         }
-
         renameList({
             oldListName: listName.newListName,
             newListName: listName.newListName,
             editing: !listName.editing
         })
-
         Axios.patch(
             `${URL}/board/my_list/${list.id}/`,
             { name: e.target.value },
@@ -98,6 +96,18 @@ const List = (props) => {
                     type: 'LIST_RENAME',
                     index: props.index,
                     name: res.data.name,
+                })
+            })
+    }
+    const deleteList = () => {
+        Axios.delete(
+            `${URL}/board/my_list/${list.id}/`,
+            headers
+        )
+            .then((res) => {
+                boardDispatch({
+                    type: 'DEL_LIST',
+                    index: props.index,
                 })
             })
     }
@@ -135,7 +145,6 @@ const List = (props) => {
             listOrder: listOrder
         })
     }
-
     const setNewCardMembers = (e, member) => {
         e.preventDefault()
         let newMembers = newCardState.members
@@ -151,7 +160,6 @@ const List = (props) => {
             members: newMembers
         })
     }
-
     const addLabel = index => {
         let newLabel = newCardState.labels
         newLabel.push(boardState.labels[index])
@@ -161,7 +169,6 @@ const List = (props) => {
             labels: newLabel
         })
     }
-
     const delLabel = index => {
         let newLabel = newCardState.labels
         newLabel = newLabel.slice(0, index).concat(newLabel.slice(index + 1))
@@ -169,6 +176,9 @@ const List = (props) => {
             ...newCardState,
             labels: newLabel
         })
+    }
+    const createNewCard = () => {
+        console.log(newCardState);
     }
 
     /* ----------------------------- Popver function ---------------------------- */
@@ -188,7 +198,6 @@ const List = (props) => {
             content: content,
         })
     }
-
 
     return (
         <Draggable draggableId={props.listId} index={props.index}>
@@ -237,8 +246,6 @@ const List = (props) => {
                                 >
                                     {
                                         list.cards && list.cards.map((card, index) => {
-                                            // console.log(card);
-                                            
                                             return (
                                                 <Card
                                                     index={index}
@@ -297,9 +304,10 @@ const List = (props) => {
                                 <div className='add-card-wrapper'>
                                     <Button
                                         className='add-button'
-                                        onClick={() => {
-                                            setNewCardState({ ...newCardState, editing: !newCardState.editing })
-                                        }}>
+                                        // onClick={() => {
+                                        //     setNewCardState({ ...newCardState, editing: !newCardState.editing })
+                                        // }}>
+                                        onClick={createNewCard}>
                                         Add card</Button>
                                     <div
                                         className='x-button'
@@ -366,12 +374,13 @@ const List = (props) => {
                                             setContent={setContent}
                                             listOrder={props.index + 1}
                                             newCard={{
+                                                addLabel,
+                                                delLabel,
                                                 setNewCardEdit,
                                                 setNewCardPosition,
                                                 setNewCardMembers,
-                                                addLabel,
-                                                delLabel
                                             }}
+                                            deleteList={deleteList}
                                             lists={boardState.lists}
                                             members={boardState.members}
                                             listLabels={boardState.labels} />

@@ -371,6 +371,12 @@ export const PopOverList = styled.div`
             }
         }
 
+        .create-label-button {
+            width: 260px;
+            text-align: center;
+            margin: 10px 10px 0px 10px;
+        }
+
         .label-wrapper {
             width: 260px;
             height: 32px;

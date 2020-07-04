@@ -57,7 +57,7 @@ const PopoverContents = (props) => {
                     <Divider variant='middle' />
 
                     <ul>
-                        <li>Archive This List</li>
+                        <li onClick={() => props.deleteList()}>Archive This List</li>
                     </ul>
                 </>
             )

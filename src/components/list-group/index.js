@@ -44,28 +44,25 @@ export default function ListGroup(props) {
         }
         else {
             form.append('shift', result.destination.index - result.source.index)
+            
+            boardDispatch({
+                type: 'MOVE_LIST',
+                sourceIndex: result.source.index,
+                destIndex: result.destination.index,
+            })
 
             Axios.post(
                 `${URL}/board/my_list/${result.draggableId.match(RegExp(/\d+/))[0]}/drag_list/`,
                 form,
                 headers
             )
-                .then((res) => {
-                    boardDispatch({
-                        type: 'MOVE_LIST',
-                        sourceIndex: result.source.index,
-                        destIndex: result.destination.index,
-                    })
-                })
-                .catch((err) => {
-                })
         }
     }
 
-    boardDispatch({
-        type: 'OVERRIDE_LISTS',
-        newLists: boardState.lists.sort(function (a, b) { return a.order_number - b.order_number })
-    })
+    let sortedLists = boardState.lists
+    useMemo(() => {
+        sortedLists = boardState.lists.sort((a, b) => { return a.order_number - b.order_number })
+    }, [sortedLists])
 
     return (
         <BoardBody>
@@ -82,8 +79,7 @@ export default function ListGroup(props) {
                                 {...provided.droppableProps}
                             >
                                 {
-                                    boardState.lists && boardState.lists.map((list, index) => {
-                                        console.log(list);
+                                    sortedLists && sortedLists.map((list, index) => {
                                         return (
                                             <List
                                                 index={index}
