@@ -149,6 +149,7 @@ class profile extends Component {
             maxHeight: "100px",
             height: "fit-content",
           }}
+          alt = ""
         />
       );
     } else {
@@ -223,6 +224,7 @@ class profile extends Component {
                 value={this.state.username}
                 onChange={this.handleChange}
                 fullWidth
+                disabled="disabled"
               />
               <TextField
                 id="bio"
@@ -230,7 +232,7 @@ class profile extends Component {
                 type="text"
                 label="bio"
                 className={classes.TextField}
-                value={this.state.bio}
+                value={!this.state.bio ? this.state.bio  : ("")}
                 onChange={this.handleChange}
                 fullWidth
               />

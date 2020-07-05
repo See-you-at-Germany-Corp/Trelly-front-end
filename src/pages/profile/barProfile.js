@@ -3,9 +3,9 @@ const BarProfile = (props) => {
 
   const [
     state = {
-      fullName: props.data.fullName,
-      initials: props.data.initials,
-      userName: props.data.userName,
+      fullName: props.data.fullname,
+      initials: props.data.init,
+      userName: props.data.username,
       //picture: props.data.fullName,
       status: "",
     },
@@ -52,7 +52,7 @@ const BarProfile = (props) => {
               <a
                 className={`tabbed-pane-nav-item-button js-member-profile ${state.status}`}
                 data-tab="profile"
-                href=""
+                href="/"
                 onClick={() => activeStatus()}
               >
                 Profile and Visibility
@@ -62,7 +62,7 @@ const BarProfile = (props) => {
               <a
                 className={`tabbed-pane-nav-item-button js-member-activity ${state.status}`}
                 data-tab="cards"
-                href=""
+                href="/"
                 onClick={() => activeStatus()}
               >
                 Activity
@@ -72,7 +72,7 @@ const BarProfile = (props) => {
               <a
                 className="tabbed-pane-nav-item-button js-member-cards"
                 data-tab="cards"
-                href=""
+                href="/"
               >
                 Cards
               </a>
@@ -81,7 +81,7 @@ const BarProfile = (props) => {
               <a
                 className="tabbed-pane-nav-item-button js-member-account"
                 data-tab="settings"
-                href=""
+                href="/"
               >
                 Settings
               </a>
@@ -90,7 +90,7 @@ const BarProfile = (props) => {
               <a
                 className="tabbed-pane-nav-item-button js-billing"
                 data-tab="trello-gold"
-                href=""
+                href="/"
               >
                 <span className="icon-sm icon-trello-gold mod-inline icon-trello-gold-color"></span>{" "}
                 Trello Gold
@@ -104,8 +104,3 @@ const BarProfile = (props) => {
 };
 
 export default BarProfile;
-
-const getActiveTap = (pushButton) => {
-  let temp = " active";
-  return temp;
-};
