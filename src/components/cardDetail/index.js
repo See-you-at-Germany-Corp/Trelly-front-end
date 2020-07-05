@@ -56,17 +56,26 @@ const CardDetail = props => {
     }
 
     /// get card detail from backend.
-    React.useEffect(() => {
-        if (cardData !== null) { 
-            axios.get(`${URL}${getCardDetail(cardData.id)}`, authenHeader)
-            .then(res => { 
-                if(isLoad)
-                    setCardDetail(res.data);
-            })
-            setIsLoad(true);
+    React.useEffect(() => { 
+        if (cardData !== null) {  
+            if (!isLoad) {
+                axios.get(`${URL}${getCardDetail(cardData.id)}`, authenHeader)
+                    .then(res => { 
+                        setCardDetail(res.data);
+                    })
+                setIsLoad(true);
+            }
         }
         // eslint-disable-next-line
     }, [authenHeader, cardData, isLoad]);
+
+    /// get card detail from backend.
+    React.useEffect(() => { 
+        if (cardData !== null) {  
+            setIsLoad(false);
+        }
+        // eslint-disable-next-line
+    }, [cardData]);
  
     return (
         <div>

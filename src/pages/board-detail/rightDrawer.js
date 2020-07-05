@@ -553,7 +553,7 @@ const LabelsBox = (props) => {
 }
 
 const DrawerBox = styled.div`
-    height: 94.5vh;
+    height: calc(100vh - 40px - 28px); 
     width: 340px;
     /* background-color: lightpink; */
     background-color: #EFEFEF;
