@@ -3,6 +3,7 @@ import React from 'react'
 import Card from './board-card'
 import * as ListStyle from './list-styled'
 import PopoverContents from './popover-content'
+import CardDetail from '../../components/cardDetail';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import defaultLabel from '../../pages/board-detail/labelData'
 import { BoardContext } from '../../context/board-context/board-context'
@@ -11,7 +12,6 @@ import { TextareaAutosize, Button, Popover, Divider, Avatar } from '@material-ui
 import Axios from 'axios'
 import { URL } from '../../api/index'
 import cookie from 'react-cookies'
-
 const headers = {
     headers: {
         Authorization: `Bearer ${cookie.load('authen-token')}`
@@ -272,6 +272,21 @@ const List = (props) => {
         })
     }
 
+    /* ------------------------ Boat Card Detail ----------------------- */
+
+    /// mockup card data.
+    const [cardData, setCardData] = React.useState(null);
+    const [cardOpen, setCardOpen] = React.useState(false);
+
+    function cardClickHandler (card, listName, listId) { 
+        setCardData({
+            ...card,
+            listName,
+            listId
+        });
+        setCardOpen(true);
+    }
+
     return (
         <Draggable draggableId={props.listId} index={props.index}>
             {(provided) => (
@@ -325,11 +340,19 @@ const List = (props) => {
                                                     key={`card-${card.id}`}
                                                     cardId={`card-${card.id}`}
                                                     listIndex={props.index}
+                                                    cardClickHandler={() => cardClickHandler(card, list.name, list.id)}
                                                 />
                                             )
                                         })
                                     }
                                     {provided.placeholder}
+
+                                    <CardDetail 
+                                        open={cardOpen} 
+                                        onClose={() => setCardOpen(false)}
+                                        cardData={cardData}  
+                                    />
+
                                 </ListStyle.CardList>
                             )}
                         </Droppable>

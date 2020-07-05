@@ -14,6 +14,9 @@ import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
+import axios from "axios";
+import { URL } from '../../api/index.js';
+
 const styles = {
   form: {
     textAlign: "center",
@@ -36,102 +39,139 @@ const styles = {
 class profile extends Component {
   constructor() {
     super();
-    this.state = {
-      fullName: "",
-      initials: "",
-      userName: "",
-      bio: "",
-      picture: ""
-    };
+    this.state = {};
   }
-  //Get user data
 
-  
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      fullName: this.state.fullName,
-      initials: this.state.initials,
-      userName: this.state.userName,
-      bio: this.state.bio,
-      picture: this.state.picture,
-    });
-    const userData = {
-      fullName: this.state.fullName,
-      initials: this.state.initials,
-      userName: this.state.userName,
-      bio: this.state.bio,
-      picture: this.state.picture,
-    };
-    this.props.SUBMIT(
-      userData
-      // loading: false,
-      // error: {},
-    );
-    console.log(userData);
+    const authenHeader = this.props.authenHeader;
 
-    //Rest
+    const formData = new FormData();
+    formData.append("new_fullname", this.state.fullname);
+    formData.append("init", this.state.init);
+    formData.append("bio", this.state.bio);
+    if (typeof (this.state.picture) !== typeof '')
+      formData.append("picture", this.state.picture);
+    this.props.SUBMIT(this.state); 
+
+    //Rest post
+    if (authenHeader !== null) {
+      axios
+        .patch(
+          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
+          formData,
+          authenHeader
+        )
+        .then((res) => {
+          console.log(res);
+        });
+    }
   };
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-    //console.log(this.setState);
   };
   handleImageChange = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
     const image = event.target.files[0];
     const formData = new FormData();
     formData.append("image", image, image.name);
-    console.log("form", formData);
-    console.log(image.name);
-
-    //this.props.uploadImage(formData);
-    //send rest
+    reader.onloadend = () => {
+      this.setState({
+        picture: image,
+        pictureName: image.name,
+        imagePreviewUrl: reader.result,
+      });
+    };
+    reader.readAsDataURL(image);
   };
   handleEditPicture = (event) => {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   };
+  PictureOrInit = (state) => {
+    return this.state.picture ? (
+      <div className="">
+        <img
+          className="namePicture"
+          src={"https://boxing-donair-89223.herokuapp.com" + this.state.picture}
+          alt=""
+          style={{
+            width: "100%",
+            maxWidth: "100px",
+            maxHeight: "100px",
+            height: "fit-content",
+          }}
+        />
+      </div>
+    ) : (
+        <div>
+          <span
+            className="namePicture"
+            style={{
+              fontSize: "48px",
+              height: "100px",
+              width: "100px",
+              lineHeight: "100px",
+            }}
+          >
+            {this.state.initials}
+          </span>
+        </div>
+      );
+  };
+
+  componentDidMount() {
+    const authenHeader = this.props.authenHeader;
+    axios.get(`${URL}/profile/my_profile/`, authenHeader)
+      .then((res) => {
+        const state = res.data;
+        this.props.SUBMIT(state);
+        this.setState({ ...state });
+      });
+    this.setState({ ...this.props.DataProfile });
+  }
+
   render() {
     const { classes } = this.props;
-    const { user } = this.state;
-    console.log("Hello props");
-
-     console.log(this.props);
-
-    //console.log(this.props.DataProfile.fullName);
-
+    let { imagePreviewUrl } = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = (
+        <img
+          className = "namePicture"
+          src={imagePreviewUrl}
+          style={{
+            width: "100%",
+            maxWidth: "100px",
+            maxHeight: "100px",
+            height: "fit-content",
+          }}
+        />
+      );
+    } else {
+      // $imagePreview = (
+      //   <div className="previewText">Please select an Image for Preview</div>
+      // );
+    }
     return (
       <div>
-        <BarProfile />
+        <BarProfile data={this.state} />
         <ProfileContainer container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
             <div className="contain-avatar" data-test-id="profile-avatar">
               <h3 className="text-avatar">Avatar</h3>
               <div className="contain-picture-avatar">
-                <div
-                  className="MrFeHFqEkuBP9W name-picture"
-                  title="Mark Latthapol (marklatthapol)"
-                >
-                  <span
-                    className="namePicture"
-                    style={{
-                      fontSize: "48px",
-                      height: "100px",
-                      width: "100px",
-                      lineHeight: "100px",
-                    }}
-                  >
-                    {this.state.initials}
-                  </span>
+                <div className="" title={this.state.pictureName}>
+                  {this.PictureOrInit()}
+                  <div className="imgPreview">{$imagePreview}</div>
                 </div>
                 <div className="inputPicture">
                   <input
                     className="testButton"
-                    onClick={() => {
-                      console.log("555");
-                    }}
                     type="file"
                     id="imageInput"
                     onChange={this.handleImageChange}
@@ -156,31 +196,31 @@ class profile extends Component {
             <form noValidate onSubmit={this.handleSubmit}>
               <TextField
                 id="full-name"
-                name="fullName"
+                name="fullname"
                 type="text"
                 label="full-name"
                 className={classes.TextField}
-                value={this.state.fullName}
+                value={this.state.fullname}
                 onChange={this.handleChange}
                 fullWidth
               />
               <TextField
                 id="initials"
-                name="initials"
+                name="init"
                 type="text"
                 label="initials"
                 className={classes.TextField}
-                value={this.state.initials}
+                value={this.state.init}
                 onChange={this.handleChange}
                 fullWidth
               />
               <TextField
                 id="username"
-                name="userName"
+                name="username"
                 type="text"
                 label="username"
                 className={classes.TextField}
-                value={this.state.userName}
+                value={this.state.username}
                 onChange={this.handleChange}
                 fullWidth
               />
@@ -220,7 +260,7 @@ profile.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    DataProfile: state.DataProfile,
+    DataProfile: state.dataProfile,
   };
 };
 const mapDispatchToProps = (dispatch) => {

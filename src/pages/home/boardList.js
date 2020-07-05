@@ -8,6 +8,7 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import './boardListStyle.css';
 
 import { starBoard, unStarBoard } from '../../redux/actions/starredBoardList.js';
+import { delRecentlyBoard, addRecentlyBoard } from '../../redux/actions/recentlyBoard.js';
 import { createOn } from '../../redux/actions/createNewBoard';
 import { URL, useAuthen } from '../../api/index.js';
 import { starToggle } from '../../api/board.js';
@@ -18,14 +19,28 @@ const SortableItem = SortableElement((props) => {
     const index = props.boardIndex;
     const board = props.board;
     const starredStyle = props.starredStyle;
-    const keyId = props.keyId;
-    const boardHref = props.boardHref;
+    const keyId = props.keyId; 
+    const boardHref = props.disabledLink ? '#' : props.boardHref;
     const isStarredBoard = props.isStarredBoard;
 
     const authenHeader = useAuthen();
 
     function starApi (boardId) { 
         axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
+    }
+
+    function starHandler () { 
+        props.dispatch(starBoard(board.id, board))
+        if (board.recently_id > 0) {
+            props.dispatch(delRecentlyBoard(board.id));
+        } 
+    }
+
+    function unStarHandler () { 
+        props.dispatch(unStarBoard(board.id, board))
+        if (board.recently_id > 0) {
+            props.dispatch(addRecentlyBoard(board));
+        }
     }
 
     return (
@@ -41,10 +56,10 @@ const SortableItem = SortableElement((props) => {
                         {
                             isStarredBoard === true ?
                                 /// click to unstar board.
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(unStarBoard(board.id))} style={starredStyle}></i>
+                                <i className='board-star fas fa-star' onClick={() => unStarHandler()} style={starredStyle}></i>
                                 :
                                 /// click to star board.
-                                <i className='board-star fas fa-star' onClick={() => props.dispatch(starBoard(board.id, board))} style={starredStyle}></i>
+                                <i className='board-star fas fa-star' onClick={() => starHandler()} style={starredStyle}></i>
                         }
                     </Link>
                 </BoardSmallBox>
@@ -107,6 +122,15 @@ const SortableList = SortableContainer((props) => {
                     })
             }
 
+            {
+                props.boardListData.length === 0 && props.listName === 'Personal Boards' &&
+                <BoardContainer className='board-list-item-box' key='create'>
+                    <BoardSmallBox to='#' onClick={() => props.dispatch(createOn())} className='board-list-item create-new-board-button' style={{ background: 'rgb(241, 241, 241)', textAlign: 'center' }}>
+                        <p style={{ marginTop: '38px', color: 'slategray', marginLeft: '9px', fontSize: '14px' }}>Create new board</p>
+                    </BoardSmallBox>
+                </BoardContainer>
+            }
+
         </div>
     );
 });
@@ -146,8 +170,7 @@ const BoardContainer = styled.div`
     &:hover {
         filter: brightness(95%); 
         cursor: pointer;
-    }
-
+    } 
 `
 
 const BoardSmallBox = styled(Link)` 
@@ -173,8 +196,7 @@ const BoardSmallBox = styled(Link)`
 
     & > a {
         -webkit-user-drag: none;
-    }
-
+    } 
 `
 
 /* ------------------------- Redux --------------------------- */

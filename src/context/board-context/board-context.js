@@ -98,13 +98,13 @@ const boardReducer = (state, action) => {
 
             return state;
 
-        case ('ADD_MEMBER'):
-            const newState2 = { ...state };
-            newState2.members.push(action.member);
-
+        case ('ADD_MEMBER'): {
+            const newState = { ...state };
+            newState.members.push(action.member);
+        }
             /// post to backend.
 
-            return newState2;
+            return newState;
 
         case ('REMOVE_MEMBER'):
             const newState = { ...state };
@@ -126,8 +126,51 @@ const boardReducer = (state, action) => {
                 color_code: action.color_code
             };
 
+        case ('ADD_LABEL_TO_BOARD'): {
+            const newState = { ...state };
+            newState.labels.push(action.labelData);
+
+            return newState;
+        }
+
+        case ('UPDATE_LABEL_IN_BOARD'): {
+            const newState = { ...state };
+            const updateIndex = newState.labels.findIndex(label => label.id === action.labelId);
+
+            if (updateIndex >= 0) {
+                newState.labels[updateIndex].name = action.newName;
+                newState.labels[updateIndex].color_id = action.newColor_id;
+            }
+
+            return newState;
+        }
+
+        case ('DEL_LABEL_IN_BOARD'): {
+            const newState = { ...state };
+            const delIndex = newState.labels.findIndex(label => label.id === action.labelId);
+
+            if (delIndex >= 0) {
+                newState.labels.splice(delIndex, 1);
+            }
+
+            return newState;
+        }
+
         case ('CHANGE_CURRENT_BOARD'):
             return action.newState;
+
+        case ('CHANGE_CARD_NAME'): {
+            let newState = { ...state };
+            let listIndex = newState.lists.findIndex(list => list.id === action.listId);
+
+            if (listIndex >= 0) {
+                let cardIndex = newState.lists[listIndex].cards.findIndex(card => card.id === action.cardId);
+                if (cardIndex >= 0)
+                    newState.lists[listIndex].cards[cardIndex].name = action.newName;
+            }
+
+            return newState;
+        }
 
         default:
             return state
