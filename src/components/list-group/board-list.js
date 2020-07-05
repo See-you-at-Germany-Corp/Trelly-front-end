@@ -181,6 +181,7 @@ const List = (props) => {
         })
     }
     const createNewCard = () => {
+        console.log(newCardState);
         if (newCardState.name !== '') {
             let formData = new FormData()
             formData.append('list', newCardState.listOrder ? boardState.lists[newCardState.listOrder - 1].id : list.id)
@@ -192,6 +193,7 @@ const List = (props) => {
                 headers
             )
                 .then((res) => {
+                    // BoardDispatch
                     boardDispatch({
                         type: 'ADD_CARD',
                         id: res.data.id,
@@ -200,17 +202,16 @@ const List = (props) => {
                         position: newCardState.position,
                         order_number: res.data.order_number,
                     })
-
                     boardDispatch({
                         type: 'MOVE_CARDS_IN_LIST',
-                        sourceIndex: res.data.order_number-1,
-                        destIndex: newCardState.position-1,
+                        sourceIndex: res.data.order_number - 1,
+                        destIndex: newCardState.position - 1,
                         listId: `list-${formData.get('list')}`
                     })
-
                     formData.delete('name')
                     formData.delete('list')
 
+                    // Drag card
                     formData.append('list_shift', 0)
                     formData.append('card_shift', newCardState.position - (boardState.lists[newCardState.listOrder - 1].cards.length))
                     Axios.post(
@@ -218,6 +219,38 @@ const List = (props) => {
                         formData,
                         headers
                     )
+                        .then(() => {
+                            formData.delete('list_shift')
+                            formData.delete('card_shift')
+                        })
+
+                    // Add Member
+                    newCardState.members.forEach(element => {
+                        formData.set('user_id', element.id)
+                        Axios.post(
+                            `${URL}/board/my_card/${res.data.id}/add_member/`,
+                            formData,
+                            headers
+                        )
+                            .then((res) => {
+                                formData.delete('user_id')
+                                console.log(res)
+                            })
+                    });
+
+                    // Add Label
+                    newCardState.labels.forEach(element => {
+                        formData.set('label', element.id)
+                        Axios.post(
+                            `${URL}/board/my_card/${res.data.id}/add_label/`,
+                            formData,
+                            headers
+                        )
+                            .then((res) => {
+                                formData.delete('label')
+                                console.log(res)
+                            })
+                    });
                 })
         }
     }
