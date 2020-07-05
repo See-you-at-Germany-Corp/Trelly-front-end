@@ -450,6 +450,7 @@ const LabelsBox = (props) => {
         return [anchorEl, setAnchorEl, handleClick, handleClose, open, id];
     }
 
+    // eslint-disable-next-line
     const [anchorEl, setAnchorEl, handleClick, handleClose, open, id] = usePopover(); 
 
     const [mode, setMode] = React.useState(1);
