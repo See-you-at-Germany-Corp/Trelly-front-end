@@ -25,6 +25,7 @@ import { URL, useAuthen } from "./api";
 function App(props) {
   const authenHeader = useAuthen();
 
+  // eslint-disable-next-line
   React.useMemo(() => {
     if (authenHeader !== null) {
       axios.get(`${URL}/profile/my_profile/`, authenHeader)

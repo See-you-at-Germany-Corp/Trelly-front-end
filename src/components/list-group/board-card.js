@@ -7,9 +7,7 @@ import { Draggable } from 'react-beautiful-dnd'
 
 import { BoardContext } from '../../context/board-context/board-context'
 import { motion } from 'framer-motion'
-import { Avatar } from '@material-ui/core'
-import { Link } from 'react-router-dom';
-import { Popover } from 'antd';
+import { Avatar } from '@material-ui/core' 
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
@@ -17,10 +15,10 @@ import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 // import "antd/dist/antd.css";
 
 function Card(props) {
-    const { boardState, boardDispatch } = useContext(BoardContext)
+    const { boardState } = useContext(BoardContext)
 
     const card = boardState.lists[props.listIndex].cards[props.index]
-    let myId = props.dataProfile.id;
+    
     return (
         <Draggable draggableId={props.cardId} index={props.index}>
             {provided => (
@@ -111,113 +109,6 @@ const CardDiv = styled(motion.div)`
     display: block;
     
 `;
-
-const AvatarDetailBox = styled.div`
-    width: 290px;
-    min-height: 120px;
-    // background-color: snow; 
-    border-radius: 4px;
-    // opacity: ${props => props.focus === true ? '100' : '0'};
-    opacity:1;
-    // visibility: ${props => props.focus === true ? 'visible' : 'hidden'};
-    // visibility: hidden;
-    // &:focus{
-    //     visibility: visible;
-    // }
-    // box-shadow: 2px 4px 8px #888888;
-    // top:3;
-    // position: absolute;
-    // margin-top: 34px;
-    // padding-bottom: 10px; 
-    // left: ${props => props.left !== 0 && `${props.left + 10}px`};
-    z-index: 2;
-
-    & > i {
-        position: absolute;
-        right: 13px;
-        top: 10px;
-        color: rgb(155, 155, 155); 
-    }
-
-    & > i:hover {
-        cursor: pointer;
-        color: rgb(125, 125, 125); 
-    }
-
-    .avatar-description {
-        width: 280px;
-        min-height: 60px;
-        /* background-color: lightblue; */
-        display: flex;
-        flex-wrap: wrap; 
-        margin:0 auto;
-    }
-
-    .avatar-pic {
-        width: 50px;
-        height: 50px;
-        margin: 8px 12px 0px 12px;
-
-        color: midnightblue;
-        background-color: gainsboro;
-        font-size: 16px;
-        font-weight: 700; 
-    }
-
-    .description {
-        width: 70%;
-        min-height: 60px;
-        /* background-color: lightcoral; */
-        
-        // margin-top: 8px;
-          
-        word-wrap: break-word; 
-        user-select: text; 
-    }
-
-    .description > a {
-        text-decoration: none;
-        color: midnightblue;
-    }
-
-    .description > a:hover {
-        text-decoration: underline;
-    }
-
-    .description > p {
-        padding: 0;
-        margin: 0;
-        font-size: 14px; 
-        font-weight: 400;
-        color: gray;
-    }
-
-    .description .full-name {
-        font-size: 16px; 
-        font-weight: 500;
-    }
-
-    .menu {
-        // margin-top: 8px;
-        // margin-left: -2px;
-        width: 100%;
-    }
-
-    .menu > p {
-        margin: 0px 0px 0px 0px;
-        width: 100%;
-        padding: 8px 14px 8px 10px;  
-
-        font-size: 14px;
-    }
-
-    .menu > p:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-        cursor: pointer;
-    }
-
-`;
-
 
 const ColorBar = styled(motion.div)`
     width: 40px;
