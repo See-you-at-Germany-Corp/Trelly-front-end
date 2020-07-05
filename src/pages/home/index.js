@@ -67,6 +67,12 @@ const Home = ({ personalBoardList, starredBoardList, recentlyBoardList, isLoadin
                     dispatch({ type: 'SET_LOADING_HOME', isLoading: false });
                 })
                 .catch(res => console.log(res));
+
+            axios.get(`${URL}/profile/my_profile/`, authenHeader)
+                .then((res) => {
+                    const state = res.data;
+                    dispatch({ type: 'SUBMIT', state });
+                });
         }
         // eslint-disable-next-line
     }, [authenHeader]);

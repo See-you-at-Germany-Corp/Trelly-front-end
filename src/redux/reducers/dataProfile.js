@@ -7,11 +7,11 @@ import {useAuthen} from '../../api/index';
 
 
 const initialState = {
-    fullName: "TestFullName",
-    initials: "TF",
-    userName: "userTF",
+    fullname: "TestFullName",
+    init: "TF",
+    username: "userTF",
     bio: "lol",
-    picture: "s.png",
+    picture: "",
 
   };
   
