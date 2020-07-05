@@ -73,13 +73,19 @@ class profile extends Component {
     });
   };
   handleImageChange = (event) => {
+    event.preventDefault();
+    let reader = new FileReader();
     const image = event.target.files[0];
     const formData = new FormData();
     formData.append("image", image, image.name);
-    this.setState({
-      picture: image,
-      pictureName: image.name,
-    });
+    reader.onloadend = () => {
+      this.setState({
+        picture: image,
+        pictureName: image.name,
+        imagePreviewUrl: reader.result,
+      });
+    };
+    reader.readAsDataURL(image);
   };
   handleEditPicture = (event) => {
     const fileInput = document.getElementById("imageInput");
@@ -130,6 +136,26 @@ class profile extends Component {
 
   render() {
     const { classes } = this.props;
+    let { imagePreviewUrl } = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = (
+        <img
+          className = "namePicture"
+          src={imagePreviewUrl}
+          style={{
+            width: "100%",
+            maxWidth: "100px",
+            maxHeight: "100px",
+            height: "fit-content",
+          }}
+        />
+      );
+    } else {
+      // $imagePreview = (
+      //   <div className="previewText">Please select an Image for Preview</div>
+      // );
+    }
     return (
       <div>
         <BarProfile data={this.state} />
@@ -141,6 +167,7 @@ class profile extends Component {
               <div className="contain-picture-avatar">
                 <div className="" title={this.state.pictureName}>
                   {this.PictureOrInit()}
+                  <div className="imgPreview">{$imagePreview}</div>
                 </div>
                 <div className="inputPicture">
                   <input
