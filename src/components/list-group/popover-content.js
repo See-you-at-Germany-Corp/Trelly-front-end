@@ -181,7 +181,7 @@ const PopoverContents = (props) => {
                                         destListOrder: e.target.value,
                                         destPosition: props.lists[e.target.value - 1].cards.length + 1
                                     })
-                                    props.newCard.setNewCardPosition(newCardOption.destListOrder, newCardOption.destPosition)
+                                    props.newCard.setNewCardPosition(e.target.value, props.lists[e.target.value - 1].cards.length + 1)
                                 }}>
                                 {
                                     props.lists.map((item, i) => <MenuItem key={'new-card-list-' + i} value={item.order_number} >{item.name}</MenuItem>)
@@ -196,7 +196,7 @@ const PopoverContents = (props) => {
                                 value={newCardOption.destPosition}
                                 onChange={e => {
                                     setNewCardOption({ ...newCardOption, destPosition: e.target.value })
-                                    props.newCard.setNewCardPosition(newCardOption.destListOrder, newCardOption.destPosition)
+                                    props.newCard.setNewCardPosition(newCardOption.destListOrder, e.target.value)
                                 }}>
                                 {
                                     props.lists[newCardOption.destListOrder - 1].cards.map((item, i) => <MenuItem key={'new-card-position-' + i + 1} value={i + 1} >{i + 1}</MenuItem>)

@@ -36,7 +36,7 @@ const List = (props) => {
         labels: [],
         members: [],
         editing: false,
-        position: null,
+        position: boardState.lists[props.index].cards.length + 1,
         listOrder: props.index + 1,
     })
 
@@ -185,6 +185,7 @@ const List = (props) => {
             let formData = new FormData()
             formData.append('list', newCardState.listOrder ? boardState.lists[newCardState.listOrder - 1].id : list.id)
             formData.append('name', newCardState.name)
+
             Axios.post(
                 `${URL}/board/my_card/`,
                 formData,
@@ -196,8 +197,27 @@ const List = (props) => {
                         id: res.data.id,
                         name: res.data.name,
                         list: formData.get('list'),
+                        position: newCardState.position,
                         order_number: res.data.order_number,
                     })
+
+                    boardDispatch({
+                        type: 'MOVE_CARDS_IN_LIST',
+                        sourceIndex: res.data.order_number-1,
+                        destIndex: newCardState.position-1,
+                        listId: `list-${formData.get('list')}`
+                    })
+
+                    formData.delete('name')
+                    formData.delete('list')
+
+                    formData.append('list_shift', 0)
+                    formData.append('card_shift', newCardState.position - (boardState.lists[newCardState.listOrder - 1].cards.length))
+                    Axios.post(
+                        `${URL}/board/my_card/${res.data.id}/drag_card/`,
+                        formData,
+                        headers
+                    )
                 })
         }
     }

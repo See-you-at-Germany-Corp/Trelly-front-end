@@ -45,16 +45,20 @@ const boardReducer = (state, action) => {
         case 'ADD_CARD': {
             let newState = { ...state }
             let index = newState.lists.findIndex(item => item.id === parseInt(action.list))
-            newState.lists[index].cards.push({
-                id: action.id,
-                name: action.name,
-                labels: [],
-                members: [],
-                checklist: null,
-                order_number: action.order_number,
-                is_description: false,
-                is_watching: false,
-            })
+            console.log(action.position);
+
+            newState.lists[index].cards.splice(action.position - 1, 0,
+                ({
+                    id: action.id,
+                    name: action.name,
+                    labels: [],
+                    members: [],
+                    checklist: null,
+                    order_number: action.order_number,
+                    is_description: false,
+                    is_watching: false,
+                })
+            )
 
             return newState
         }
