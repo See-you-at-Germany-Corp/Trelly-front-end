@@ -26,7 +26,6 @@ export default function Card(props) {
     const card = boardState.lists[props.listIndex].cards[props.index]
     let myId = 1;  /// mockup myId
     const { data } = usePalette("https://trello-backgrounds.s3.amazonaws.com/SharedBackground/320x480/6ade9ce5f322963707d748d1581a0650/photo-1590941624133-bf53cea5ff37.jpg")
-    console.log(data)
     return (
         <Draggable draggableId={props.cardId} index={props.index}>
             {provided => (
