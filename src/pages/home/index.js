@@ -1,8 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-import styled from 'styled-components';
+import axios from 'axios'; 
 import { connect } from 'react-redux';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './style.css';
 

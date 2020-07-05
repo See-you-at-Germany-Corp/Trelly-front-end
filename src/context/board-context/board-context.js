@@ -103,6 +103,18 @@ const boardReducer = (state, action) => {
 
         case ('CHANGE_CURRENT_BOARD'): 
             return action.newState;
+
+        case ('CHANGE_CARD_NAME'):
+            let newState6 = { ...state };
+            let listIndex = newState6.lists.findIndex(list => list.id === action.listId);
+            
+            if (listIndex >= 0) {
+                let cardIndex = newState6.lists[listIndex].cards.findIndex(card => card.id === action.cardId);
+                if (cardIndex >= 0)
+                    newState6.lists[listIndex].cards[cardIndex].name = action.newName;
+            }
+                 
+            return newState6;
  
         default:
             return state

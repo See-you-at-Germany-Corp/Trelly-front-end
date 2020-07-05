@@ -174,14 +174,12 @@ const AboutBox = (props) => {
  
     const { boardState } = React.useContext(BoardContext);
 
-    const mockupFounder = boardState.members[
+    const founderMember = boardState.members[
         boardState.members.findIndex(member => member.id === boardState.admin)
     ];
 
     const mockupDes = 'Trelly copy from Trello.';
-
-    const founderMember = mockupFounder;
-
+  
     const [isEdit, setEdit] = React.useState(false);
     const [des, setDes] = React.useState(mockupDes);
     const [cpyDes, setCpy] = React.useState(mockupDes);
@@ -452,6 +450,7 @@ const LabelsBox = (props) => {
         return [anchorEl, setAnchorEl, handleClick, handleClose, open, id];
     }
 
+    // eslint-disable-next-line
     const [anchorEl, setAnchorEl, handleClick, handleClose, open, id] = usePopover(); 
 
     const [mode, setMode] = React.useState(1);
@@ -876,9 +875,12 @@ const LabelBigBox = styled.div`
  
     .label-item > p { 
         color: white;
+        max-width: 230px;
         line-height: 0px;
         margin-left: 15px;
         padding: 0; 
+ 
+        word-wrap: break-word;  
     }
 
     .label-item:hover {
