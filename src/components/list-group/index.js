@@ -30,8 +30,8 @@ export default function ListGroup(props) {
 
             if (result.destination.droppableId === result.source.droppableId) {
                 shift = result.destination.index - result.source.index
-                form.append('card_shift',shift)
-                form.append('list_shift',listShift)
+                form.append('card_shift', shift)
+                form.append('list_shift', listShift)
                 boardDispatch({
                     type: 'MOVE_CARDS_IN_LIST',
                     sourceIndex: result.source.index,
@@ -47,8 +47,8 @@ export default function ListGroup(props) {
             }
 
             shift = result.destination.index + 1
-            form.append('card_shift',shift)
-            form.append('list_shift',listShift)
+            form.append('card_shift', shift)
+            form.append('list_shift', listShift)
             Axios.post(
                 `${URL}/board/my_card/${result.draggableId.match(/\d+/)[0]}/drag_card/`,
                 form,
@@ -126,7 +126,7 @@ export default function ListGroup(props) {
 }
 
 const StyledListContainer = styled.div`
-    height: calc(90vh - 40px);
+    max-height: calc(92vh - 40px);
     max-width: calc(100vw - 10px);
 
     padding-left: 10px;
@@ -136,10 +136,17 @@ const StyledListContainer = styled.div`
     display: flex;
     overflow-x: auto;
 
-    background-color: grey;
+    /* background-color: red; */
 
     ::-webkit-scrollbar {
-        background-color: red;
+        width: 15px;
+        border-radius: 10px;
+        background: rgba(9,30,66,.08);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: rgba(9,30,66,.08);
     }
 `
 

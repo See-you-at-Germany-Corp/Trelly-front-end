@@ -181,7 +181,6 @@ const List = (props) => {
         })
     }
     const createNewCard = () => {
-        console.log(newCardState);
         if (newCardState.name !== '') {
             let formData = new FormData()
             formData.append('list', newCardState.listOrder ? boardState.lists[newCardState.listOrder - 1].id : list.id)

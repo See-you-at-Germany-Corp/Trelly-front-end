@@ -116,8 +116,8 @@ const PopoverContents = (props) => {
                         props.members.filter((item) =>
                             item.full_name.toLocaleLowerCase().includes(cardMembers.search.toLocaleLowerCase()) === true
                         ).map((item) => (
-                            <a
-                                href='#'
+                            <Link
+                                to='#'
                                 className='member-item-wrapper'
                                 key={item.full_name}
                                 onClick={e => props.newCard.setNewCardMembers(e, item)}
@@ -125,7 +125,7 @@ const PopoverContents = (props) => {
                                 <Avatar className='member-avatar'>{item.picture === '' ? item.init : ''}</Avatar>
                                 <div className='member-name' style={{ maxWidth: cardMembers.members.indexOf(item.id) !== -1 ? 180 : 220 }}>{item.full_name}</div>
                                 {cardMembers.members.indexOf(item.id) !== -1 && <div className='member-check'></div>}
-                            </a>
+                            </Link>
                         ))
                     }
                 </>
