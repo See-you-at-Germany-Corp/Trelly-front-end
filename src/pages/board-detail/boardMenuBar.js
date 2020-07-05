@@ -21,7 +21,8 @@ import { changeRecentlyName } from '../../redux/actions/recentlyBoard';
 
 const BoardMenuBar = (props) => {
 
-    /// wait to use redux.
+    /// wait to use redux. 
+    // let myId = props.dataProfile.id;
     let myId = 1;  /// mockup myId. 
 
     const starredBoardList = props.starredBoardList;
@@ -367,6 +368,7 @@ const BoardMenuBar = (props) => {
 
 const mapStateToProps = (state) => ({
     starredBoardList: state.starredBoardList,
+    dataProfile: state.dataProfile
 })
 
 const BoardMenuBarWithConnect = connect(mapStateToProps)(BoardMenuBar);
