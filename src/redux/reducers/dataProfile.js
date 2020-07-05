@@ -1,11 +1,3 @@
-import axios from 'axios';
-import {useAuthen} from '../../api/index';
-// const authenHeader = useAuthen();
-//   axios.get("https://mighty-lowlands-07946.herokuapp.com/profile/my_profile/",authenHeader).then((res) => {
-//     console.log(res.data);
-    
-
-
 const initialState = {
     fullname: "TestFullName",
     init: "TF",
