@@ -1,4 +1,3 @@
-import axios from 'axios';
 import cookie from 'react-cookies'
 
 const initState = { 
@@ -13,7 +12,6 @@ export default (state = initState, action) => {
         case 'LOG_OUT':
             // del token in cookie or localhost
             cookie.remove('authen-token', { path: '/' })
-
             return {loggedIn: false}
         default:
             return state

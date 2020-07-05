@@ -28,7 +28,6 @@ function Login(props) {
 
     const login = () => {
         // Login then redirect to Home
-
         let token = ''
         Axios.post(`${URL}/login/token/`, loginState)
             .then(res => {
@@ -36,8 +35,6 @@ function Login(props) {
                 cookie.save('authen-token', token, { path: '/' });
                 props.dispatch({ type: 'LOG_IN'})
             });
-
-        // console.log(loginState.username, loginState.password);
     }
 
     const smallClient = windowSize.height < 350
