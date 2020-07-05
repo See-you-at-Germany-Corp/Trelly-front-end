@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, createContext, useReducer, useConte
 import {motion } from "framer-motion";
 import styled, { css } from 'styled-components';
 
-
+import axios from 'axios';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import { Divider, Avatar } from '@material-ui/core';
@@ -18,6 +18,9 @@ import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/st
 import { useLocation } from 'react-router-dom';
 import { URL, useAuthen } from '../../api/index.js';
 import moveStarObject from '../../function/moveStarObject';
+import { starToggle } from '../../api/board.js';
+// import { URL, useAuthen } from '../../api/index.js';
+
 
 
 import { createOn } from '../../redux/actions/createNewBoard';
@@ -355,7 +358,7 @@ const LogoOnly =({variant,size})=>{
     );
 }
 
-const Navbars = ({personalBoardList,starredBoardList,on}) => {
+const Navbars = ({personalBoardList,starredBoardList,on,profile}) => {
     const [isType, setType] = useState(false);
     const [search,setSearch] = useState('');
     const inputRef = useRef();
@@ -547,11 +550,11 @@ const Navbars = ({personalBoardList,starredBoardList,on}) => {
                             <motion.button style={{ outline: "none", border: "none", backgroundColor: "transparent", margin: "auto", padding: "0px" }}
                                 onClick={() => { setOpen({type:'user'}); setType('user') }}
                             >
-                                <Avatar style={{ width: "32px", height: "32px", margin: "auto" }} />
+                                <Avatar src={profile.picture} style={{ width: "32px", height: "32px", margin: "auto",fontSize:"16px" }}>{profile.initials}</Avatar>
                             </motion.button>
                         </Row>
                     }
-                    board={<UserCard />}
+                    board={<UserCard name={profile.fullName}/>}
                 />
             </div>
             <div style={{maxWidth:"100px",top:"0",margin:"0px",position:"absolute",left:"50%",transform:"translateX(-50%)",alignItems:"center"}}>
@@ -692,15 +695,15 @@ const Notification = () => {
     );
 }
 
-const UserCard = () => {
-    const UserMenuLink =({children})=>{
+const UserCards = ({dispatch,name}) => {
+    const UserMenuLink =({children,onClick})=>{
         return (
-            <Linkable margin="0px" padding="10px 10px 10px 20px" children={children} />
+            <Linkable margin="0px" onClick={onClick} padding="10px 10px 10px 20px" children={children} />
         );
     }
     return (
         <DropDownCard
-            title="Gintoki Sakata"
+            title={name}
             children={
                 <div>
                     <Column padding="0px">
@@ -749,6 +752,7 @@ const UserCard = () => {
                         />
                         <Divider variant="middle" light />
                         <UserMenuLink 
+                            onClick={()=>dispatch({type:"LOG_OUT"})}
                             children={
                                 <div>
                                     Log out
@@ -1092,17 +1096,19 @@ const BoardPreviewTitle = styled(motion.div)`
 const BoardPreviewBg = styled(motion.div)`
     top:0px;
     position:absolute;
-    background-image: url(${require('./test.jpg')});
+    // background-image: url(${require('./test.jpg')});
     background-position: center top;
     filter: blur(4px) opacity(50%);
     // -webkit-filter: blur(4px) greyscale(100%);
     background-size: cover;
+    background-color: ${props=>props.backgroundColor};
     height:100%;
     width:80%;
 `;
 const Imgpreview = styled(motion.img)`
     width:20%;
     filter: opacity(90%);
+    background-color:${props=>props.backgroundColor};
 `;
 
 const BoardPreviewBgHover = {
@@ -1110,7 +1116,7 @@ const BoardPreviewBgHover = {
         filter: "blur(4px) opacity(30%)"
     },
     hover:{
-        filter: "blur(1px) opacity(35%)",
+        filter: "blur(1px) opacity(50%)",
         transition:{
             duration: 0.3
         }
@@ -1143,7 +1149,11 @@ const FlyUpDiv = styled(motion.div)`
 const BoardPreview =({board,star,dispatch,index,open})=>{
     // eslint-disable-next-line
     const [openP,setOpenP] = useContext(OpenContext);
+    const authenHeader = useAuthen();
     const StarButton =({board,dispatch,star})=>{
+    function starApi (boardId) { 
+        axios.post(`${URL}${starToggle(boardId)}`, {}, authenHeader)  
+    }
         return (
             <motion.div 
             variants={
@@ -1170,6 +1180,7 @@ const BoardPreview =({board,star,dispatch,index,open})=>{
             }
             style={{position:"absolute",left:"250px",marginTop:"-33px" }}>
             <motion.div whileHover={{scale:1.3}} whileTap={{scale:0.8}} onClick={()=>{
+                    starApi(board.id)
                         if(!star){
                             dispatch(starBoard(board.id,board))
                         }
@@ -1209,20 +1220,22 @@ const BoardPreview =({board,star,dispatch,index,open})=>{
                 <motion.div 
                     whileHover="hover"
                     initial="init" 
-                    style={{position:"relative",overflow:"hidden",border:"1px solid rgba(0, 0, 0, 0.1)",borderRadius:"5px" }}
+                    style={{position:"relative",overflow:"hidden",border:"1px solid rgba(0, 0, 0, 0.7)",borderRadius:"5px" }}
                     whileTap={{boxShadow:"0px 0px 20px -10px"}}
                     >   
                     <Linkable
                         padding="0px"
                         onClick={()=>setOpenP({type:''})}
-                        link={board.href}
+                        // const boardHref = `/${board.id}/${board.name}`;
+                        link={`/${board.id}/${board.name}`}
                         children={
                             <Row maxHeight="40px" minHeight="40px" overflow="hidden" >
                                 
-                                <Imgpreview src={require("./test.jpg")} variants={ImgPreviewHover}/>
+                                <Imgpreview backgroundColor={board.color_code} variants={ImgPreviewHover}/>
+                                {/* {console.log(board)} */}
                                 {/* <img src={require("./test.jpg")}/> */}
                                 <div style={{display:"block" ,width:"80%",alignSelf:"center"}}>
-                                <BoardPreviewBg variants={BoardPreviewBgHover}></BoardPreviewBg>
+                                <BoardPreviewBg backgroundColor={board.color_code} variants={BoardPreviewBgHover}></BoardPreviewBg>
                                 <BoardPreviewTitle>
                                     <Column minWidth="60%" maxWidth="60%">
                                         {board.name}
@@ -1403,6 +1416,8 @@ const mapStateToProps =(state)=> ({
     createCurrent: state.createNewBoard.ref,
     starredBoardList: state.starredBoardList,
     on:state.createNewBoard,
+    loggedIn:state.loggedIn,
+    profile:state.dataProfile
 })
 
 const ConnectedHidable = connect(mapStateToProps)(Hidable);
@@ -1410,4 +1425,5 @@ const Create = connect(mapStateToProps)(Creates);
 const Board = connect(mapStateToProps)(Boards);
 const SearchDropDown = connect(mapStateToProps)(SearchDropDowns);
 const Navbar = connect(mapStateToProps)(Navbars);
+const UserCard = connect(mapStateToProps)(UserCards);
 export default Navbar;
