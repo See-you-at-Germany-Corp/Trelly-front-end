@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar';
+import Popover from '@material-ui/core/Popover';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { keyframes } from 'styled-components';
@@ -12,6 +14,12 @@ import { BoardContext } from '../../context/board-context/board-context';
 import { changePicture } from '../../redux/actions/currentBoard.js';
 import { changePicturePersonal } from '../../redux/actions/personalBoardList.js';
 import { changePictureStarred } from '../../redux/actions/starredBoardList.js';
+
+import CreateLabel from './createLabel.js'; 
+
+import { URL, useAuthen } from '../../api';
+import { updateMyBoard } from '../../api/board.js';
+import { changePicturRecently } from '../../redux/actions/recentlyBoard.js';
 
 const mainMenuData = [
     {
@@ -105,12 +113,14 @@ const RightDrawer = (props) => {
                     <i className="fas fa-chevron-left" onMouseDown={() => backHandler()}></i>
                 </BackBox>
             }
+
             <MainBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=1 */}
             <AboutBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=2 */}
             <ChangeBackgroundBox id={id} setId={(id) => idChangeHandler(id)} /> {/* id=3 */}
             <ColorPickerBox id={id} setId={(id) => idChangeHandler(id)} dispatch={props.dispatch} /> {/* id=3.1 */}
             <MoreBox id={id} setId={(id) => idChangeHandler(id)} />
             <LabelsBox id={id} setId={(id) => idChangeHandler(id)} />
+
         </DrawerBox>
     );
 }
@@ -161,15 +171,12 @@ const AboutBox = (props) => {
     else if (props.id !== state.id && state.open === true) {
         setState({ ...state, open: false });
     }
+ 
+    const { boardState } = React.useContext(BoardContext);
 
-    const mockupFounder = {
-        id: 2,
-        full_name: 'PANSA BOONTHAVEEKHUNSAWATD',
-        init: 'PB',
-        username: 'pansaboonthaveekhunsawatd',
-        bio: '',
-        picture: ''
-    }
+    const mockupFounder = boardState.members[
+        boardState.members.findIndex(member => member.id === boardState.admin)
+    ];
 
     const mockupDes = 'Trelly copy from Trello.';
 
@@ -321,12 +328,23 @@ const ColorPickerBox = (props) => {
     }
 
     const { boardState, boardDispatch } = React.useContext(BoardContext);
+    const authenHeader = useAuthen();
 
     function changePictureHandler(color_code) {
         if (boardState.color_code !== color_code) {
-            boardDispatch(changePicture(color_code)); 
+            /// set current board color_code. 
+            boardDispatch(changePicture(color_code));
+            /// set personal board color_code.
             props.dispatch(changePicturePersonal(boardState.id, color_code));
+            /// set starred board color_code.
             props.dispatch(changePictureStarred(boardState.id, color_code));
+            /// set recently board color_code.
+            props.dispatch(changePicturRecently(boardState.id, color_code));
+            /// post to back-end.
+            axios.patch(`${URL}${updateMyBoard(boardState.id)}`, {
+                name: boardState.name,
+                color_code
+            }, authenHeader);
         }
     }
 
@@ -413,9 +431,35 @@ const LabelsBox = (props) => {
 
     const [searchText, setSeacrh] = React.useState('');
 
-    function searchOnChange (e) {
+    function searchOnChange(e) {
         setSeacrh(e.target.value);
     }
+
+    const usePopover = () => {
+        const [anchorEl, setAnchorEl] = React.useState(null);
+
+        const handleClick = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+
+        const handleClose = () => {
+            setAnchorEl(null);
+        };
+
+        const open = Boolean(anchorEl);
+        const id = open ? 'simple-popover' : undefined;
+
+        return [anchorEl, setAnchorEl, handleClick, handleClose, open, id];
+    }
+
+    const [anchorEl, setAnchorEl, handleClick, handleClose, open, id] = usePopover(); 
+
+    const [mode, setMode] = React.useState(1);
+    const [currentLabelData, setCurrent] = React.useState({
+        color_id: null,
+        name: null,
+        label_id: null
+    });
 
     return (
         <>
@@ -425,9 +469,8 @@ const LabelsBox = (props) => {
                     <div className='menu-bar-name-box'><p>{state.name}</p></div>
 
                     <SlideDiv>
-                        <input className='search-label' type='search' placeholder='Search labels...' onChange={(e) => searchOnChange(e)}></input>
-
                         <LabelBigBox>
+                        <input className='search-label' type='search' placeholder='Search labels...' onChange={(e) => searchOnChange(e)}></input>
                             <div className='label-name'>
                                 <SmallDefaultText>LABELS</SmallDefaultText>
                             </div>
@@ -435,40 +478,71 @@ const LabelsBox = (props) => {
                             <div className='label-lists'>
                                 {
                                     labelSorted
-                                        .filter(bg => 
-                                            searchText !== '' ? 
-                                            bg.name !== null && bg.name.toLowerCase().includes(searchText.toLowerCase()) : true
+                                        .filter(bg =>
+                                            searchText !== '' ?
+                                                bg.name !== null && bg.name.toLowerCase().includes(searchText.toLowerCase()) : true
                                         )
-                                        .map(bg => (
-                                            <div className='label-box'>
-                                                <div className='label-item' 
+                                        .map((bg, index) => (
+                                            <div key={index} className='label-box'>
+                                                <div 
+                                                    className='label-item'
                                                     style={{ background: `${labelData[bg.color_id - 1].picture}` }}
+                                                    onClick={(e) => {
+                                                        handleClick(e);
+                                                        setCurrent({
+                                                            color_id: bg.color_id,
+                                                            name: bg.name,
+                                                            label_id: bg.id
+                                                        });
+                                                        setMode(2);
+                                                    }}
                                                 >
                                                     <p><b>{bg.name}</b></p>
                                                 </div>
                                                 <i className="far fa-edit"></i>
                                             </div>
                                         ))
-                                } 
-                            </div>
-                            <div className='label-lists'>
-                                {
-                                    labelSorted.map(bg => (
-                                        <div className='label-box'>
-                                            <div className='label-item' 
-                                                style={{ background: `${labelData[bg.color_id - 1].picture}` }}
-                                            >
-                                                <p><b>{bg.name}</b></p>
-                                            </div>
-                                            <i className="far fa-edit"></i>
-                                        </div>
-                                    ))
-                                } 
-                            </div>
+                                }
+                            </div> 
 
                             <div className='create-box'>
-                                <button>Create a new label</button>
+                                <button 
+                                    onClick={(e) => {
+                                        handleClick(e);
+                                        setCurrent(null);
+                                        setMode(1);
+                                    }}
+                                >
+                                    Create a new label
+                                </button>
                             </div>
+
+                            {/* click create label */}
+                            <CreateLabelPop
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <div className='create-label-box'>
+                                    <div className='create-name'>
+                                        <SmallDefaultText>{mode === 1 ? 'Create Label' : 'Change Label'}</SmallDefaultText>
+                                    </div>
+                                    <CreateLabel 
+                                        mode={mode} 
+                                        currentLabelData={currentLabelData} 
+                                        handleClose={() => handleClose()} 
+                                    />
+                                </div>
+                            </CreateLabelPop>
 
                         </LabelBigBox>
                     </SlideDiv>
@@ -495,10 +569,9 @@ const DrawerBox = styled.div`
     transition: all 0.25s ease; 
 
     position: absolute;
-    padding: 14px;
-    margin-top: 5.5vh;
+    padding: 14px; 
     right: 0;
-    top: 0;
+    top: calc(100vh - (100vh - 40px));
     justify-self: flex-end;
 
     .fa-times {
@@ -577,10 +650,10 @@ const SlideDiv = styled.div`
     animation: ${slide} 0.15s linear;
 
     .search-label {
-        margin-top: 15px;
-        margin-bottom: 8px;
+        margin-top: 15px; 
         padding: 4px;
-        width: 100%;
+        width: 97%;
+        height: 40px;
         border-radius: 3px;
         border: 2px lightgray solid;
         outline: none;
@@ -765,7 +838,7 @@ const LabelBigBox = styled.div`
     }
 
     .label-name {
-        width: 100%;
+        width: 100%; 
         margin-top: 5px;
         margin-bottom: 5px;
     }
@@ -800,11 +873,11 @@ const LabelBigBox = styled.div`
         margin-top: 3px;
         transition: width 0.25s;
     }
-
-    
+ 
     .label-item > p { 
         color: white;
-        margin: 4px 0 0 15px;
+        line-height: 0px;
+        margin-left: 15px;
         padding: 0; 
     }
 
@@ -819,7 +892,7 @@ const LabelBigBox = styled.div`
         margin-top: 10px;
 
         button { 
-            width: 100%;
+            width: 97%;
             padding: 6px;
             background-color: rgb(230, 230, 230);
             border: none;
@@ -836,6 +909,21 @@ const LabelBigBox = styled.div`
                 color: deepskyblue;
             }
         } 
+    } 
+`;
+
+const CreateLabelPop = styled(Popover)` 
+    .create-label-box { 
+        padding: 10px;
+        width: 280px;
+        height: 250px;  
+
+        .create-name {
+            text-align: center;
+            margin-top: 2px;
+            padding-bottom: 11px;
+            border-bottom: 0.5px solid lightgray;
+        }
     }
 `;
 

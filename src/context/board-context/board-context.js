@@ -74,6 +74,33 @@ const boardReducer = (state, action) => {
                 color_code: action.color_code
             };
 
+        case ('ADD_LABEL_TO_BOARD'):
+            const newState3 = {...state};
+            newState3.labels.push(action.labelData);
+
+            return newState3;
+
+        case ('UPDATE_LABEL_IN_BOARD'):
+            const newState5 = {...state};
+            const updateIndex = newState5.labels.findIndex(label => label.id === action.labelId);
+
+            if (updateIndex >= 0) {
+                newState5.labels[updateIndex].name = action.newName;
+                newState5.labels[updateIndex].color_id = action.newColor_id;
+            }
+ 
+            return newState5;
+
+        case ('DEL_LABEL_IN_BOARD'):
+            const newState4 = {...state};
+            const delIndex = newState4.labels.findIndex(label => label.id === action.labelId);
+
+            if (delIndex >= 0) {
+                newState4.labels.splice(delIndex, 1);
+            } 
+
+            return newState4;
+
         case ('CHANGE_CURRENT_BOARD'): 
             return action.newState;
  
