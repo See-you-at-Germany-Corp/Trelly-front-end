@@ -1,15 +1,23 @@
 import React from 'react';
 
 import AddMemberPopup from './addMemberPopup.js';
+import AddLabelPopup from './addLabelPopup.js';
 import { BoardContext } from '../../context/board-context/board-context.js';
 
 import { CardMenuDiv } from './styled.js';
 import { DefaultText, MenuButton } from './styled.js';
 
 const CardMenu = props => { 
+
+    const cardDetail = props.cardDetail;
+
+    React.useEffect(() => {
+
+    }, [cardDetail]);
+
     return (
         <CardMenuDiv>
-            <AddtoCardMenu {...props} />
+            <AddtoCardMenu cardDetail={cardDetail} { ...props } />
             <ActionsMenu />
         </CardMenuDiv>
     );
@@ -48,6 +56,8 @@ const AddtoCardMenu = props => {
     const cardDetail = props.cardDetail;
     const { boardState } = React.useContext(BoardContext);
 
+    /* ------------- member popup ------------- */
+
     const [memberPopup, setMemberPopup] = React.useState({
         open: false,
         anchor: null
@@ -69,10 +79,35 @@ const AddtoCardMenu = props => {
         });
     }
 
+    /* ------------- label popup ------------- */
+
+    const [labelPopup, setLabelPopup] = React.useState({
+        open: false,
+        anchor: null
+    });
+
+    function onLabelClick(e) {
+        setLabelPopup({
+            ...labelPopup,
+            open: true,
+            anchor: e.currentTarget
+        });
+    }
+
+    function onLabelClose() {
+        setLabelPopup({
+            ...labelPopup,
+            open: false,
+            anchor: null
+        });
+    }
+
     function menuFxSwitch(e, menuId) {
         switch (menuId) {
             case 1:
                 return onMemberClick(e, menuId)
+            case 2:
+                return onLabelClick(e, menuId)
             default:
                 return () => {};
         }
@@ -111,6 +146,16 @@ const AddtoCardMenu = props => {
                 removeMember={(account_id) => props.removeMember(account_id)}
             >
             </AddMemberPopup>
+
+            <AddLabelPopup
+                isOpen={labelPopup.open}
+                anchor={labelPopup.anchor}
+                onClose={() => onLabelClose()} 
+                cardDetail={cardDetail} 
+                addLabel={(label_id) => props.addLabel(label_id)}
+                removeLabel={(label_id) => props.removeLabel(label_id)}
+            >
+            </AddLabelPopup>
         </div>
     );
 }

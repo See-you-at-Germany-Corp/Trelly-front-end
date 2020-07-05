@@ -126,7 +126,8 @@ const AddMemberPopup = props => {
                         <DefaultText fontSize={14} fontWeight={600}>BOARD MEMBERS</DefaultText>
                     </div>
                     {
-                        memberData.filter(member =>  
+                        memberData
+                        .filter(member =>  
                             searchStat.value !== '' ?
                                 member.full_name.toLowerCase().includes(searchStat.value.toLowerCase()) : true
                         )

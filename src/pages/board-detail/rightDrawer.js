@@ -875,9 +875,12 @@ const LabelBigBox = styled.div`
  
     .label-item > p { 
         color: white;
+        max-width: 230px;
         line-height: 0px;
         margin-left: 15px;
         padding: 0; 
+ 
+        word-wrap: break-word;  
     }
 
     .label-item:hover {

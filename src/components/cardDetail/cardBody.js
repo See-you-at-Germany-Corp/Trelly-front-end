@@ -3,6 +3,9 @@ import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar'; 
 
 import AddMemberPopup from './addMemberPopup.js';
+import AddLabelPopup from './addLabelPopup.js';
+
+import labelData from '../../pages/board-detail/labelData.js';
 
 import { CardBodyDiv } from './styled.js';
 import { DefaultText, SaveButton, ShowButton } from './styled.js';
@@ -105,6 +108,15 @@ const CardBody = props => {
                     getMemberData={(memberId) => getMemberData(memberId)}
                     addMember={(account_id) => props.addMember(account_id)}
                     removeMember={(account_id) => props.removeMember(account_id)}
+                />
+            }
+
+            {
+                (cardDetail !== null && cardDetail.labels.length > 0) &&
+                <LabelBox
+                    cardDetail={cardDetail}  
+                    addLabel={(label_id) => props.addLabel(label_id)}
+                    removeLabel={(label_id) => props.removeLabel(label_id)}
                 />
             }
 
@@ -263,6 +275,92 @@ const MemberBox = props => {
                 removeMember={(account_id) => props.removeMember(account_id)}
             >
             </AddMemberPopup>
+        </div>
+    );
+}
+
+const LabelBox = props => {
+
+    const cardDetail = props.cardDetail;
+    const { boardState } = React.useContext(BoardContext);
+
+    /* --------- popup state --------- */
+
+    const [labelPopup, setLabelPopup] = React.useState({
+        open: false,
+        anchor: null
+    });
+
+    function onLabelClick(e) {
+        setLabelPopup({
+            ...labelPopup,
+            open: true,
+            anchor: e.currentTarget
+        });
+    }
+
+    function onLabelClose() {
+        setLabelPopup({
+            ...labelPopup,
+            open: false,
+            anchor: null
+        });
+    }
+
+    function findLabel(labelId) {
+        const index = boardState.labels.findIndex(label => label.id === labelId); 
+        
+        if (index >= 0)
+            return labelData[boardState.labels[index].color_id - 1]; 
+    }
+
+    function findLabelName(labelId) {
+        const index = boardState.labels.findIndex(label => label.id === labelId); 
+
+        if (index >= 0)
+            return boardState.labels[index].name;
+    }
+
+    return (
+        <div className='label-big-box'>
+            <div className='label-name-box'>
+                <DefaultText fontSize={13}>LABELS</DefaultText>
+            </div>
+
+            <div className='label-list'>
+                {
+                    cardDetail.labels !== [] &&
+                    cardDetail.labels
+                    .sort(function (a, b) { return findLabel(a.label_id).color_id - findLabel(b.label_id).color_id })
+                    .map((label, index) => (
+                        <div 
+                            key={index} 
+                            className='label-item' 
+                            style={{ background: `${findLabel(label.label_id).picture}` }}
+                            onMouseDown={onLabelClick}
+                        >
+                            <p>{findLabelName(label.label_id)}</p>
+                        </div>
+                    ))
+                } 
+
+                <div
+                    className='label-add-box'
+                    onClick={onLabelClick}
+                >
+                    <i className="fas fa-plus"></i>
+                </div>
+            </div>
+
+            <AddLabelPopup
+                isOpen={labelPopup.open}
+                anchor={labelPopup.anchor}
+                onClose={() => onLabelClose()}
+                cardDetail={cardDetail}
+                addLabel={(label_id) => props.addLabel(label_id)}
+                removeLabel={(label_id) => props.removeLabel(label_id)}
+            >
+            </AddLabelPopup>
         </div>
     );
 }

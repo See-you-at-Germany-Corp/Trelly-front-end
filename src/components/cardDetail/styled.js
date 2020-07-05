@@ -157,10 +157,101 @@ export const CardBodyDiv = styled.div`
 
             .member-add-box { 
                 border-radius: 50%;
+                
+                :active {
+                    background-color: rgba(100, 220, 220, 0.2); 
+                    color: deepskyblue;
+                    filter: brightness(100%);
+                }
 
                 i {
                     margin-top: 25%;
                     margin-left: 9px;
+                }
+            }
+        }
+    }
+
+    .label-big-box {
+        display: flex;
+        flex-flow: column wrap;
+
+        margin-bottom: 20px;
+
+        .label-name-box, .label-list {
+            margin-left: 40px;
+        }
+
+        .label-list {
+            display: flex;
+            flex-flow: row wrap;
+
+            padding-top: 5px; 
+ 
+            .label-item {
+                min-width: 40px;
+                height: 34px;
+
+                border-radius: 3px;
+
+                margin-right: 4px; 
+                margin-bottom: 4px;
+
+                text-align: center;
+
+                overflow: auto;
+                user-select: none;
+
+                :hover {
+                    cursor: pointer;
+                    filter: brightness(95%);
+                }
+
+                :active { 
+                    filter: brightness(90%);
+                }
+
+                p {
+                    color: white;
+
+                    font-weight: 600; 
+
+                    padding: 0 8px 0 8px;
+                    margin: 5px 0 0 0;
+
+                    word-break: break-all;
+                    word-wrap: break-word; 
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1; /* number of lines to show */
+                    -webkit-box-orient: vertical;
+                }
+            }
+
+            .label-add-box { 
+                background: lightgray;
+                width: 40px;
+                height: 34px;
+
+                color: #172b4d;
+                 
+                border-radius: 3px;
+
+                :hover {
+                    cursor: pointer;
+                    filter: brightness(95%);
+                }
+
+                :active {
+                    background-color: rgba(100, 220, 220, 0.2); 
+                    color: deepskyblue;
+                    filter: brightness(100%);
+                }
+
+                i {
+                    margin-top: 25%;
+                    margin-left: 13px;
                 }
             }
         }

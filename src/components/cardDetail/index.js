@@ -8,7 +8,7 @@ import CardMenu from './cardMenu.js';
 import { CardPopUp, CardBigBox } from './styled.js';
 
 import { URL, useAuthen } from '../../api';
-import { getCardDetail, toggleMemberInCard } from '../../api/card.js';
+import { getCardDetail, toggleMemberInCard, toggleLabelInCard } from '../../api/card.js';
 
 const CardDetail = props => {
 
@@ -17,6 +17,8 @@ const CardDetail = props => {
     const [cardDetail, setCardDetail] = React.useState(null); 
     const authenHeader = useAuthen();
  
+    /* ------------- member state ------------- */
+
     function memberHandler(user_id) {
         setCardDetail({ ...cardDetail });
         setIsLoad(false);
@@ -34,24 +36,38 @@ const CardDetail = props => {
         memberHandler(user_id);
     }
 
+    /* ------------- label state ------------- */
+
+    function labelHandler(label_id) {
+        setCardDetail({ ...cardDetail });
+        setIsLoad(false);
+
+        let form = new FormData();
+        form.append('label', label_id);
+        axios.post(`${URL}${toggleLabelInCard(cardData.id)}`, form, authenHeader)
+    }
+
+    function addLabel(label_id) {
+        labelHandler(label_id);
+    }
+
+    function removeLabel(label_id) {
+        labelHandler(label_id);
+    }
+
     /// get card detail from backend.
     React.useEffect(() => {
-        if (cardData !== null) {
+        if (cardData !== null) { 
             axios.get(`${URL}${getCardDetail(cardData.id)}`, authenHeader)
-            .then(res => {
-                if (cardDetail !== null) 
-                    setCardDetail({
-                        ...cardDetail,
-                        activities: res.data.activities
-                    });
-                else 
+            .then(res => { 
+                if(isLoad)
                     setCardDetail(res.data);
             })
             setIsLoad(true);
         }
         // eslint-disable-next-line
     }, [authenHeader, cardData, isLoad]);
-
+ 
     return (
         <div>
             <CardPopUp 
@@ -69,12 +85,16 @@ const CardDetail = props => {
                             cardDetail={cardDetail} 
                             addMember={(account_id) => addMember(account_id)}
                             removeMember={(account_id) => removeMember(account_id)}
+                            addLabel={(label_id) => addLabel(label_id)}
+                            removeLabel={(label_id) => removeLabel(label_id)}
                         />
 
                         <CardMenu 
                             cardDetail={cardDetail} 
                             addMember={(account_id) => addMember(account_id)}
                             removeMember={(account_id) => removeMember(account_id)}
+                            addLabel={(label_id) => addLabel(label_id)}
+                            removeLabel={(label_id) => removeLabel(label_id)}
                         />
                     </div>
                 </CardBigBox>
