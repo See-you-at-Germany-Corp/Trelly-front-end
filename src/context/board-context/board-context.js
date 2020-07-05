@@ -101,10 +101,10 @@ const boardReducer = (state, action) => {
         case ('ADD_MEMBER'): {
             const newState = { ...state };
             newState.members.push(action.member);
-        }
             /// post to backend.
 
             return newState;
+        }
 
         case ('REMOVE_MEMBER'):
             const newState = { ...state };
