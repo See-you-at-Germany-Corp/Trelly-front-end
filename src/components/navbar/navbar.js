@@ -14,14 +14,12 @@ import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import QueryBuilderRoundedIcon from '@material-ui/icons/QueryBuilderRounded';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
-import {starBoard, unStarBoard, overWriteStarBoard} from '../../redux/actions/starredBoardList';
+import {starBoard, unStarBoard} from '../../redux/actions/starredBoardList';
 import { useLocation } from 'react-router-dom';
 import { URL, useAuthen } from '../../api/index.js';
 import moveStarObject from '../../function/moveStarObject';
 import { starToggle } from '../../api/board.js';
 // import { URL, useAuthen } from '../../api/index.js';
-
-
 
 import { createOn } from '../../redux/actions/createNewBoard';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -159,7 +157,7 @@ const Row = styled(motion.div)`
     max-height:${props=>props.maxHeight}
     margin: ${props => props.margin};
     padding: ${props => props.padding};
-    // z-index:11;
+    /* z-index:11; */
     background-color:${props=>props.backgroundColor? props.backgroundColor : 'transparent'};
 `;
 
@@ -960,7 +958,6 @@ const Hidable =({personalBoardList,starredBoardList,type,dispatch,open,setOpen})
     const [test,setTest] = useState(starredBoardList)
     const authenHeader = useAuthen();
     const onDragEnd =(result)=> {
-        let temp = starredBoardList;
         // dropped outside the list
         if (!result.destination) {
           return;
@@ -1355,17 +1352,6 @@ const MyDropdown = ({margin,onChange,setOpen,board,isOpen,children,mode,isType,m
         </Column>
     );
 };
-
-
-//reorder list
-const reorder = (list, startIndex, endIndex) => {
-    
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);  
-    return result;
-  };
-
 
 const initState = {
     board:false,
