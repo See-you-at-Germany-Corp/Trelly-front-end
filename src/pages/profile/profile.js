@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
+import { URL } from '../../api/index.js';
 
 const styles = {
   form: {
@@ -38,62 +39,20 @@ const styles = {
 class profile extends Component {
   constructor() {
     super();
-    this.state = {
-      fullName: "",
-      initials: "",
-      userName: "",
-      bio: "",
-      picture: "",
-      pictureName: "",
-      imagePreviewUrl: "",
-    };
-  }
-
-  //Get user data
-  componentDidMount() {
-    const authenHeader = this.props.authenHeader;
-
-    if (authenHeader !== null) {
-      axios
-        .get(
-          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
-          authenHeader
-        )
-        .then((res) => {
-          const member = res.data;
-          for (var x in member) {
-            if (member[x] === "null") {
-              member[x] = "";
-            }
-          }
-          this.setState({
-            id: member.id,
-            fullName: member.fullname,
-            initials: member.init,
-            userName: member.username,
-            bio: member.bio,
-            picture: member.picture,
-          });
-        });
-    }
+    this.state = {};
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     const authenHeader = this.props.authenHeader;
 
-    const userData = {
-      new_fullname: this.state.fullName,
-      init: this.state.initials,
-      bio: this.state.bio,
-      picture: this.state.picture,
-    };
     const formData = new FormData();
-    formData.append("new_fullname", this.state.fullName);
-    formData.append("init", this.state.initials);
+    formData.append("new_fullname", this.state.fullname);
+    formData.append("init", this.state.init);
     formData.append("bio", this.state.bio);
-    formData.append("picture", this.state.picture);
-    this.props.SUBMIT(userData);
+    if (typeof (this.state.picture) !== typeof '')
+      formData.append("picture", this.state.picture);
+    this.props.SUBMIT(this.state); 
 
     //Rest post
     if (authenHeader !== null) {
@@ -148,21 +107,33 @@ class profile extends Component {
         />
       </div>
     ) : (
-      <div>
-        <span
-          className="namePicture"
-          style={{
-            fontSize: "48px",
-            height: "100px",
-            width: "100px",
-            lineHeight: "100px",
-          }}
-        >
-          {this.state.initials}
-        </span>
-      </div>
-    );
+        <div>
+          <span
+            className="namePicture"
+            style={{
+              fontSize: "48px",
+              height: "100px",
+              width: "100px",
+              lineHeight: "100px",
+            }}
+          >
+            {this.state.initials}
+          </span>
+        </div>
+      );
   };
+
+  componentDidMount() {
+    const authenHeader = this.props.authenHeader;
+    axios.get(`${URL}/profile/my_profile/`, authenHeader)
+      .then((res) => {
+        const state = res.data;
+        this.props.SUBMIT(state);
+        this.setState({ ...state });
+      });
+    this.setState({ ...this.props.DataProfile });
+  }
+
   render() {
     const { classes } = this.props;
     let { imagePreviewUrl } = this.state;
@@ -225,31 +196,31 @@ class profile extends Component {
             <form noValidate onSubmit={this.handleSubmit}>
               <TextField
                 id="full-name"
-                name="fullName"
+                name="fullname"
                 type="text"
                 label="full-name"
                 className={classes.TextField}
-                value={this.state.fullName}
+                value={this.state.fullname}
                 onChange={this.handleChange}
                 fullWidth
               />
               <TextField
                 id="initials"
-                name="initials"
+                name="init"
                 type="text"
                 label="initials"
                 className={classes.TextField}
-                value={this.state.initials}
+                value={this.state.init}
                 onChange={this.handleChange}
                 fullWidth
               />
               <TextField
                 id="username"
-                name="userName"
+                name="username"
                 type="text"
                 label="username"
                 className={classes.TextField}
-                value={this.state.userName}
+                value={this.state.username}
                 onChange={this.handleChange}
                 fullWidth
               />

@@ -18,6 +18,7 @@ export default function Card(props) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
+                    onClick={props.cardClickHandler}
                 >
                     {card.name}
                 </StyledCard>

@@ -7,6 +7,7 @@ import './style.css';
 
 import BoardMenuBar from './boardMenuBar.js';
 import ListGroup from '../../components/list-group/index'
+ 
 import { BoardContext } from '../../context/board-context/board-context'
 import { changeCurrentBoard } from '../../redux/actions/currentBoard';
 
@@ -45,7 +46,7 @@ const BoardDetail = (props) => {
 
     return (
         <div className='board-detail' style={{ background: `${boardState.color_code}` }}>
-            <BoardMenuBar {...props} />
+            <BoardMenuBar {...props} /> 
             <ListGroup />
         </div>
     );
