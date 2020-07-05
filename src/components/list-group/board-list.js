@@ -3,11 +3,20 @@ import React from 'react'
 import Card from './board-card'
 import * as ListStyle from './list-styled'
 import PopoverContents from './popover-content'
+import CardDetail from '../../components/cardDetail';
 import { Droppable, Draggable } from 'react-beautiful-dnd'
 import defaultLabel from '../../pages/board-detail/labelData'
 import { BoardContext } from '../../context/board-context/board-context'
 import { TextareaAutosize, Button, Popover, Divider, Avatar } from '@material-ui/core'
-import CardDetail from '../../components/cardDetail';
+
+import Axios from 'axios'
+import { URL } from '../../api/index'
+import cookie from 'react-cookies'
+const headers = {
+    headers: {
+        Authorization: `Bearer ${cookie.load('authen-token')}`
+    }
+}
 
 const List = (props) => {
     const { boardState, boardDispatch } = React.useContext(BoardContext)
@@ -26,9 +35,9 @@ const List = (props) => {
         name: '',
         labels: [],
         members: [],
-        editing: true,
-        position: null,
-        listOrder: null,
+        editing: false,
+        position: boardState.lists[props.index].cards.length + 1,
+        listOrder: props.index + 1,
     })
 
     // List popover & New card popover state
@@ -40,6 +49,8 @@ const List = (props) => {
         anchorElement: null,
     })
 
+    const sortedCards = boardState.lists[props.index].cards.sort((a, b) => { return a.order_number - b.order_number })
+
     React.useEffect(() => {
         if (selectFocus === 'list') {
             listNameRef.current.focus()
@@ -48,6 +59,7 @@ const List = (props) => {
             newCardRef.current.focus()
         }
     });
+
 
     /* --------------------------- List name fucntion --------------------------- */
     const handleChangeListName = e => {
@@ -64,7 +76,7 @@ const List = (props) => {
     const listNameBlur = e => {
         setSelectFocus('')
 
-        if (!listName.newListName.length) {
+        if (!listName.newListName.length || listName.oldListName === listName.newListName) {
             renameList({
                 oldListName: listName.oldListName,
                 newListName: listName.oldListName,
@@ -72,20 +84,35 @@ const List = (props) => {
             })
             return
         }
-
         renameList({
             oldListName: listName.newListName,
             newListName: listName.newListName,
             editing: !listName.editing
         })
-
-        boardDispatch({
-            type: 'CHANGE_LIST_NAME',
-            index: props.index,
-            name: e.target.value,
-        })
-
-        // send new name to server
+        Axios.patch(
+            `${URL}/board/my_list/${list.id}/`,
+            { name: e.target.value },
+            headers
+        )
+            .then((res) => {
+                boardDispatch({
+                    type: 'LIST_RENAME',
+                    index: props.index,
+                    name: res.data.name,
+                })
+            })
+    }
+    const deleteList = () => {
+        Axios.delete(
+            `${URL}/board/my_list/${list.id}/`,
+            headers
+        )
+            .then((res) => {
+                boardDispatch({
+                    type: 'DEL_LIST',
+                    index: props.index,
+                })
+            })
     }
 
     /* ---------------------------- New Card function --------------------------- */
@@ -121,7 +148,6 @@ const List = (props) => {
             listOrder: listOrder
         })
     }
-
     const setNewCardMembers = (e, member) => {
         e.preventDefault()
         let newMembers = newCardState.members
@@ -137,16 +163,15 @@ const List = (props) => {
             members: newMembers
         })
     }
-
     const addLabel = index => {
         let newLabel = newCardState.labels
         newLabel.push(boardState.labels[index])
+
         setNewCardState({
             ...newCardState,
             labels: newLabel
         })
     }
-
     const delLabel = index => {
         let newLabel = newCardState.labels
         newLabel = newLabel.slice(0, index).concat(newLabel.slice(index + 1))
@@ -154,6 +179,79 @@ const List = (props) => {
             ...newCardState,
             labels: newLabel
         })
+    }
+    const createNewCard = () => {
+        if (newCardState.name !== '') {
+            let formData = new FormData()
+            formData.append('list', newCardState.listOrder ? boardState.lists[newCardState.listOrder - 1].id : list.id)
+            formData.append('name', newCardState.name)
+
+            Axios.post(
+                `${URL}/board/my_card/`,
+                formData,
+                headers
+            )
+                .then((res) => {
+                    // BoardDispatch
+                    boardDispatch({
+                        type: 'ADD_CARD',
+                        id: res.data.id,
+                        name: res.data.name,
+                        list: formData.get('list'),
+                        position: newCardState.position,
+                        order_number: res.data.order_number,
+                    })
+                    boardDispatch({
+                        type: 'MOVE_CARDS_IN_LIST',
+                        sourceIndex: res.data.order_number - 1,
+                        destIndex: newCardState.position - 1,
+                        listId: `list-${formData.get('list')}`
+                    })
+                    formData.delete('name')
+                    formData.delete('list')
+
+                    // Drag card
+                    formData.append('list_shift', 0)
+                    formData.append('card_shift', newCardState.position - (boardState.lists[newCardState.listOrder - 1].cards.length))
+                    Axios.post(
+                        `${URL}/board/my_card/${res.data.id}/drag_card/`,
+                        formData,
+                        headers
+                    )
+                        .then(() => {
+                            formData.delete('list_shift')
+                            formData.delete('card_shift')
+                        })
+
+                    // Add Member
+                    newCardState.members.forEach(element => {
+                        formData.set('user_id', element.id)
+                        Axios.post(
+                            `${URL}/board/my_card/${res.data.id}/add_member/`,
+                            formData,
+                            headers
+                        )
+                            .then((res) => {
+                                formData.delete('user_id')
+                                console.log(res)
+                            })
+                    });
+
+                    // Add Label
+                    newCardState.labels.forEach(element => {
+                        formData.set('label', element.id)
+                        Axios.post(
+                            `${URL}/board/my_card/${res.data.id}/add_label/`,
+                            formData,
+                            headers
+                        )
+                            .then((res) => {
+                                formData.delete('label')
+                                console.log(res)
+                            })
+                    });
+                })
+        }
     }
 
     /* ----------------------------- Popver function ---------------------------- */
@@ -235,7 +333,7 @@ const List = (props) => {
                                     isDraggingOver={snapshot.isDraggingOver}
                                 >
                                     {
-                                        list.cards.map((card, index) => {
+                                        sortedCards && sortedCards.map((card, index) => {
                                             return (
                                                 <Card
                                                     index={index}
@@ -271,10 +369,14 @@ const List = (props) => {
                             <div className={`new-card-wrapper ${newCardState.editing ? '' : 'hide'}`}>
                                 <div className='text-box-wrapper'>
                                     <div className='label-wrapper'>
-                                        {newCardState.labels.map((item) =>
-                                            <div
-                                                className='card-label'
-                                                style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                        {newCardState.labels.map((item) => {
+                                            return (
+                                                <div
+                                                    className='card-label'
+                                                    key={`label${item.id}`}
+                                                    style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                            )
+                                        }
                                         )}
                                     </div>
 
@@ -299,6 +401,7 @@ const List = (props) => {
                                     <Button
                                         className='add-button'
                                         onClick={() => {
+                                            createNewCard()
                                             setNewCardState({ ...newCardState, editing: !newCardState.editing })
                                         }}>
                                         Add card</Button>
@@ -367,12 +470,13 @@ const List = (props) => {
                                             setContent={setContent}
                                             listOrder={props.index + 1}
                                             newCard={{
+                                                addLabel,
+                                                delLabel,
                                                 setNewCardEdit,
                                                 setNewCardPosition,
                                                 setNewCardMembers,
-                                                addLabel,
-                                                delLabel
                                             }}
+                                            deleteList={deleteList}
                                             lists={boardState.lists}
                                             members={boardState.members}
                                             listLabels={boardState.labels} />

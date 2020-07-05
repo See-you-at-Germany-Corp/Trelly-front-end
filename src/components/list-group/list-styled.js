@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 
 export const ListWrapper = styled.div`
-    max-height: 95%;
+    height: 82.5vh;
     min-width: 250px;
     max-width: 280px;
+    position: relative;
     margin-right: 10px;
     border-radius: 10px;
     padding-bottom: 10px;
-    background-color: transparent;
+    /* background-color: greenyellow; */
 `
 
 export const ListContent = styled.div`
@@ -16,7 +17,8 @@ export const ListContent = styled.div`
     position: relative;
     border-radius: 5px;
     flex-direction: column;
-    background-color: #ebecf0
+    background-color: #ebecf0;
+    /* background-color: red; */
 `
 
 export const HeaderField = styled.div`
@@ -64,23 +66,23 @@ export const HeaderField = styled.div`
 `
 export const CardList = styled.div`
     padding: 10px;
+    max-height: 550px;
     overflow-y: auto;
-    background-color: ${props => props.isDraggingOver ? 'green' : 'transparent'}
+    /* background-color: ${props => props.isDraggingOver ? 'green' : 'transparent'} */
+    background-color: transparent;
 `
 
 export const AddCard = styled.div`
     min-height: 40px;
     margin: 10px 8px;
-    display: table;
 
     .add-composer {
-        width: 100%;
+        width: calc(100% - 10px);
         height: 40px;
         padding-left: 10px;
         border-radius: 3px;
         font-size: 15px;
-        display: table-cell;
-        vertical-align: middle;
+        line-height: 40px;
         color: #5e6c84;
         cursor: pointer;
 
@@ -104,7 +106,7 @@ export const AddCard = styled.div`
                 border: 0;
                 resize: none;
                 padding: 10px;
-                font-size: 10px;
+                font-size: 12px;
                 background-color: white;
 
                 :focus {
@@ -164,7 +166,7 @@ export const AddCard = styled.div`
 
     .add-button {
         min-width: 60px;
-        min-height: 40px;
+        min-height: 32px;
         overflow: hidden;
         display: inline-block;
 
@@ -178,7 +180,7 @@ export const AddCard = styled.div`
     
     .x-button {
         min-width: 40px;
-        min-height: 40px;
+        min-height: 32px;
 
         color: #5e6c84;
         font-size: 15px;
@@ -339,14 +341,12 @@ export const PopOverList = styled.div`
                 word-break: break-all;
                 word-wrap: break-word; 
                 text-overflow: ellipsis;
-                /* background-color: greenyellow; */
             }
 
             .member-check {
                 min-width: 40px;
                 max-width: 40px;
                 line-height: 40px;
-                /* background-color: blue; */
             }
 
             :hover {
@@ -368,6 +368,19 @@ export const PopOverList = styled.div`
             ::-webkit-scrollbar-thumb {
                 border-radius: 10px;
                 background: rgba(9,30,66,.08);
+            }
+        }
+
+        .create-label-button {
+            width: 260px;
+            outline: none;
+            color: #172b4d;
+            cursor: pointer;
+            text-align: center;
+            margin: 10px 10px 0px 10px;
+
+            :hover {
+                    background-color: rgba(0,0,0,0.15);
             }
         }
 
@@ -458,10 +471,6 @@ export const PopOverList = styled.div`
                     background-color: #ebecf0;
                 }
             }
-        }
-
-        .create-label-button {
-            
         }
 
         ul {

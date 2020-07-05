@@ -5,28 +5,80 @@ import { moveItem, insertItem, deleteItem, findItem } from '../../function/moveC
 const BoardContext = createContext({})
 
 const boardReducer = (state, action) => {
+
     switch (action.type) {
-        case 'MOVE_CARDS_IN_LIST': {
-            const listIndex = findItem(state.lists, action.listId, 'list-')
-            const newCardIds = moveItem(state.lists[listIndex].cards, action.sourceIndex, action.destIndex)
-            state.lists[listIndex].cards = newCardIds
+        // list
+        case 'OVERRIDE_LISTS': {
+            let newState = { ...state }
+            newState.lists = action.newLists
+            return newState
+        }
+
+        case 'MOVE_LIST': {
+            let newState = { ...state }
+            let newListOrder = moveItem(state.lists, action.sourceIndex, action.destIndex)
+            newState.lists = newListOrder
+
+            return newState
+        }
+
+        case 'LIST_RENAME': {
+            state.lists[action.index].name = action.name
             return state
         }
+
+        case 'ADD_LIST': {
+            let newState = { ...state }
+            delete action.newList.board
+            newState.lists.push({ ...action.newList, cards: [] })
+            return newState
+        }
+
+        case 'DEL_LIST': {
+            let newState = { ...state }
+            let newLists = state.lists.slice(0, action.index).concat(state.lists.slice(action.index + 1))
+            newState.lists = newLists
+            return newState
+        }
+
+        // card
+        case 'ADD_CARD': {
+            let newState = { ...state }
+            let index = newState.lists.findIndex(item => item.id === parseInt(action.list))
+            console.log(action.position);
+
+            newState.lists[index].cards.splice(action.position - 1, 0,
+                ({
+                    id: action.id,
+                    name: action.name,
+                    labels: [],
+                    members: [],
+                    checklist: null,
+                    order_number: action.order_number,
+                    is_description: false,
+                    is_watching: false,
+                })
+            )
+
+            return newState
+        }
+
+        case 'MOVE_CARDS_IN_LIST': {
+            let newState = { ...state }
+            const listIndex = findItem(state.lists, action.listId, 'list-')
+            const newCardIds = moveItem(state.lists[listIndex].cards, action.sourceIndex, action.destIndex)
+            newState.lists[listIndex].cards = newCardIds
+
+            return newState
+        }
+
         case 'MOVE_CARDS_OVER_LIST': {
             const destIndex = findItem(state.lists, action.dest.droppableId, 'list-')
             const sourceIndex = findItem(state.lists, action.source.droppableId, 'list-')
             const cardIndex = findItem(state.lists[sourceIndex].cards, action.item, 'card-')
             insertItem(state.lists[destIndex].cards, action.dest.index, state.lists[sourceIndex].cards[cardIndex])
             deleteItem(state.lists[sourceIndex].cards, action.source.index)
-            return state
-        }
-        case 'MOVE_LIST': {
-            const newListOrder = moveItem(state.lists, action.sourceIndex, action.destIndex)
-            state.lists = newListOrder
-            return state
-        }
-        case 'CHANGE_LIST_NAME': {
-            state.lists[action.index].name = action.name
+
             return state
         }
 
@@ -46,13 +98,13 @@ const boardReducer = (state, action) => {
 
             return state;
 
-        case ('ADD_MEMBER'):
-            const newState2 = { ...state };
-            newState2.members.push(action.member);
-
+        case ('ADD_MEMBER'): {
+            const newState = { ...state };
+            newState.members.push(action.member);
+        }
             /// post to backend.
 
-            return newState2;
+            return newState;
 
         case ('REMOVE_MEMBER'):
             const newState = { ...state };
@@ -74,48 +126,52 @@ const boardReducer = (state, action) => {
                 color_code: action.color_code
             };
 
-        case ('ADD_LABEL_TO_BOARD'):
-            const newState3 = {...state};
-            newState3.labels.push(action.labelData);
+        case ('ADD_LABEL_TO_BOARD'): {
+            const newState = { ...state };
+            newState.labels.push(action.labelData);
 
-            return newState3;
+            return newState;
+        }
 
-        case ('UPDATE_LABEL_IN_BOARD'):
-            const newState5 = {...state};
-            const updateIndex = newState5.labels.findIndex(label => label.id === action.labelId);
+        case ('UPDATE_LABEL_IN_BOARD'): {
+            const newState = { ...state };
+            const updateIndex = newState.labels.findIndex(label => label.id === action.labelId);
 
             if (updateIndex >= 0) {
-                newState5.labels[updateIndex].name = action.newName;
-                newState5.labels[updateIndex].color_id = action.newColor_id;
+                newState.labels[updateIndex].name = action.newName;
+                newState.labels[updateIndex].color_id = action.newColor_id;
             }
- 
-            return newState5;
 
-        case ('DEL_LABEL_IN_BOARD'):
-            const newState4 = {...state};
-            const delIndex = newState4.labels.findIndex(label => label.id === action.labelId);
+            return newState;
+        }
+
+        case ('DEL_LABEL_IN_BOARD'): {
+            const newState = { ...state };
+            const delIndex = newState.labels.findIndex(label => label.id === action.labelId);
 
             if (delIndex >= 0) {
-                newState4.labels.splice(delIndex, 1);
-            } 
+                newState.labels.splice(delIndex, 1);
+            }
 
-            return newState4;
+            return newState;
+        }
 
-        case ('CHANGE_CURRENT_BOARD'): 
+        case ('CHANGE_CURRENT_BOARD'):
             return action.newState;
 
-        case ('CHANGE_CARD_NAME'):
-            let newState6 = { ...state };
-            let listIndex = newState6.lists.findIndex(list => list.id === action.listId);
-            
+        case ('CHANGE_CARD_NAME'): {
+            let newState = { ...state };
+            let listIndex = newState.lists.findIndex(list => list.id === action.listId);
+
             if (listIndex >= 0) {
-                let cardIndex = newState6.lists[listIndex].cards.findIndex(card => card.id === action.cardId);
+                let cardIndex = newState.lists[listIndex].cards.findIndex(card => card.id === action.cardId);
                 if (cardIndex >= 0)
-                    newState6.lists[listIndex].cards[cardIndex].name = action.newName;
+                    newState.lists[listIndex].cards[cardIndex].name = action.newName;
             }
-                 
-            return newState6;
- 
+
+            return newState;
+        }
+
         default:
             return state
     }

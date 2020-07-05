@@ -1,6 +1,10 @@
 body {
     background: snow;
-    /* overflow: hidden; */
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 0;
+    margin: 0;
 }
 
 .homepage-main-container {

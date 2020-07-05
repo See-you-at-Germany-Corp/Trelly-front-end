@@ -30,9 +30,8 @@ const PopoverContents = (props) => {
         }
         else {
             newLabels = newLabels.slice(0, newLabelIndex).concat(newLabels.slice(newLabelIndex + 1))
-            props.newCard.delLabel(index)
+            props.newCard.delLabel(newLabelIndex)
         }
-
         setLabel({
             ...label,
             labels: newLabels
@@ -58,7 +57,7 @@ const PopoverContents = (props) => {
                     <Divider variant='middle' />
 
                     <ul>
-                        <li>Archive This List</li>
+                        <li onClick={() => props.deleteList()}>Archive This List</li>
                     </ul>
                 </>
             )
@@ -117,8 +116,8 @@ const PopoverContents = (props) => {
                         props.members.filter((item) =>
                             item.full_name.toLocaleLowerCase().includes(cardMembers.search.toLocaleLowerCase()) === true
                         ).map((item) => (
-                            <a
-                                href='#'
+                            <Link
+                                to='#'
                                 className='member-item-wrapper'
                                 key={item.full_name}
                                 onClick={e => props.newCard.setNewCardMembers(e, item)}
@@ -126,7 +125,7 @@ const PopoverContents = (props) => {
                                 <Avatar className='member-avatar'>{item.picture === '' ? item.init : ''}</Avatar>
                                 <div className='member-name' style={{ maxWidth: cardMembers.members.indexOf(item.id) !== -1 ? 180 : 220 }}>{item.full_name}</div>
                                 {cardMembers.members.indexOf(item.id) !== -1 && <div className='member-check'></div>}
-                            </a>
+                            </Link>
                         ))
                     }
                 </>
@@ -144,23 +143,24 @@ const PopoverContents = (props) => {
                     <div className='label-group' >
                         {
                             props.listLabels.map((item, i) => {
-                                return (<div className='label-wrapper' key={`label-${item.id}`}>
-                                    <div
-                                        className='hover-label'
-                                        style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
-                                    <Link
-                                        href='#'
-                                        className='main-label'
-                                        style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }}
-                                        onClick={e => addLabelToNewCard(e, i, item.id)}>
-                                        <p>{item.name}</p>
-                                        {label.labels.indexOf(item.id) !== -1 && <div className='label-check'><i className="fas fa-check" /></div>}
-                                    </Link>
-                                    <Link
-                                        href='#'
-                                        className='edit-label'><i className="far fa-edit" />
-                                    </Link>
-                                </div>)
+                                return (
+                                    <div className='label-wrapper' key={`label-${item.id}`}>
+                                        <div
+                                            className='hover-label'
+                                            style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }} />
+                                        <Link
+                                            href='#'
+                                            className='main-label'
+                                            style={{ backgroundColor: defaultLabel[item.color_id - 1].picture }}
+                                            onClick={e => addLabelToNewCard(e, i, item.id)}>
+                                            <p>{item.name}</p>
+                                            {label.labels.indexOf(item.id) !== -1 && <div className='label-check'><i className="fas fa-check" /></div>}
+                                        </Link>
+                                        <Link
+                                            href='#'
+                                            className='edit-label'><i className="far fa-edit" />
+                                        </Link>
+                                    </div>)
                             })
                         }
                     </div>
@@ -181,7 +181,7 @@ const PopoverContents = (props) => {
                                         destListOrder: e.target.value,
                                         destPosition: props.lists[e.target.value - 1].cards.length + 1
                                     })
-                                    props.newCard.setNewCardPosition(newCardOption.destListOrder, newCardOption.destPosition)
+                                    props.newCard.setNewCardPosition(e.target.value, props.lists[e.target.value - 1].cards.length + 1)
                                 }}>
                                 {
                                     props.lists.map((item, i) => <MenuItem key={'new-card-list-' + i} value={item.order_number} >{item.name}</MenuItem>)
@@ -196,7 +196,7 @@ const PopoverContents = (props) => {
                                 value={newCardOption.destPosition}
                                 onChange={e => {
                                     setNewCardOption({ ...newCardOption, destPosition: e.target.value })
-                                    props.newCard.setNewCardPosition(newCardOption.destListOrder, newCardOption.destPosition)
+                                    props.newCard.setNewCardPosition(newCardOption.destListOrder, e.target.value)
                                 }}>
                                 {
                                     props.lists[newCardOption.destListOrder - 1].cards.map((item, i) => <MenuItem key={'new-card-position-' + i + 1} value={i + 1} >{i + 1}</MenuItem>)
