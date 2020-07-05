@@ -14,6 +14,8 @@ import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
+import axios from "axios";
+
 const styles = {
   form: {
     textAlign: "center",
@@ -41,97 +43,136 @@ class profile extends Component {
       initials: "",
       userName: "",
       bio: "",
-      picture: ""
+      picture: "",
+      pictureName: "",
     };
   }
-  //Get user data
 
-  
+  //Get user data
+  componentDidMount() {
+    const authenHeader = this.props.authenHeader;
+
+    if (authenHeader !== null) {
+      axios
+        .get(
+          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
+          authenHeader
+        )
+        .then((res) => {
+          const member = res.data;
+          for (var x in member) {
+            if (member[x] === "null") {
+              member[x] = "";
+            }
+          }
+          this.setState({
+            id: member.id,
+            fullName: member.fullname,
+            initials: member.init,
+            userName: member.username,
+            bio: member.bio,
+            picture: member.picture,
+          });
+        });
+    }
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      fullName: this.state.fullName,
-      initials: this.state.initials,
-      userName: this.state.userName,
-      bio: this.state.bio,
-      picture: this.state.picture,
-    });
+    const authenHeader = this.props.authenHeader;
+
     const userData = {
-      fullName: this.state.fullName,
-      initials: this.state.initials,
-      userName: this.state.userName,
+      new_fullname: this.state.fullName,
+      init: this.state.initials,
       bio: this.state.bio,
       picture: this.state.picture,
     };
-    this.props.SUBMIT(
-      userData
-      // loading: false,
-      // error: {},
-    );
-    console.log(userData);
+    const formData = new FormData();
+    formData.append("new_fullname", this.state.fullName);
+    formData.append("init", this.state.initials);
+    formData.append("bio", this.state.bio);
+    formData.append("picture", this.state.picture);
+    this.props.SUBMIT(userData);
 
-    //Rest
+    //Rest post
+    if (authenHeader !== null) {
+      axios
+        .patch(
+          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
+          formData,
+          authenHeader
+        )
+        .then((res) => {
+          console.log(res);
+        });
+    }
   };
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
-    //console.log(this.setState);
   };
   handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
     formData.append("image", image, image.name);
-    console.log("form", formData);
-    console.log(image.name);
-
-    //this.props.uploadImage(formData);
-    //send rest
+    this.setState({
+      picture: image,
+      pictureName: image.name,
+    });
   };
   handleEditPicture = (event) => {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   };
+  PictureOrInit = (state) => {
+    return this.state.picture ? (
+      <div className="">
+        <img
+          className="namePicture"
+          src={"https://boxing-donair-89223.herokuapp.com" + this.state.picture}
+          alt=""
+          style={{
+            width: "100%",
+            maxWidth: "100px",
+            maxHeight: "100px",
+            height: "fit-content",
+          }}
+        />
+      </div>
+    ) : (
+      <div>
+        <span
+          className="namePicture"
+          style={{
+            fontSize: "48px",
+            height: "100px",
+            width: "100px",
+            lineHeight: "100px",
+          }}
+        >
+          {this.state.initials}
+        </span>
+      </div>
+    );
+  };
   render() {
     const { classes } = this.props;
-    const { user } = this.state;
-    console.log("Hello props");
-
-     console.log(this.props);
-
-    //console.log(this.props.DataProfile.fullName);
-
     return (
       <div>
-        <BarProfile />
+        <BarProfile data={this.state} />
         <ProfileContainer container className={classes.form}>
           <Grid item sm />
           <Grid item sm>
             <div className="contain-avatar" data-test-id="profile-avatar">
               <h3 className="text-avatar">Avatar</h3>
               <div className="contain-picture-avatar">
-                <div
-                  className="MrFeHFqEkuBP9W name-picture"
-                  title="Mark Latthapol (marklatthapol)"
-                >
-                  <span
-                    className="namePicture"
-                    style={{
-                      fontSize: "48px",
-                      height: "100px",
-                      width: "100px",
-                      lineHeight: "100px",
-                    }}
-                  >
-                    {this.state.initials}
-                  </span>
+                <div className="" title={this.state.pictureName}>
+                  {this.PictureOrInit()}
                 </div>
                 <div className="inputPicture">
                   <input
                     className="testButton"
-                    onClick={() => {
-                      console.log("555");
-                    }}
                     type="file"
                     id="imageInput"
                     onChange={this.handleImageChange}
@@ -220,7 +261,7 @@ profile.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    DataProfile: state.DataProfile,
+    DataProfile: state.dataProfile,
   };
 };
 const mapDispatchToProps = (dispatch) => {

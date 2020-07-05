@@ -1,18 +1,17 @@
-
 import React from "react";
-const BarProfile = () => {
+const BarProfile = (props) => {
+
   const [
     state = {
-      fullName: "Latthapol",
-      initials: "ML",
-      userName: "ml",
-      bio: "",
-      picture: "",
+      fullName: props.data.fullName,
+      initials: props.data.initials,
+      userName: props.data.userName,
+      //picture: props.data.fullName,
       status: "",
     },
     setState,
   ] = React.useState();
-  
+
   const activeStatus = () => {
     setState({ status: " active" });
   };
@@ -42,7 +41,7 @@ const BarProfile = () => {
               </div>
               <div className="content-header">
                 <span className="content-name">{state.fullName}</span>
-                  <span className="content-nickname">@{state.userName}</span>
+                <span className="content-nickname">@{state.userName}</span>
               </div>
             </div>
           </div>
@@ -54,7 +53,7 @@ const BarProfile = () => {
                 className={`tabbed-pane-nav-item-button js-member-profile ${state.status}`}
                 data-tab="profile"
                 href=""
-                onClick={()=>activeStatus()}
+                onClick={() => activeStatus()}
               >
                 Profile and Visibility
               </a>
@@ -64,7 +63,7 @@ const BarProfile = () => {
                 className={`tabbed-pane-nav-item-button js-member-activity ${state.status}`}
                 data-tab="cards"
                 href=""
-                onClick={()=>activeStatus()}
+                onClick={() => activeStatus()}
               >
                 Activity
               </a>
