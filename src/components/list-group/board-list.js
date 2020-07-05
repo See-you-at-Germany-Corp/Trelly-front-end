@@ -37,7 +37,7 @@ const List = (props) => {
         members: [],
         editing: false,
         position: null,
-        listOrder: null,
+        listOrder: props.index + 1,
     })
 
     // List popover & New card popover state
@@ -49,6 +49,8 @@ const List = (props) => {
         anchorElement: null,
     })
 
+    const sortedCards = boardState.lists[props.index].cards.sort((a, b) => { return a.order_number - b.order_number })
+
     React.useEffect(() => {
         if (selectFocus === 'list') {
             listNameRef.current.focus()
@@ -57,6 +59,7 @@ const List = (props) => {
             newCardRef.current.focus()
         }
     });
+
 
     /* --------------------------- List name fucntion --------------------------- */
     const handleChangeListName = e => {
@@ -178,7 +181,25 @@ const List = (props) => {
         })
     }
     const createNewCard = () => {
-        console.log(newCardState);
+        if (newCardState.name !== '') {
+            let formData = new FormData()
+            formData.append('list', newCardState.listOrder ? boardState.lists[newCardState.listOrder - 1].id : list.id)
+            formData.append('name', newCardState.name)
+            Axios.post(
+                `${URL}/board/my_card/`,
+                formData,
+                headers
+            )
+                .then((res) => {
+                    boardDispatch({
+                        type: 'ADD_CARD',
+                        id: res.data.id,
+                        name: res.data.name,
+                        list: formData.get('list'),
+                        order_number: res.data.order_number,
+                    })
+                })
+        }
     }
 
     /* ----------------------------- Popver function ---------------------------- */
@@ -245,7 +266,7 @@ const List = (props) => {
                                     isDraggingOver={snapshot.isDraggingOver}
                                 >
                                     {
-                                        list.cards && list.cards.map((card, index) => {
+                                        sortedCards && sortedCards.map((card, index) => {
                                             return (
                                                 <Card
                                                     index={index}
@@ -304,10 +325,10 @@ const List = (props) => {
                                 <div className='add-card-wrapper'>
                                     <Button
                                         className='add-button'
-                                        // onClick={() => {
-                                        //     setNewCardState({ ...newCardState, editing: !newCardState.editing })
-                                        // }}>
-                                        onClick={createNewCard}>
+                                        onClick={() => {
+                                            createNewCard()
+                                            setNewCardState({ ...newCardState, editing: !newCardState.editing })
+                                        }}>
                                         Add card</Button>
                                     <div
                                         className='x-button'

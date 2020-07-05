@@ -1,31 +1,3 @@
-/* -------------------------------- Unit test ------------------------------- */
-/* const testList = [
-    {
-        id: 0,
-        name: 'A',
-    },
-    {
-        id: 1,
-        name: 'B',
-    },
-    {
-        id: 2,
-        name: 'C',
-    },
-    {
-        id: 3,
-        name: 'D',
-    },
-    {
-        id: 4,
-        name: 'E',
-    },
-    {
-        id: 5,
-        name: 'F',
-    },
-]
-moveObj(testList, 1, -1)*/
 function findItem(obj, id, type) {
     return obj.findIndex(element => (
         element.id === parseInt(id.split(type)[1])
@@ -33,14 +5,20 @@ function findItem(obj, id, type) {
 }
 
 function moveItem(obj, source, dest) {
-    if (source < dest) {
-        const [before, center, after] = [obj.slice(0, source), obj.slice(source + 1, dest + 1), obj.slice(dest + 1)]
-        return [...before, ...center, obj[source], ...after]
+    const shift = dest - source
+
+    if (shift > 0) {
+        for (let i = source + 1; i <= dest; i++) {
+            obj[i].order_number -= 1
+        }
     }
     else {
-        const [before, center, after] = [obj.slice(0, dest), obj.slice(dest, source), obj.slice(source + 1)]
-        return [...before, obj[source], ...center, ...after]
+        for (let i = dest; i < source; i++) {
+            obj[i].order_number += 1
+        }
     }
+    obj[source].order_number += shift
+    return obj
 }
 
 function insertItem(obj, index, item) {

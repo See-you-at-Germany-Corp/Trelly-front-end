@@ -104,7 +104,7 @@ export const AddCard = styled.div`
                 border: 0;
                 resize: none;
                 padding: 10px;
-                font-size: 10px;
+                font-size: 12px;
                 background-color: white;
 
                 :focus {
@@ -373,8 +373,15 @@ export const PopOverList = styled.div`
 
         .create-label-button {
             width: 260px;
+            outline: none;
+            color: #172b4d;
+            cursor: pointer;
             text-align: center;
             margin: 10px 10px 0px 10px;
+
+            :hover {
+                    background-color: rgba(0,0,0,0.15);
+            }
         }
 
         .label-wrapper {

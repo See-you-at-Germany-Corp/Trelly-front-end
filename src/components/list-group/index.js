@@ -25,16 +25,35 @@ export default function ListGroup(props) {
         if (!result.destination) return
 
         if (result.type === 'card') {
+            let shift
+            const listShift = boardState.lists.findIndex(item => item.id === parseInt(result.destination.droppableId.match(/\d+/))) - boardState.lists.findIndex(item => item.id === parseInt(result.source.droppableId.match(/\d+/)))
+
             if (result.destination.droppableId === result.source.droppableId) {
+                shift = result.destination.index - result.source.index
+                form.append('card_shift',shift)
+                form.append('list_shift',listShift)
                 boardDispatch({
                     type: 'MOVE_CARDS_IN_LIST',
                     sourceIndex: result.source.index,
                     destIndex: result.destination.index,
                     listId: result.destination.droppableId
                 })
+                Axios.post(
+                    `${URL}/board/my_card/${result.draggableId.match(/\d+/)[0]}/drag_card/`,
+                    form,
+                    headers
+                )
                 return
             }
 
+            shift = result.destination.index + 1
+            form.append('card_shift',shift)
+            form.append('list_shift',listShift)
+            Axios.post(
+                `${URL}/board/my_card/${result.draggableId.match(/\d+/)[0]}/drag_card/`,
+                form,
+                headers
+            )
             boardDispatch({
                 type: 'MOVE_CARDS_OVER_LIST',
                 source: result.source,
@@ -44,11 +63,15 @@ export default function ListGroup(props) {
         }
         else {
             form.append('shift', result.destination.index - result.source.index)
-            
+
             boardDispatch({
                 type: 'MOVE_LIST',
                 sourceIndex: result.source.index,
                 destIndex: result.destination.index,
+            })
+            boardDispatch({
+                type: 'OVERRIDE_LISTS',
+                newLists: boardState.lists.sort((a, b) => { return a.order_number - b.order_number })
             })
 
             Axios.post(
@@ -61,6 +84,7 @@ export default function ListGroup(props) {
 
     let sortedLists = boardState.lists
     useMemo(() => {
+        //eslint-disable-next-line
         sortedLists = boardState.lists.sort((a, b) => { return a.order_number - b.order_number })
     }, [sortedLists])
 
