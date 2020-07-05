@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,32 +20,26 @@ import CreateNewBoard from "./components/createNewBoard";
 import BoardDetail from "./pages/board-detail";
 
 import { BoardProvider } from "./context/board-context/board-context";
-import { useAuthen } from "./api/index";
+import { URL, useAuthen } from "./api";
+
 function App(props) {
   const authenHeader = useAuthen();
-  useEffect(()=>{
+
+  React.useMemo(() => {
     if (authenHeader !== null) {
-      axios
-        .get(
-          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
-          authenHeader
-        )
+      axios.get(`${URL}/profile/my_profile/`, authenHeader)
         .then((res) => {
-          const member = res.data;
-          props.dispatch({type:"SET_DATA",state:{
-            fullName: member.fullname,
-            initials: member.init,
-            userName: member.username,
-            bio: member.bio,
-            picture: member.picture,
-          }})
+          const state = res.data;
+          props.dispatch({ type: "SUBMIT", state })
         });
     }
   })
+
   return (
     <Router>
-      {props.loggedIn ?
-      <Navbar />:null
+      {
+        props.loggedIn &&
+        <Navbar />
       }
       <CreateNewBoard />
 
@@ -63,7 +57,7 @@ function App(props) {
               <Route path="/forgot/" component={Forgot} />
 
               <Route path="/profile/" >
-                <Profile authenHeader = {authenHeader}></Profile>
+                <Profile authenHeader={authenHeader}></Profile>
               </Route>
 
               <Route
@@ -75,16 +69,16 @@ function App(props) {
               <Route exact path="/" component={Home} />
             </Switch>
           ) : (
-            <Switch>
-              <Route exact path="/login/" component={Login} />
+              <Switch>
+                <Route exact path="/login/" component={Login} />
 
-              <Route exact path="/signup/" component={Signup} />
+                <Route exact path="/signup/" component={Signup} />
 
-              <Route exact path="/forgot/" component={Forgot} />
+                <Route exact path="/forgot/" component={Forgot} />
 
-              <Redirect to="/login/" />
-            </Switch>
-          )
+                <Redirect to="/login/" />
+              </Switch>
+            )
         }
       </BoardProvider>
     </Router>

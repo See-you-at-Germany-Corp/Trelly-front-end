@@ -154,7 +154,7 @@ const Row = styled(motion.div)`
     overflow:${props=>props.overflow ? props.overflow: "visible"};
     width:${props=>props.width? props.width: "100%"};
     min-height:${props => props.minHeight};
-    max-height:${props=>props.maxHeight}
+    max-height:${props=>props.maxHeight};
     margin: ${props => props.margin};
     padding: ${props => props.padding};
     /* z-index:11; */
@@ -548,11 +548,11 @@ const Navbars = ({personalBoardList,starredBoardList,on,profile}) => {
                             <motion.button style={{ outline: "none", border: "none", backgroundColor: "transparent", margin: "auto", padding: "0px" }}
                                 onClick={() => { setOpen({type:'user'}); setType('user') }}
                             >
-                                <Avatar src={profile.picture} style={{ width: "32px", height: "32px", margin: "auto",fontSize:"16px" }}>{profile.initials}</Avatar>
+                                <Avatar src={profile.picture} style={{ width: "32px", height: "32px", margin: "auto",fontSize:"16px" }}>{profile.init}</Avatar>
                             </motion.button>
                         </Row>
                     }
-                    board={<UserCard name={profile.fullName}/>}
+                    board={<UserCard name={profile.fullname}/>}
                 />
             </div>
             <div style={{maxWidth:"100px",top:"0",margin:"0px",position:"absolute",left:"50%",transform:"translateX(-50%)",alignItems:"center"}}>
@@ -750,7 +750,7 @@ const UserCards = ({dispatch,name}) => {
                         />
                         <Divider variant="middle" light />
                         <UserMenuLink 
-                            onClick={()=>dispatch({type:"LOG_OUT"})}
+                            onClick={() => dispatch({ type:"LOG_OUT" })}
                             children={
                                 <div>
                                     Log out

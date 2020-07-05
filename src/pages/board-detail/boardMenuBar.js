@@ -22,8 +22,9 @@ import { changeRecentlyName } from '../../redux/actions/recentlyBoard';
 const BoardMenuBar = (props) => {
 
     /// wait to use redux. 
-    // let myId = props.dataProfile.id;
-    let myId = 1;  /// mockup myId. 
+    let myId = props.dataProfile.id;
+    // let myId = 1;
+    // let myId = 5;  /// mockup myId. 
 
     const starredBoardList = props.starredBoardList;
 
@@ -200,12 +201,15 @@ const BoardMenuBar = (props) => {
     /* ------------------ working once -------------------- */
 
     React.useEffect(() => {
-        /// reorder members. 
-        boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId))); 
+        if (myId !== null && typeof myId !== undefined) {
+            if (boardState.members.length > 0) {
+                boardDispatch(memberOverWrite(memberSortByInit(boardState.members, myId)));  
+            }
+        }
         setNameDisp(boardState.name); 
         // eslint-disable-next-line
-    }, [boardState.name]);
-
+    }, [boardState.name, myId]);
+    
     return (
         <div className='board-menu-bar'>
 
@@ -266,7 +270,7 @@ const BoardMenuBar = (props) => {
                 <AvatarGroup className='board-avatar-box' max={999} ref={avatarBoxRef}>
 
                     {
-                        boardState.members.map((member, index) =>
+                        typeof myId !== undefined && boardState.members.map((member, index) =>
                             <Avatar
                                 className='avatar'
                                 key={index}
@@ -727,9 +731,8 @@ const SubmitInviteBtn = styled.button`
 
 const memberSortByInit = (members, myId) => {
 
-    const newMembers = [...members];
-    const myIndex = members.findIndex(member => member.id === myId);
-
+    const newMembers = [ ...members ];
+    const myIndex = members.findIndex(member => member.id === myId); 
     const copyMyData = newMembers[myIndex];
     /// remove my data from members array.
     newMembers.splice(myIndex, 1);

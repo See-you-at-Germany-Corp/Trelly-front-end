@@ -1,8 +1,8 @@
 
 import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux';
 
-// import Draggable from 'react-draggable'
 import { Draggable } from 'react-beautiful-dnd'
 
 import { BoardContext } from '../../context/board-context/board-context'
@@ -14,16 +14,13 @@ import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 
+// import "antd/dist/antd.css";
 
-import "antd/dist/antd.css";
-
-
-
-export default function Card(props) {
+function Card(props) {
     const { boardState, boardDispatch } = useContext(BoardContext)
 
     const card = boardState.lists[props.listIndex].cards[props.index]
-    let myId = 1;  /// mockup myId
+    let myId = props.dataProfile.id;
     return (
         <Draggable draggableId={props.cardId} index={props.index}>
             {provided => (
@@ -68,43 +65,12 @@ export default function Card(props) {
                                         let member = boardState.members[index];
                                         let initials = name.match(/\b\w/g) || [];
                                         initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-                                        return (
-                                            <Popover
-                                                placement="bottomLeft"
-                                                content={
-                                                    <AvatarDetailBox>
-                                                        <div className='avatar-description'>
-                                                            <Avatar className='avatar-pic' src={member.picture}>{initials}</Avatar>
-                                                            <div className='description'>
-                                                                <Link to='#' className='full-name'>{member.full_name}</Link>
-                                                                <p>{`@${member.username}`}</p>
-                                                                <p>{member.bio}</p>
-                                                                {
-                                                                    myId === member.id &&
-                                                                    <Link
-                                                                        to='/profile'
-                                                                        style={{ fontSize: '14px', textDecorationLine: 'underline', color: 'gray' }}
-                                                                    >
-                                                                        Edit profile info
-                                                        </Link>
-                                                                }
-                                                            </div>
-                                                            <div className='menu' onClick={() => {
-                                                                boardDispatch({ type: 'REMOVE_CARD_MEMBER', cardId: props.index, index: props.listIndex, id: card.members.findIndex(mb => mb.account_id === member.id) })
-                                                                // axios.patch(`${URL}${getMyBoards}/${boardState.id}`,boardState.lists)
-                                                            }}>
-                                                                <p>Remove from Card</p>
-                                                            </div>
-                                                        </div>
-                                                    </AvatarDetailBox>
-                                                }
-                                                trigger="click">
-                                                <motion.div>
-                                                    <motion.div whileTap={{ scale: 0.8 }}>
-                                                        <Avatar src={member.picture} sizes="small" style={{ fontSize: "12px", width: "24px", height: "24px", margin: "2px" }}>{initials}</Avatar>
-                                                    </motion.div>
+                                        return ( 
+                                            <motion.div>
+                                                <motion.div whileTap={{ scale: 0.8 }}>
+                                                    <Avatar src={member.picture} sizes="small" style={{ fontSize: "12px", width: "24px", height: "24px", margin: "2px" }}>{initials}</Avatar>
                                                 </motion.div>
-                                            </Popover>
+                                            </motion.div>
                                         );
                                     })}
                                 </div>
@@ -116,6 +82,15 @@ export default function Card(props) {
         </Draggable>
     )
 }
+
+const mapStateWithProps = state => ({
+    dataProfile: state.dataProfile
+})
+
+const CardWithConnect = connect(mapStateWithProps)(Card);
+
+export default CardWithConnect;
+
 const StyledCardOutside = styled(motion.div)`
     border-radius: 3px;
     box-shadow: 0px 5px 8px -8px ;

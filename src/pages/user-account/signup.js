@@ -1,9 +1,12 @@
 import React from 'react'
+import axios from 'axios';
 
 import { Link } from 'react-router-dom'
 import { useWindowSize } from '../../function/useWindowSize'
 import { TextField, FormControl, Divider } from '@material-ui/core'
 import { BackgroundDecorate, FormSection, FormButton, HeaderLogo, FormLayout, Footer, LinkCover } from './styled'
+
+import { URL } from '../../api/';
 
 export default function Signup() {
     const windowSize = useWindowSize()
@@ -20,6 +23,11 @@ export default function Signup() {
 
     const signup = () => {
         // Signup then Login -> redirect to home
+        axios.post(`${URL}/profile/sign_up/`, signupState)
+            .then(res => {
+                console.log(res);
+                console.log('created');
+            })
     }
 
     const form = {

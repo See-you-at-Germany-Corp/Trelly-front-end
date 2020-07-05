@@ -127,7 +127,7 @@ class profile extends Component {
     const authenHeader = this.props.authenHeader;
     axios.get(`${URL}/profile/my_profile/`, authenHeader)
       .then((res) => {
-        const state = res.data;
+        const state = res.data; 
         this.props.SUBMIT(state);
         this.setState({ ...state });
       });

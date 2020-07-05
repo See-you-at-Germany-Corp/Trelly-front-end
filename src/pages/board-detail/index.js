@@ -23,7 +23,7 @@ const BoardDetail = (props) => {
      
     const authenHeader = useAuthen();
 
-    React.useMemo(() => {
+    React.useEffect(() => {
         /// send api to get current board data.
         /// then overwrite current board data.
         if (authenHeader) {
@@ -40,7 +40,7 @@ const BoardDetail = (props) => {
                 })
         }
         // eslint-disable-next-line
-    }, [authenHeader,boardId]);
+    }, [authenHeader, boardId]);
 
     document.body.style.backgroundColor = boardState.color_code;
 
