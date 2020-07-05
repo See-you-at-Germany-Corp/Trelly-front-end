@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,6 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import { connect } from "react-redux";
+import axios from 'axios';
+
 
 import Home from "./pages/home";
 import Login from "./pages/user-account/login";
@@ -21,9 +23,30 @@ import { BoardProvider } from "./context/board-context/board-context";
 import { useAuthen } from "./api/index";
 function App(props) {
   const authenHeader = useAuthen();
+  useEffect(()=>{
+    if (authenHeader !== null) {
+      axios
+        .get(
+          "https://boxing-donair-89223.herokuapp.com/profile/my_profile/",
+          authenHeader
+        )
+        .then((res) => {
+          const member = res.data;
+          props.dispatch({type:"SET_DATA",state:{
+            fullName: member.fullname,
+            initials: member.init,
+            userName: member.username,
+            bio: member.bio,
+            picture: member.picture,
+          }})
+        });
+    }
+  })
   return (
     <Router>
-      <Navbar />
+      {props.loggedIn ?
+      <Navbar />:null
+      }
       <CreateNewBoard />
 
       <BoardProvider>

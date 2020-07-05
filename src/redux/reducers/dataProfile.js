@@ -18,6 +18,9 @@ const initialState = {
       //     ...state,
       //     picture: action.picture
       //   }
+      case "SET_DATA":
+        console.log(action.state);
+        return action.state;
       default:
         return state;
     }
