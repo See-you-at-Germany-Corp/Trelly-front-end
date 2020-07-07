@@ -1,0 +1,8 @@
+.board-detail {
+    /* background-color: lightslategray; */
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden; 
+    min-height: 94.5vh;
+    max-height: 94.5vh;
+}

@@ -1,0 +1,141 @@
+.create-new-board-container { 
+    position: absolute;
+    overflow: hidden;
+    height: 94.5vh;
+    width: 100%;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.create-new-board-box {
+    opacity: 100%;
+    height: 145px;
+    width: 405px; 
+    position: absolute;
+    margin-top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    /* background-color: skyblue; */
+    display: flex;
+}
+
+.create-new-board-box .new-board-detail-box {
+    /* background-color: mediumorchid; */
+    width: 295px;
+    height: 97px;    
+    float: left;
+    border-radius: 3px;
+}
+
+.create-new-board-box .new-board-detail-box > i {
+    color: white;
+    font-size: 14px; 
+    float: right;
+    margin: 12px;
+}
+
+.create-new-board-box .new-board-detail-box > i:hover {
+    cursor: pointer;  
+}
+
+.create-new-board-box .new-board-detail-box > input {
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    padding: 7px 0px 4px 8px;
+    margin: 11px 0px 0px 9px;
+    width: 228px;
+    color: white;
+    font-weight: 750;
+    font-size: 16px;
+}
+
+.create-new-board-box .new-board-detail-box > input:hover {
+    background-color: rgba(255, 255, 255, 0.2); 
+}
+
+.create-new-board-box .new-board-detail-box > input:focus {
+    background-color: rgba(255, 255, 255, 0.25); 
+    outline: none;
+}
+
+.create-new-board-box .new-board-detail-box > input::placeholder {
+    color: lightgray;
+    font-weight: 750;
+    font-size: 16px;
+}
+
+.create-new-board-box .new-board-bg-list {
+    /* background-color: lightpink; */
+    width: 110px;
+    height: 97px;  
+    display: flex;
+    flex-wrap: wrap; 
+    /* padding-left: 8px; */
+}
+ 
+.create-new-board-box .new-board-bg-list .bg-selector {
+    width: 28px;
+    height: 27px;  
+    margin: 0px 0px 6.5px 8px; 
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector > i {
+    color: white;
+    z-index: 1;
+    position: absolute; 
+    font-size: 10px;
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector:hover {
+    cursor: pointer;
+    filter: brightness(85%);
+}
+
+.create-new-board-box .new-board-bg-list .bg-selector:active { 
+    filter: brightness(70%);
+}
+
+.create-new-board-box .create-button { 
+    width: 105px;
+    height: 32.5px;   
+    background-color: forestgreen;
+    margin-top: 7px;
+    border-radius: 3px;
+    display: flex; 
+    justify-content: center;
+    user-select: none;  
+    outline: none;
+    border: none;
+}
+
+.create-new-board-box .create-button:hover { 
+    cursor: pointer;
+    filter: brightness(110%);
+}
+
+.create-new-board-box .create-button:active {  
+    filter: brightness(80%);
+}
+
+.create-new-board-box .create-button:disabled {   
+    cursor: not-allowed;
+    background-color: whitesmoke; 
+}
+.create-new-board-box .create-button:disabled > p {   
+    color: darkgrey;
+}
+
+.create-new-board-box .create-button > p { 
+    padding: 0;
+    margin: 0;
+    margin-top: 2px;
+    margin-left: -2px;
+    font-size: 12px; 
+    align-self: center;
+    color: whitesmoke; 
+}

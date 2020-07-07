@@ -1,0 +1,87 @@
+.board-list {
+    display: flex;  
+    flex-flow: row wrap;
+    /* background: lightsteelblue; */
+    width: 100%; 
+    padding: 20px 0% 25px 0px;    
+    max-width: 900px;
+    /* min-width: 90%;   */
+    /* font-size: 40px; */
+}
+
+.board-list .board-name-group { 
+    width: 95%;
+    margin-left: 25px;
+}
+
+.board-list .board-name-group .board-icon { 
+    display: inline;
+    padding-right: 15px;
+}
+
+.board-list .board-name-group .board-name { 
+    display: inline; 
+}
+ 
+.board-star {
+    font-size: 15px; 
+    float: right;
+    color: white;
+    margin-top: 7px;
+    padding: 10px;
+    transform: translateX(13px);
+    transition: transform 0.2s, opacity 0.2s, filter 0.2s, font-size 0.1s;
+    opacity: 0;
+    filter: brightness(95%);   
+    -webkit-user-drag: none;
+} 
+
+.board-star:hover {
+    filter: brightness(100%); 
+    font-size: 14px;
+    padding-right: 9px; 
+}
+
+.board-list .board-list-item-box:hover {
+    filter: brightness(95%); 
+}
+
+.board-list-item:hover .board-star {
+    display: block;
+    transform: translateX(0px);
+    transition: transform 0.2s, opacity 0.2s, filter 0.2s, font-size 0.1s;
+    opacity: 100; 
+}
+
+.create-new-board-button {
+    user-select: none;
+}
+
+.create-new-board-button:hover {
+    cursor: pointer;
+}
+
+.create-new-board-button:active {
+    filter: brightness(90%); 
+}
+
+@media only screen and (max-width: 900px) and (min-width: 751px) {  
+    .board-list .board-list-item-box {
+        width: 29%;   
+        margin: 10px 0px 2px 12px;
+    }
+}
+
+@media only screen and (max-width: 750px) and (min-width: 601px) {  
+    .board-list .board-list-item-box {
+        width: 44%;   
+        margin: 10px 0px 0px 8px;
+    }
+}
+
+@media only screen and (max-width: 600px) {  
+    .board-list .board-list-item-box {
+        width: 46%;   
+        margin: 10px 0px 0px 8px;
+    }
+}
