@@ -8,7 +8,7 @@
 }
 
 .create-new-board-box {
-    opacity: 100%;
+    opacity: 1;
     height: 145px;
     width: 405px; 
     position: absolute;

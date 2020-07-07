@@ -705,10 +705,12 @@ const UserCards = ({dispatch,name}) => {
             children={
                 <div>
                     <Column padding="0px">
-                        <UserMenuLink
+                        <UserMenuLink 
                             children={
                                 <div>
-                                    Profile and visibility
+                                    <Link to='/profile' style={{ textDecoration: 'none' }}>
+                                        Profile and visibility
+                                    </Link>
                                 </div>
                             }
                         />

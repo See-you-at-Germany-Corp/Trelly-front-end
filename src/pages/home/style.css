@@ -11,7 +11,7 @@ body {
     /* background: lightblue;  */ 
     position: relative;
     /* max-height: 91.5vh;  */
-    max-height: 91.5vh; 
+    max-height: 91vh; 
     display: flex;
     flex-direction: row ;
     padding-top: 22px;  
@@ -60,7 +60,7 @@ body {
     padding-top: 3px;
     font-size: 14px;
     display: inline;
-    opacity: 100%; 
+    opacity: 1; 
 }
 
 .homepage-main-container .homepage-sub-container {

@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { useWindowSize } from '../../function/useWindowSize'
 import { TextField, FormControl, Divider } from '@material-ui/core'
 import { BackgroundDecorate, FormSection, FormButton, HeaderLogo, FormLayout, Footer, LinkCover } from './styled'
@@ -11,6 +11,7 @@ import { URL } from '../../api/';
 export default function Signup() {
     const windowSize = useWindowSize()
 
+    const [isSignedUp, setIsSignedUp] = React.useState(false);
     const [signupState, setSignupState] = React.useState({
         email: '',
         fullname: '',
@@ -25,8 +26,8 @@ export default function Signup() {
         // Signup then Login -> redirect to home
         axios.post(`${URL}/profile/sign_up/`, signupState)
             .then(res => {
-                console.log(res);
-                console.log('created');
+                if (res.status === 201)
+                    setIsSignedUp(true);
             })
     }
 
@@ -42,65 +43,68 @@ export default function Signup() {
     const policies = <LinkCover><a href='/signup'>Privacy Policies</a></LinkCover>
 
     return (
-        <div style={{ overflow: 'visible', height: '100vh' }}>
-            <FormSection>
-                {
-                    !smallClient && <HeaderLogo />
-                }
-
-                <FormLayout >
+        isSignedUp ? 
+            <Redirect to='/login' />
+            :
+            <div style={{ overflow: 'visible', height: '100vh' }}>
+                <FormSection>
                     {
-                        smallClient && <HeaderLogo />
+                        !smallClient && <HeaderLogo />
                     }
-                    <h1>Sign up for your account</h1>
-                    <FormControl fullWidth>
-                        {
-                            Object.keys(form).map((item, i) => {
-                                return (
-                                    <TextField variant='outlined'
-                                        key={`form-signup${i}`}
-                                        type={form[item][0]}
-                                        label={form[item][1]}
-                                        placeholder={form[item][2]}
-                                        size='small'
-                                        value={signupState[item]}
-                                        onChange={handleChange(item)} />
-                                )
-                            })
-                        }
-                    </FormControl>
 
-                    <div style={{
-                        display: 'inline',
-                        fontSize: 11.4,
-                        marginTop: 10,
-                        marginBottom: 25,
-                        color: 'rgb(94, 108, 132)',
-                    }}>
-                        By signing up, I accept the Atlassian&nbsp;
+                    <FormLayout >
+                        {
+                            smallClient && <HeaderLogo />
+                        }
+                        <h1>Sign up for your account</h1>
+                        <FormControl fullWidth>
+                            {
+                                Object.keys(form).map((item, i) => {
+                                    return (
+                                        <TextField variant='outlined'
+                                            key={`form-signup${i}`}
+                                            type={form[item][0]}
+                                            label={form[item][1]}
+                                            placeholder={form[item][2]}
+                                            size='small'
+                                            value={signupState[item]}
+                                            onChange={handleChange(item)} />
+                                    )
+                                })
+                            }
+                        </FormControl>
+
+                        <div style={{
+                            display: 'inline',
+                            fontSize: 11.4,
+                            marginTop: 10,
+                            marginBottom: 25,
+                            color: 'rgb(94, 108, 132)',
+                        }}>
+                            By signing up, I accept the Atlassian&nbsp;
                         {termOfServices}
                         &nbsp;and acknowledge the&nbsp;
                         {policies}
-                    </div>
+                        </div>
 
-                    <FormButton onClick={signup} text='Sign up' />
+                        <FormButton onClick={signup} text='Sign up' />
 
-                    <Divider />
+                        <Divider />
 
-                    <LinkCover>
-                        <Link to='/login' style={{ fontSize: 12 }}>
-                            Already have an Atlassian account? Log in
+                        <LinkCover>
+                            <Link to='/login' style={{ fontSize: 12 }}>
+                                Already have an Atlassian account? Log in
                         </Link>
-                    </LinkCover>
-                </FormLayout>
-            </FormSection >
+                        </LinkCover>
+                    </FormLayout>
+                </FormSection >
 
-            {
-                !smallClient &&
-                <BackgroundDecorate left={require('../../asset/collab.png')} right={require('../../asset/hero.svg')} />
-            }
+                {
+                    !smallClient &&
+                    <BackgroundDecorate left={require('../../asset/collab.png')} right={require('../../asset/hero.svg')} />
+                }
 
-            <Footer />
-        </div>
+                <Footer />
+            </div> 
     )
 }
